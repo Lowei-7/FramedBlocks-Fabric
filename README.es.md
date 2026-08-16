@@ -48,6 +48,17 @@ Se requiere un JDK 17 o superior.
 
 El jar generado se escribe en `build/libs/`.
 
+## Versiones
+
+Cada versión compatible de Minecraft vive en su propia rama. Las ramas actuales son:
+
+| Rama    | Minecraft | Estado           |
+|---------|-----------|------------------|
+| `1.20.1`| 1.20.1    | Publicada        |
+
+Las ramas se crean cuando se completa y prueba el port de cada versión de Minecraft.
+Cada rama se compila automáticamente por CI en cada push.
+
 ## Licencia
 
 Este proyecto se distribuye bajo la **GNU Lesser General Public License v3.0** — consulta el

@@ -47,6 +47,17 @@ A JDK 17+ is required.
 
 The built jar is written to `build/libs/`.
 
+## Versions
+
+Each supported Minecraft version lives on its own branch. The current branches are:
+
+| Branch  | Minecraft | Status            |
+|---------|-----------|-------------------|
+| `1.20.1`| 1.20.1    | Released          |
+
+Branches are created as the port for each Minecraft version is completed and
+tested. Every branch is built automatically by CI on each push.
+
 ## License
 
 This project is licensed under the **GNU Lesser General Public License v3.0** — see the

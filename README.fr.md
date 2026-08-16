@@ -50,6 +50,18 @@ Un JDK 17 ou plus est requis.
 
 Le jar compilé est écrit dans `build/libs/`.
 
+## Versions
+
+Chaque version de Minecraft prise en charge vit sur sa propre branche. Les branches actuelles sont :
+
+| Branche  | Minecraft | Statut            |
+|----------|-----------|-------------------|
+| `1.20.1` | 1.20.1    | Publiée           |
+
+Les branches sont créées au fur et à mesure que le portage de chaque version de
+Minecraft est terminé et testé. Chaque branche est compilée automatiquement par
+la CI à chaque push.
+
 ## Licence
 
 Ce projet est distribué sous la **GNU Lesser General Public License v3.0** — voir le fichier
