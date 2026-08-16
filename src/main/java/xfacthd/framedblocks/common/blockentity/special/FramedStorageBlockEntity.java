@@ -3,6 +3,7 @@ package xfacthd.framedblocks.common.blockentity.special;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,26 +29,48 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
     public static final Component TITLE = Utils.translate("title", "framed_secret_storage");
     public static final String INVENTORY_NBT_KEY = "inventory";
 
-    // Simplified inventory storage without Forge IItemHandler
-    private final ItemStack[] items = new ItemStack[9 * 4];
+    public static final int INVENTORY_SIZE = 27;
+
+    // Real inventory backing the FramedStorageMenu. The menu binds directly to this
+    // container so every item change is written straight back into the block entity
+    // and persisted to NBT on chunk save.
+    private final Container inventory = new SimpleContainer(INVENTORY_SIZE)
+    {
+        @Override
+        public void setItem(int slot, ItemStack stack)
+        {
+            super.setItem(slot, stack);
+            FramedStorageBlockEntity.this.setChanged();
+        }
+
+        @Override
+        public ItemStack removeItem(int slot, int amount)
+        {
+            ItemStack stack = super.removeItem(slot, amount);
+            FramedStorageBlockEntity.this.setChanged();
+            return stack;
+        }
+    };
     private Component customName = null;
 
     public FramedStorageBlockEntity(BlockPos pos, BlockState state)
     {
         super(FBContent.BE_TYPE_FRAMED_SECRET_STORAGE.get(), pos, state);
-        for (int i = 0; i < items.length; i++) items[i] = ItemStack.EMPTY;
     }
 
     protected FramedStorageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-        for (int i = 0; i < items.length; i++) items[i] = ItemStack.EMPTY;
+    }
+
+    public Container getInventory()
+    {
+        return inventory;
     }
 
     public void open(ServerPlayer player)
     {
-        // NetworkHooks.openScreen replaced by Fabric equivalent
-        // TODO: Implement with Fabric networking
+        player.openMenu(this);
     }
 
     public boolean isUsableByPlayer(Player player)
@@ -63,8 +86,9 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
     public List<ItemStack> getDrops()
     {
         List<ItemStack> drops = new ArrayList<>();
-        for (ItemStack stack : items)
+        for (int i = 0; i < inventory.getContainerSize(); i++)
         {
+            ItemStack stack = inventory.getItem(i);
             if (!stack.isEmpty())
             {
                 drops.add(stack);
@@ -76,10 +100,7 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
     @Override
     public void clearContent()
     {
-        for (int i = 0; i < items.length; i++)
-        {
-            items[i] = ItemStack.EMPTY;
-        }
+        inventory.clearContent();
     }
 
     public int getAnalogOutputSignal()
@@ -87,8 +108,9 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
         int stacks = 0;
         float fullness = 0;
 
-        for (ItemStack stack : items)
+        for (int i = 0; i < inventory.getContainerSize(); i++)
         {
+            ItemStack stack = inventory.getItem(i);
             if (!stack.isEmpty())
             {
                 float sizeLimit = stack.getMaxStackSize();
@@ -97,7 +119,7 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
             }
         }
 
-        fullness /= (float)items.length;
+        fullness /= (float)inventory.getContainerSize();
         return Mth.floor(fullness * 14F) + (stacks > 0 ? 1 : 0);
     }
 
@@ -131,7 +153,23 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
     @Override
     public void saveAdditional(CompoundTag nbt)
     {
-        // TODO: Serialize items to NBT
+        ListTag itemsTag = new ListTag();
+        for (int i = 0; i < inventory.getContainerSize(); i++)
+        {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty())
+            {
+                CompoundTag itemTag = new CompoundTag();
+                itemTag.putByte("Slot", (byte)i);
+                stack.save(itemTag);
+                itemsTag.add(itemTag);
+            }
+        }
+        if (!itemsTag.isEmpty())
+        {
+            nbt.put(INVENTORY_NBT_KEY, itemsTag);
+        }
+
         if (customName != null)
         {
             nbt.putString("custom_name", Component.Serializer.toJson(customName));
@@ -143,7 +181,22 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
     public void load(CompoundTag nbt)
     {
         super.load(nbt);
-        // TODO: Deserialize items from NBT
+
+        inventory.clearContent();
+        if (nbt.contains(INVENTORY_NBT_KEY, Tag.TAG_LIST))
+        {
+            ListTag itemsTag = nbt.getList(INVENTORY_NBT_KEY, Tag.TAG_COMPOUND);
+            for (int i = 0; i < itemsTag.size(); i++)
+            {
+                CompoundTag itemTag = itemsTag.getCompound(i);
+                int slot = itemTag.getByte("Slot") & 0xFF;
+                if (slot >= 0 && slot < inventory.getContainerSize())
+                {
+                    inventory.setItem(slot, ItemStack.of(itemTag));
+                }
+            }
+        }
+
         if (nbt.contains("custom_name", Tag.TAG_STRING))
         {
             customName = Component.Serializer.fromJson(nbt.getString("custom_name"));

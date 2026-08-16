@@ -1,11 +1,13 @@
 package xfacthd.framedblocks.client;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
 import xfacthd.framedblocks.FramedBlocks;
 import xfacthd.framedblocks.api.FramedBlocksClientAPI;
@@ -54,6 +56,10 @@ public final class FBClient implements ClientModInitializer
         ScreenRegistry.register(FBContent.MENU_TYPE_FRAMED_STORAGE.get(), FramedStorageScreen::new);
         ScreenRegistry.register(FBContent.MENU_TYPE_FRAMING_SAW.get(), FramingSawScreen::new);
         ScreenRegistry.register(FBContent.MENU_TYPE_POWERED_FRAMING_SAW.get(), PoweredFramingSawScreen::new);
+
+        // ---- Render layers ----
+        BlockRenderLayerMap.INSTANCE.putBlock(FBContent.BLOCK_FRAMING_SAW.get(), RenderType.cutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(FBContent.BLOCK_POWERED_FRAMING_SAW.get(), RenderType.translucent());
 
         // ---- Block colors ----
         Block[] blocks = FBContent.getRegisteredBlocks().stream()

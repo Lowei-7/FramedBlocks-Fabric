@@ -139,6 +139,11 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
                 }
 
                 ItemStack[] items = additives.get(i).ingredient().getItems();
+                if (items.length == 0)
+                {
+                    // Additive ingredient resolves to no items on this side; nothing to display
+                    continue;
+                }
                 int t = (int) (System.currentTimeMillis() / 1700) % items.length;
                 int y = topPos + 64 + (18 * i);
                 ClientUtils.renderTransparentFakeItem(graphics, items[t], leftPos + 20, y);
@@ -347,6 +352,12 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
     private static MutableComponent makeHaveButNeedTooltip(Component present, Ingredient additive)
     {
         ItemStack[] options = additive.getItems();
+        if (options.length == 0)
+        {
+            // Ingredient resolves to no items on this side (e.g. the matching item
+            // isn't available on the client) so there is no item name to show
+            return Component.translatable(TOOLTIP_HAVE_X_BUT_NEED_Y_ITEM, present, TOOLTIP_HAVE_ITEM_NONE);
+        }
         Object singleValue = RecipeUtils.getSingleIngredientValue(additive);
         if (options.length > 1 && singleValue != null)
         {
