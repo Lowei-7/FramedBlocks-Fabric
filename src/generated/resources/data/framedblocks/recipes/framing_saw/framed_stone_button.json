@@ -10,6 +10,7 @@
   ],
   "material": 768,
   "result": {
-    "item": "framedblocks:framed_stone_button"
+    "id": "framedblocks:framed_stone_button",
+    "count": 1
   }
 }

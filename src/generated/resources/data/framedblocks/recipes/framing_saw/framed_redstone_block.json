@@ -10,6 +10,7 @@
   ],
   "material": 6144,
   "result": {
-    "item": "framedblocks:framed_redstone_block"
+    "id": "framedblocks:framed_redstone_block",
+    "count": 1
   }
 }

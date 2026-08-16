@@ -10,6 +10,7 @@
   ],
   "material": 6144,
   "result": {
-    "item": "framedblocks:framed_bouncy_cube"
+    "id": "framedblocks:framed_bouncy_cube",
+    "count": 1
   }
 }

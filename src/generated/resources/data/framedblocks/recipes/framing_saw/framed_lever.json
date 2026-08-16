@@ -10,6 +10,7 @@
   ],
   "material": 1536,
   "result": {
-    "item": "framedblocks:framed_lever"
+    "id": "framedblocks:framed_lever",
+    "count": 1
   }
 }

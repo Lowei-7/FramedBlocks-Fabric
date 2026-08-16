@@ -18,21 +18,30 @@ public final class FramingSawRecipe implements Recipe<Container>
     public static final int MAX_ADDITIVE_COUNT = 3;
     private static final Lazy<ItemStack> TOAST_ICON = Lazy.of(() -> new ItemStack(FBContent.BLOCK_FRAMING_SAW.get()));
 
-    private final ResourceLocation id;
+    private ResourceLocation id;
     private final int materialAmount;
     private final List<FramingSawRecipeAdditive> additives;
     private final ItemStack result;
     private final IBlockType resultType;
     private final boolean disabled;
 
-    FramingSawRecipe(ResourceLocation id, int materialAmount, List<FramingSawRecipeAdditive> additives, ItemStack result, IBlockType resultType, boolean disabled)
+    FramingSawRecipe(int materialAmount, List<FramingSawRecipeAdditive> additives, ItemStack result, boolean disabled)
     {
-        this.id = id;
         this.materialAmount = materialAmount;
         this.additives = additives;
         this.result = result;
-        this.resultType = resultType;
+        this.resultType = FramingSawRecipeSerializer.findResultType(result);
         this.disabled = disabled;
+    }
+
+    void setId(ResourceLocation id)
+    {
+        this.id = id;
+    }
+
+    public ResourceLocation getId()
+    {
+        return id;
     }
 
     @Override
@@ -146,12 +155,6 @@ public final class FramingSawRecipe implements Recipe<Container>
     public boolean isDisabled()
     {
         return disabled;
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
     }
 
     @Override

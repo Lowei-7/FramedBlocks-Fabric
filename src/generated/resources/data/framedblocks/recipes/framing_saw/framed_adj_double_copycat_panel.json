@@ -10,6 +10,7 @@
   ],
   "material": 6144,
   "result": {
-    "item": "framedblocks:framed_adj_double_copycat_panel"
+    "id": "framedblocks:framed_adj_double_copycat_panel",
+    "count": 1
   }
 }

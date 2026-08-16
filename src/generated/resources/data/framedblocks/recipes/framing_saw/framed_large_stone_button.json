@@ -10,6 +10,7 @@
   ],
   "material": 1536,
   "result": {
-    "item": "framedblocks:framed_large_stone_button"
+    "id": "framedblocks:framed_large_stone_button",
+    "count": 1
   }
 }

@@ -16,6 +16,7 @@
   ],
   "material": 6144,
   "result": {
-    "item": "framedblocks:framed_target"
+    "id": "framedblocks:framed_target",
+    "count": 1
   }
 }

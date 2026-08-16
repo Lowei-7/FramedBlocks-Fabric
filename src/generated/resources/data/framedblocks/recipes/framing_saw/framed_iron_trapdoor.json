@@ -10,6 +10,7 @@
   ],
   "material": 1536,
   "result": {
-    "item": "framedblocks:framed_iron_trapdoor"
+    "id": "framedblocks:framed_iron_trapdoor",
+    "count": 1
   }
 }

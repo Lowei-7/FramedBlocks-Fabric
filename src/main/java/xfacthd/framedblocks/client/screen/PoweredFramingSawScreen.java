@@ -95,7 +95,7 @@ public class PoweredFramingSawScreen extends AbstractContainerScreen<PoweredFram
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY)
     {
-        renderBackground(graphics);
+        renderBackground(graphics, mouseX, mouseY, partialTick);
 
         graphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 

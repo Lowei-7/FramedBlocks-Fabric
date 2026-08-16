@@ -93,7 +93,7 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY)
     {
-        renderBackground(graphics);
+        renderBackground(graphics, mouseX, mouseY, partialTick);
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
@@ -479,7 +479,7 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta)
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta, double deltaX)
     {
         if (isScrollBarActive())
         {

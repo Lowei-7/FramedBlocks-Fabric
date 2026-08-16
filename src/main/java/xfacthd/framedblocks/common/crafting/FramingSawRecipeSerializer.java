@@ -1,9 +1,8 @@
 package xfacthd.framedblocks.common.crafting;
 
-import com.google.gson.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -17,48 +16,21 @@ import java.util.List;
 
 public final class FramingSawRecipeSerializer implements RecipeSerializer<FramingSawRecipe>
 {
+    public static final Codec<FramingSawRecipe> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+            Codec.INT.fieldOf("material").forGetter(FramingSawRecipe::getMaterialAmount),
+            FramingSawRecipeAdditive.LIST_CODEC.optionalFieldOf("additives", List.of()).forGetter(FramingSawRecipe::getAdditives),
+            ItemStack.CODEC.fieldOf("result").forGetter(FramingSawRecipe::getResult),
+            Codec.BOOL.optionalFieldOf("disabled", false).forGetter(FramingSawRecipe::isDisabled)
+    ).apply(inst, FramingSawRecipe::new));
+
     @Override
-    public FramingSawRecipe fromJson(ResourceLocation recipeId, JsonObject json)
+    public Codec<FramingSawRecipe> codec()
     {
-        boolean disabled = GsonHelper.getAsBoolean(json, "disabled", false);
-
-        int material = GsonHelper.getAsInt(json, "material");
-        if (material <= 0)
-        {
-            throw new JsonSyntaxException("Value of 'material' must be greater than 0");
-        }
-
-        List<FramingSawRecipeAdditive> additives = new ArrayList<>();
-        if (json.has("additives"))
-        {
-            JsonArray additiveArr = GsonHelper.getAsJsonArray(json, "additives");
-            if (additiveArr.size() > FramingSawRecipe.MAX_ADDITIVE_COUNT)
-            {
-                throw new JsonSyntaxException("More than 3 additives are not supported");
-            }
-
-            for (JsonElement additiveElem : additiveArr)
-            {
-                JsonObject additiveObj = additiveElem.getAsJsonObject();
-                Ingredient additive = Ingredient.fromJson(additiveObj.get("ingredient"));
-                int additiveCount = GsonHelper.getAsInt(additiveObj, "count");
-                if (additiveCount <= 0)
-                {
-                    throw new JsonSyntaxException("Value of 'additive_count' must be greater than 0");
-                }
-                additives.add(new FramingSawRecipeAdditive(additive, additiveCount));
-            }
-        }
-
-        JsonObject resultObj = GsonHelper.getAsJsonObject(json, "result");
-        ItemStack result = net.minecraft.world.item.crafting.ShapedRecipe.itemStackFromJson(resultObj);
-        IBlockType resultType = findResultType(result);
-
-        return new FramingSawRecipe(recipeId, material, additives, result, resultType, disabled);
+        return CODEC;
     }
 
     @Override
-    public FramingSawRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
+    public FramingSawRecipe fromNetwork(FriendlyByteBuf buffer)
     {
         int material = buffer.readInt();
 
@@ -72,10 +44,9 @@ public final class FramingSawRecipeSerializer implements RecipeSerializer<Framin
         }
 
         ItemStack result = buffer.readItem();
-        IBlockType resultType = findResultType(result);
         boolean disabled = buffer.readBoolean();
 
-        return new FramingSawRecipe(recipeId, material, additives, result, resultType, disabled);
+        return new FramingSawRecipe(material, additives, result, disabled);
     }
 
     @Override
@@ -95,15 +66,15 @@ public final class FramingSawRecipeSerializer implements RecipeSerializer<Framin
         buffer.writeBoolean(recipe.isDisabled());
     }
 
-    private static IBlockType findResultType(ItemStack result)
+    static IBlockType findResultType(ItemStack result)
     {
         if (!(result.getItem() instanceof BlockItem item))
         {
-            throw new JsonSyntaxException("Result items must be BlockItems");
+            throw new IllegalArgumentException("Result items must be BlockItems");
         }
         if (!(item.getBlock() instanceof IFramedBlock block))
         {
-            throw new JsonSyntaxException("Block of result items must be IFramedBlocks");
+            throw new IllegalArgumentException("Block of result items must be IFramedBlocks");
         }
         return block.getBlockType();
     }

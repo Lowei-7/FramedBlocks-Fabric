@@ -1,5 +1,6 @@
 package xfacthd.framedblocks.common.menu;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -192,7 +193,7 @@ public class FramingSawMenu extends AbstractContainerMenu implements IFramingSaw
 
                 ItemStack result = recipe.assemble(inputContainer, level.registryAccess());
                 result.setCount(calc.getOutputCount());
-                resultContainer.setRecipeUsed(recipe);
+                resultContainer.setRecipeUsed(new net.minecraft.world.item.crafting.RecipeHolder<>(holder.getId(), recipe));
                 resultSlot.set(result);
                 selectedRecipe = recipe;
 
@@ -337,6 +338,11 @@ public class FramingSawMenu extends AbstractContainerMenu implements IFramingSaw
         private RecipeHolder(FramingSawRecipe recipe)
         {
             this.recipe = recipe;
+        }
+
+        public ResourceLocation getId()
+        {
+            return recipe.getId();
         }
 
         public FramingSawRecipe getRecipe()

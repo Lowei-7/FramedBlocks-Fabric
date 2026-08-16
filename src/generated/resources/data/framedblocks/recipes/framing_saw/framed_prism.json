@@ -2,6 +2,7 @@
   "type": "framedblocks:frame",
   "material": 1536,
   "result": {
-    "item": "framedblocks:framed_prism"
+    "id": "framedblocks:framed_prism",
+    "count": 1
   }
 }

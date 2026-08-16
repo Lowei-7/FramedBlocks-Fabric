@@ -4,7 +4,9 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 import net.minecraft.Util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +30,11 @@ public final class FramingSawRecipeCache
     {
         clear();
 
-        recipes.addAll(recipeManager.getAllRecipesFor(FBContent.RECIPE_TYPE_FRAMING_SAW_RECIPE.get()));
+        recipes.addAll(recipeManager.getAllRecipesFor(FBContent.RECIPE_TYPE_FRAMING_SAW_RECIPE.get())
+                .stream()
+                .peek(holder -> holder.value().setId(holder.id()))
+                .map(RecipeHolder::value)
+                .toList());
         recipes.sort(FramingSawRecipeCache::sortRecipes);
 
         recipes.forEach(recipe ->

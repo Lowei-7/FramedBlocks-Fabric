@@ -169,9 +169,9 @@ public abstract class AbstractFramedBlock extends Block implements IFramedBlock,
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
+    public boolean canPlaceLiquid(Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid)
     {
-        return isWaterLoggable() && SimpleWaterloggedBlock.super.canPlaceLiquid(level, pos, state, fluid);
+        return isWaterLoggable() && SimpleWaterloggedBlock.super.canPlaceLiquid(player, level, pos, state, fluid);
     }
 
     @Override
@@ -181,13 +181,13 @@ public abstract class AbstractFramedBlock extends Block implements IFramedBlock,
     }
 
     @Override
-    public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
+    public ItemStack pickupBlock(Player player, LevelAccessor level, BlockPos pos, BlockState state)
     {
         if (!isWaterLoggable())
         {
             return ItemStack.EMPTY;
         }
-        return SimpleWaterloggedBlock.super.pickupBlock(level, pos, state);
+        return SimpleWaterloggedBlock.super.pickupBlock(player, level, pos, state);
     }
 
     @Override

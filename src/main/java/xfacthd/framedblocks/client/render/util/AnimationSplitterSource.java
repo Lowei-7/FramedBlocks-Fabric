@@ -12,6 +12,7 @@ import net.minecraft.client.resources.metadata.animation.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceMetadata;
 import net.minecraft.util.ExtraCodecs;
 import xfacthd.framedblocks.FramedBlocks;
 import xfacthd.framedblocks.api.util.FramedConstants;
@@ -92,7 +93,7 @@ public class AnimationSplitterSource implements SpriteSource
         }
 
         @Override
-        public SpriteContents get()
+        public SpriteContents apply(SpriteResourceLoader spriteResourceLoader)
         {
             try
             {
@@ -118,7 +119,7 @@ public class AnimationSplitterSource implements SpriteSource
 
                 NativeImage imageOut = new NativeImage(NativeImage.Format.RGBA, frameW, frameH, false);
                 image.copyRect(imageOut, srcX, srcY, 0, 0, frameW, frameH, false, false);
-                return postProcess(new SpriteContents(frame.outLoc, new FrameSize(frameW, frameH), imageOut, AnimationMetadataSection.EMPTY));
+                return postProcess(new SpriteContents(frame.outLoc, new FrameSize(frameW, frameH), imageOut, ResourceMetadata.EMPTY));
             }
             catch (Exception e)
             {

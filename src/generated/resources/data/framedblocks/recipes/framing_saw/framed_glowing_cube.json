@@ -10,6 +10,7 @@
   ],
   "material": 6144,
   "result": {
-    "item": "framedblocks:framed_glowing_cube"
+    "id": "framedblocks:framed_glowing_cube",
+    "count": 1
   }
 }
