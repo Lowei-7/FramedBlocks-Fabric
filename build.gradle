@@ -6,6 +6,14 @@ plugins {
 version = project.property('mod_version')
 group = project.property('maven_group')
 
+// Use a clear jar naming scheme: <mod>-<minecraft version>-<mod version>
+tasks.named('remapJar') {
+    archiveFileName = "${project.property('archives_base_name')}-${project.property('minecraft_version')}-${project.property('mod_version')}.jar"
+}
+tasks.named('remapSourcesJar') {
+    archiveFileName = "${project.property('archives_base_name')}-${project.property('minecraft_version')}-${project.property('mod_version')}-sources.jar"
+}
+
 repositories {
     mavenCentral()
     maven { url = 'https://maven.fabricmc.net/' }
