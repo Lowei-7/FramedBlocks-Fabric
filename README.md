@@ -32,8 +32,8 @@ stairs, panels, doors and much more without breaking the visual look of your bui
 
 ## Download
 
-Pre-built jars for each Minecraft version are available on the
-[Releases](https://github.com/Lowei-7/FramedBlocks-Fabric/releases) page.
+Jars are not published as GitHub Releases. Build the jar for this Minecraft version
+from source (see below).
 
 ## Installation
 
