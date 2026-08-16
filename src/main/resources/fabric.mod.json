@@ -3,7 +3,7 @@
   "id": "framedblocks",
   "version": "${version}",
   "name": "FramedBlocks",
-  "description": "Fabric port of FramedBlocks for Minecraft 1.20.1.",
+  "description": "Fabric port of FramedBlocks.",
   "authors": [
     "Lowei-7",
     "XFactHD"

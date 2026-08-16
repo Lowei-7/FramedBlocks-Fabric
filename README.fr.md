@@ -1,6 +1,6 @@
 # FramedBlocks (Fabric)
 
-**Port Fabric de [FramedBlocks](https://github.com/XFactHD/FramedBlocks) pour Minecraft 1.20.1.**
+**Port Fabric de [FramedBlocks](https://github.com/XFactHD/FramedBlocks).**
 
 FramedBlocks ajoute à Minecraft une vaste collection de blocs décoratifs encadrables. Chaque bloc
 encadrable accepte un camouflage de n'importe quel autre bloc, ce qui permet de construire des
@@ -40,7 +40,7 @@ Les jars précompilés pour chaque version de Minecraft sont disponibles sur la 
 
 ## Installation
 
-1. Installez le [Fabric Loader](https://fabricmc.net/use/) pour Minecraft 1.20.1.
+1. Installez le [Fabric Loader](https://fabricmc.net/use/) pour votre version de Minecraft.
 2. Installez [Fabric API](https://modrinth.com/mod/fabric-api) dans le dossier `mods`.
 3. Déposez le jar de FramedBlocks dans le dossier `mods`.
 4. Lancez le jeu.
@@ -57,11 +57,14 @@ Le jar compilé est écrit dans `build/libs/`.
 
 ## Versions
 
-Chaque version de Minecraft prise en charge vit sur sa propre branche. Les branches actuelles sont :
+`main` est la branche de développement, sans version. Chaque version de Minecraft
+prise en charge vit sur sa propre branche, versionnée. Les branches actuelles sont :
 
 | Branche  | Minecraft | Statut            |
 |----------|-----------|-------------------|
+| `main`   | —         | Développement     |
 | `1.20.1` | 1.20.1    | Publiée           |
+| `1.20.2` | 1.20.2    | Publiée           |
 
 Les branches sont créées au fur et à mesure que le portage de chaque version de
 Minecraft est terminé et testé. Chaque branche est compilée automatiquement par

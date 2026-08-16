@@ -1,6 +1,6 @@
 # FramedBlocks (Fabric)
 
-**Fabric port of [FramedBlocks](https://github.com/XFactHD/FramedBlocks) for Minecraft 1.20.1.**
+**Fabric port of [FramedBlocks](https://github.com/XFactHD/FramedBlocks).**
 
 FramedBlocks adds a huge collection of decorative framing blocks to Minecraft. Every framing
 block accepts a camouflage from any other block, letting you build seamless structures, slopes,
@@ -37,7 +37,7 @@ Pre-built jars for each Minecraft version are available on the
 
 ## Installation
 
-1. Install the [Fabric Loader](https://fabricmc.net/use/) for Minecraft 1.20.1.
+1. Install the [Fabric Loader](https://fabricmc.net/use/) for your Minecraft version.
 2. Install [Fabric API](https://modrinth.com/mod/fabric-api) into the `mods` folder.
 3. Drop the FramedBlocks jar into the `mods` folder.
 4. Launch the game.
@@ -54,11 +54,14 @@ The built jar is written to `build/libs/`.
 
 ## Versions
 
-Each supported Minecraft version lives on its own branch. The current branches are:
+`main` is the unversioned development branch. Each supported Minecraft version
+lives on its own versioned branch. The current branches are:
 
 | Branch  | Minecraft | Status            |
 |---------|-----------|-------------------|
+| `main`  | —         | Development       |
 | `1.20.1`| 1.20.1    | Released          |
+| `1.20.2`| 1.20.2    | Released          |
 
 Branches are created as the port for each Minecraft version is completed and
 tested. Every branch is built automatically by CI on each push.
