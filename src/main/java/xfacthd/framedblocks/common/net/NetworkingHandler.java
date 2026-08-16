@@ -3,6 +3,7 @@ package xfacthd.framedblocks.common.net;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +18,11 @@ import java.util.List;
 public final class NetworkingHandler {
 
     public static void init() {
+        PayloadTypeRegistry.playC2S().register(SignUpdatePacket.TYPE, SignUpdatePacket.STREAM_CODEC);
+        PayloadTypeRegistry.playC2S().register(SelectFramingSawRecipePacket.TYPE, SelectFramingSawRecipePacket.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(OpenSignScreenPacket.TYPE, OpenSignScreenPacket.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(CullingUpdatePacket.TYPE, CullingUpdatePacket.STREAM_CODEC);
+
         ServerPlayNetworking.registerGlobalReceiver(SignUpdatePacket.TYPE, (packet, context) -> {
             handleSignUpdate(context.player(), packet);
         });
