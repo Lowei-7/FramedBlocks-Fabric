@@ -31,6 +31,11 @@ construcción.
 | Fabric API   | 0.92.8 o superior  |
 | Java         | 17 o superior      |
 
+## Descarga
+
+Los jars precompilados para cada versión de Minecraft están disponibles en la página de
+[Releases](https://github.com/Lowei-7/FramedBlocks-Fabric/releases).
+
 ## Instalación
 
 1. Instala el [Fabric Loader](https://fabricmc.net/use/) para Minecraft 1.20.1.

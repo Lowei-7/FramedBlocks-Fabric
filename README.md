@@ -30,6 +30,11 @@ stairs, panels, doors and much more without breaking the visual look of your bui
 | Fabric API     | 0.92.8 or higher   |
 | Java           | 17 or higher       |
 
+## Download
+
+Pre-built jars for each Minecraft version are available on the
+[Releases](https://github.com/Lowei-7/FramedBlocks-Fabric/releases) page.
+
 ## Installation
 
 1. Install the [Fabric Loader](https://fabricmc.net/use/) for Minecraft 1.20.1.

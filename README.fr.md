@@ -33,6 +33,11 @@ casser le rendu visuel de votre construction.
 | Fabric API    | 0.92.8 ou plus     |
 | Java          | 17 ou plus         |
 
+## Téléchargement
+
+Les jars précompilés pour chaque version de Minecraft sont disponibles sur la page
+[Releases](https://github.com/Lowei-7/FramedBlocks-Fabric/releases).
+
 ## Installation
 
 1. Installez le [Fabric Loader](https://fabricmc.net/use/) pour Minecraft 1.20.1.
