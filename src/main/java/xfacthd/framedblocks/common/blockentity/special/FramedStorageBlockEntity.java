@@ -70,8 +70,7 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
 
     public void open(ServerPlayer player)
     {
-        // NetworkHooks.openScreen replaced by Fabric equivalent
-        // TODO: Implement with Fabric networking
+        player.openMenu(this);
     }
 
     public boolean isUsableByPlayer(Player player)
