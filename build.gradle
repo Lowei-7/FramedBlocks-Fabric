@@ -61,6 +61,13 @@ java {
     withSourcesJar()
 }
 
+// Run all Java tasks (runClient, runServer, ...) on the Java 21 toolchain so the
+// game launches even if the system JDK differs. Gradle auto-downloads a portable
+// Java 21 when none is installed (see the Foojay resolver in settings.gradle).
+tasks.withType(JavaExec).configureEach {
+    javaLauncher = javaToolchains.launcherFor(java.toolchain)
+}
+
 loom {
     mixin {
         defaultRefmapName = 'framedblocks.refmap.json'
