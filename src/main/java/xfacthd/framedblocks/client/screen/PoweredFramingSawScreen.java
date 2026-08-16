@@ -139,6 +139,11 @@ public class PoweredFramingSawScreen extends AbstractContainerScreen<PoweredFram
                 else if (!additiveSlot.hasItem())
                 {
                     ItemStack[] items = additives.get(i).ingredient().getItems();
+                    if (items.length == 0)
+                    {
+                        // Additive ingredient resolves to no items on this side; nothing to display
+                        continue;
+                    }
                     int t = (int) (System.currentTimeMillis() / 1700) % items.length;
                     int ax = leftPos + additiveSlot.x;
                     int ay = topPos + additiveSlot.y;

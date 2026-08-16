@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,14 +28,9 @@ public class FramedStorageMenu extends AbstractContainerMenu
         Preconditions.checkArgument(blockEntity instanceof FramedStorageBlockEntity);
         this.blockEntity = (FramedStorageBlockEntity) blockEntity;
 
-        net.minecraft.world.SimpleContainer container = new net.minecraft.world.SimpleContainer(27);
-        for (int row = 0; row < 3; ++row)
-        {
-            for (int col = 0; col < 9; ++col)
-            {
-                addSlot(new net.minecraft.world.inventory.Slot(container, col + row * 9, 8 + col * 18, 18 + row * 18));
-            }
-        }
+        // Bind the slot list directly to the block entity's inventory so every item
+        // change is written back into the block entity (and persisted to NBT)
+        addChestSlots(this.blockEntity.getInventory());
         FramedUtils.addPlayerInvSlots(this::addSlot, inv, 8, 85);
     }
 
@@ -44,14 +40,10 @@ public class FramedStorageMenu extends AbstractContainerMenu
     {
         super(FBContent.MENU_TYPE_FRAMED_STORAGE.get(), windowId);
         this.blockEntity = null;
-        net.minecraft.world.SimpleContainer container = new net.minecraft.world.SimpleContainer(27);
-        for (int row = 0; row < 3; ++row)
-        {
-            for (int col = 0; col < 9; ++col)
-            {
-                addSlot(new net.minecraft.world.inventory.Slot(container, col + row * 9, 8 + col * 18, 18 + row * 18));
-            }
-        }
+
+        // Client-side slot layout only; the real inventory lives on the server and its
+        // contents are pushed here via the menu sync packets
+        addChestSlots(new net.minecraft.world.SimpleContainer(MAX_SLOT_CHEST));
         FramedUtils.addPlayerInvSlots(this::addSlot, inv, 8, 85);
     }
 
@@ -60,9 +52,26 @@ public class FramedStorageMenu extends AbstractContainerMenu
         this(windowId, inv);
     }
 
+    private void addChestSlots(Container container)
+    {
+        for (int row = 0; row < 3; ++row)
+        {
+            for (int col = 0; col < 9; ++col)
+            {
+                addSlot(new net.minecraft.world.inventory.Slot(container, col + row * 9, 8 + col * 18, 18 + row * 18));
+            }
+        }
+    }
+
     @Override
     public boolean stillValid(Player player)
     {
+        if (blockEntity == null)
+        {
+            // Client-side menu created via the two-arg constructor; server-side
+            // validation is handled on the server where this.blockEntity is set
+            return true;
+        }
         return blockEntity.isUsableByPlayer(player);
     }
 
@@ -106,7 +115,7 @@ public class FramedStorageMenu extends AbstractContainerMenu
         super.removed(player);
 
         //noinspection ConstantConditions
-        if (!blockEntity.getLevel().isClientSide() && blockEntity instanceof FramedChestBlockEntity chest)
+        if (blockEntity != null && !blockEntity.getLevel().isClientSide() && blockEntity instanceof FramedChestBlockEntity chest)
         {
             chest.close();
         }

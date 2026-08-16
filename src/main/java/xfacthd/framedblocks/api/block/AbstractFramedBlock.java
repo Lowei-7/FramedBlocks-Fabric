@@ -141,6 +141,38 @@ public abstract class AbstractFramedBlock extends Block implements IFramedBlock,
     }
 
     @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
+    {
+        return getShapeInternal(state, level, pos, ctx);
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
+    {
+        return getShapeInternal(state, level, pos, ctx);
+    }
+
+    /**
+     * Returns the block's own frame shape (e.g. a thin outline for slabs/pots/other
+     * small blocks) instead of the vanilla full-cube default. Blocks that keep a
+     * full-block collision regardless must override this via their own shape provider.
+     */
+    private VoxelShape getShapeInternal(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
+    {
+        if (isIntangible(state, level, pos, ctx))
+        {
+            return Shapes.empty();
+        }
+        if (shapes.isEmpty())
+        {
+            // Block type provides no shape (handled by an overriding block or full cube)
+            return Shapes.block();
+        }
+        VoxelShape shape = shapes.get(state);
+        return shape.isEmpty() ? Shapes.block() : shape;
+    }
+
+    @Override
     public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
     {
         return getCamoShadeBrightness(state, level, pos, super.getShadeBrightness(state, level, pos));
