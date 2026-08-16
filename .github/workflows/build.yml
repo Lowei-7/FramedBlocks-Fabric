@@ -44,6 +44,24 @@ jobs:
           name: FramedBlocks-${{ github.ref_name }}
           path: artifacts
 
+      - name: Delete old releases for this Minecraft version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Tag format: v<mc>-<version> (e.g. v1.20.2-1.0.1) -> extract <mc>
+          MC="${GITHUB_REF_NAME#v}"
+          MC="${MC%%-*}"
+          for r in $(gh release list --json tagName --jq '.[].tagName'); do
+            case "$r" in
+              "v${MC}-"*)
+                if [ "$r" != "$GITHUB_REF_NAME" ]; then
+                  echo "Deleting old release $r"
+                  gh release delete "$r" --yes
+                fi
+                ;;
+            esac
+          done
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
