@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "framedblocks",
+  "version": "${version}",
+  "name": "FramedBlocks",
+  "description": "Fabric port of FramedBlocks for Minecraft 1.20.1.",
+  "authors": [
+    "Lowei-7",
+    "XFactHD"
+  ],
+  "contact": {
+    "sources": "https://github.com/Lowei-7/FramedBlocks-Fabric",
+    "issues": "https://github.com/Lowei-7/FramedBlocks-Fabric/issues"
+  },
+  "license": "LGPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "xfacthd.framedblocks.FramedBlocks"
+    ],
+    "client": [
+      "xfacthd.framedblocks.client.FBClient"
+    ],
+    "jade": [
+      "xfacthd.framedblocks.common.compat.jade.FramedJadePlugin"
+    ],
+    "rei_plugins_v0": [
+      "xfacthd.framedblocks.common.compat.rei.FramedReiPlugin"
+    ]
+  },
+  "mixins": [
+    "framedblocks.mixin.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.10",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}

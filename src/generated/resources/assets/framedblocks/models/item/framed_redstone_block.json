@@ -1,0 +1,4 @@
+{
+  "parent": "framedblocks:block/framed_redstone_block",
+  "render_type": "minecraft:cutout"
+}

@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "framedblocks:item/framed_blueprint",
+      "predicate": {
+        "framedblocks:blueprint_override": 0.0
+      }
+    },
+    {
+      "model": "framedblocks:item/framed_blueprint_written",
+      "predicate": {
+        "framedblocks:blueprint_override": 1.0
+      }
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "layer0": "framedblocks:item/framed_blueprint"
+  }
+}

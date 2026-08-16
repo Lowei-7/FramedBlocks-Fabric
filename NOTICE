@@ -1,0 +1,31 @@
+FramedBlocks (Fabric)
+=====================
+A Fabric port of FramedBlocks for Minecraft 1.20.1.
+
+This project is a port, not a rewrite. It is derived from the original
+FramedBlocks mod created by XFactHD:
+
+    Copyright (C) XFactHD
+
+Original repository: https://github.com/XFactHD/FramedBlocks
+
+Changes made in this port
+-------------------------
+The original codebase has been converted from the Forge modding platform to
+the Fabric modding platform (Fabric Loom, Fabric API). This includes:
+
+  - Replacing Forge registration and networking APIs with their Fabric
+    equivalents.
+  - Converting Forge capability, item, energy and fluid handlers to their
+    Fabric counterparts (or to self-contained stubs where no Fabric
+    equivalent exists).
+  - Converting the Forge render pipeline hooks and block entity rendering
+    to the Fabric rendering APIs (Indigo).
+  - Adapting Forge event handling to the Fabric event system.
+  - Fixing render-layer handling for camouflaged blocks so semi-transparent
+    camouflages (e.g. grass block overlays) render in the correct layer
+    instead of falling back to the solid layer.
+
+All such changes remain under the same license as the original work.
+This project is licensed under the GNU Lesser General Public License
+version 3.0 (see LICENSE).

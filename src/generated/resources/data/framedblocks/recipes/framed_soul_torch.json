@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "tag": "minecraft:coals"
+    },
+    "F": {
+      "item": "framedblocks:framed_cube"
+    },
+    "S": {
+      "tag": "minecraft:soul_fire_base_blocks"
+    }
+  },
+  "pattern": [
+    "C",
+    "F",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "item": "framedblocks:framed_soul_torch"
+  },
+  "show_notification": true
+}

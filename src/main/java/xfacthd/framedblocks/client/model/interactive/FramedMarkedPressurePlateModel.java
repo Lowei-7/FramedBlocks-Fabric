@@ -1,0 +1,151 @@
+package xfacthd.framedblocks.client.model.interactive;
+
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.WeightedPressurePlateBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import java.util.Set;
+import net.minecraft.client.renderer.RenderType;
+import xfacthd.framedblocks.api.model.data.FramedBlockData;
+import xfacthd.framedblocks.api.model.util.ModelUtils;
+import xfacthd.framedblocks.api.util.Utils;
+import xfacthd.framedblocks.client.util.ClientConfig;
+
+import java.util.*;
+
+public class FramedMarkedPressurePlateModel extends FramedPressurePlateModel
+{
+    public static final ResourceLocation STONE_FRAME_LOCATION = Utils.rl("block/stone_plate_frame");
+    public static final ResourceLocation STONE_FRAME_DOWN_LOCATION = Utils.rl("block/stone_plate_down_frame");
+    public static final ResourceLocation OBSIDIAN_FRAME_LOCATION = Utils.rl("block/obsidian_plate_frame");
+    public static final ResourceLocation OBSIDIAN_FRAME_DOWN_LOCATION = Utils.rl("block/obsidian_plate_down_frame");
+    public static final ResourceLocation GOLD_FRAME_LOCATION = Utils.rl("block/gold_plate_frame");
+    public static final ResourceLocation GOLD_FRAME_DOWN_LOCATION = Utils.rl("block/gold_plate_down_frame");
+    public static final ResourceLocation IRON_FRAME_LOCATION = Utils.rl("block/iron_plate_frame");
+    public static final ResourceLocation IRON_FRAME_DOWN_LOCATION = Utils.rl("block/iron_plate_down_frame");
+    private static final Map<ResourceLocation, BakedModel> FRAME_MODELS = new HashMap<>();
+
+    private final BakedModel frameModel;
+
+    private FramedMarkedPressurePlateModel(
+            BlockState state, BakedModel baseModel, ResourceLocation frameLocation, boolean powered
+    )
+    {
+        super(state, baseModel, powered);
+        frameModel = FRAME_MODELS.get(frameLocation);
+    }
+
+    @Override
+    protected Set<RenderType> getAdditionalRenderTypes(RandomSource rand, Object extraData)
+    {
+        FramedBlockData fbData = (extraData instanceof FramedBlockData fbd) ? fbd : null;
+        if (fbData != null && !fbData.getCamoState().isAir())
+        {
+            return ModelUtils.CUTOUT;
+        }
+        return Set.of();
+    }
+
+    @Override
+    protected void getAdditionalQuads(
+            Map<Direction, List<BakedQuad>> quadMap,
+            BlockState state,
+            RandomSource rand,
+            Object data,
+            RenderType layer
+    )
+    {
+        FramedBlockData fbData = (data instanceof FramedBlockData fbd) ? fbd : null;
+        if (fbData == null || fbData.getCamoState().isAir())
+        {
+            return;
+        }
+
+        quadMap.get(null).addAll(frameModel.getQuads(state, null, rand));
+        for (Direction side : Direction.values())
+        {
+            quadMap.get(side).addAll(frameModel.getQuads(state, side, rand));
+        }
+    }
+
+
+
+    public static FramedPressurePlateModel stone(BlockState state, BakedModel baseModel)
+    {
+        boolean powered = state.getValue(PressurePlateBlock.POWERED);
+        if (!ClientConfig.INSTANCE.showButtonPlateOverlay())
+        {
+            return new FramedPressurePlateModel(state, baseModel, powered);
+        }
+
+        ResourceLocation frame = powered ? STONE_FRAME_DOWN_LOCATION : STONE_FRAME_LOCATION;
+        return new FramedMarkedPressurePlateModel(state, baseModel, frame, powered);
+    }
+
+    public static FramedPressurePlateModel obsidian(BlockState state, BakedModel baseModel)
+    {
+        boolean powered = state.getValue(PressurePlateBlock.POWERED);
+        if (!ClientConfig.INSTANCE.showButtonPlateOverlay())
+        {
+            return new FramedPressurePlateModel(state, baseModel, powered);
+        }
+
+        ResourceLocation frame = powered ? OBSIDIAN_FRAME_DOWN_LOCATION : OBSIDIAN_FRAME_LOCATION;
+        return new FramedMarkedPressurePlateModel(state, baseModel, frame, powered);
+    }
+
+    public static FramedPressurePlateModel gold(BlockState state, BakedModel baseModel)
+    {
+        boolean powered = state.getValue(WeightedPressurePlateBlock.POWER) > 0;
+        if (!ClientConfig.INSTANCE.showButtonPlateOverlay())
+        {
+            return new FramedPressurePlateModel(state, baseModel, powered);
+        }
+
+        ResourceLocation frame = powered ? GOLD_FRAME_DOWN_LOCATION : GOLD_FRAME_LOCATION;
+        return new FramedMarkedPressurePlateModel(state, baseModel, frame, powered);
+    }
+
+    public static FramedPressurePlateModel iron(BlockState state, BakedModel baseModel)
+    {
+        boolean powered = state.getValue(WeightedPressurePlateBlock.POWER) > 0;
+        if (!ClientConfig.INSTANCE.showButtonPlateOverlay())
+        {
+            return new FramedPressurePlateModel(state, baseModel, powered);
+        }
+
+        ResourceLocation frame = powered ? IRON_FRAME_DOWN_LOCATION : IRON_FRAME_LOCATION;
+        return new FramedMarkedPressurePlateModel(state, baseModel, frame, powered);
+    }
+
+    public static void registerFrameModels(java.util.Collection<ResourceLocation> locations)
+    {
+        locations.add(FramedMarkedPressurePlateModel.STONE_FRAME_LOCATION);
+        locations.add(FramedMarkedPressurePlateModel.STONE_FRAME_DOWN_LOCATION);
+        locations.add(FramedMarkedPressurePlateModel.OBSIDIAN_FRAME_LOCATION);
+        locations.add(FramedMarkedPressurePlateModel.OBSIDIAN_FRAME_DOWN_LOCATION);
+        locations.add(FramedMarkedPressurePlateModel.GOLD_FRAME_LOCATION);
+        locations.add(FramedMarkedPressurePlateModel.GOLD_FRAME_DOWN_LOCATION);
+        locations.add(FramedMarkedPressurePlateModel.IRON_FRAME_LOCATION);
+        locations.add(FramedMarkedPressurePlateModel.IRON_FRAME_DOWN_LOCATION);
+    }
+
+    public static void cacheFrameModels(Map<ResourceLocation, BakedModel> registry)
+    {
+        FRAME_MODELS.clear();
+
+        FRAME_MODELS.put(STONE_FRAME_LOCATION, registry.get(STONE_FRAME_LOCATION));
+        FRAME_MODELS.put(STONE_FRAME_DOWN_LOCATION, registry.get(STONE_FRAME_DOWN_LOCATION));
+        FRAME_MODELS.put(OBSIDIAN_FRAME_LOCATION, registry.get(OBSIDIAN_FRAME_LOCATION));
+        FRAME_MODELS.put(OBSIDIAN_FRAME_DOWN_LOCATION, registry.get(OBSIDIAN_FRAME_DOWN_LOCATION));
+        FRAME_MODELS.put(GOLD_FRAME_LOCATION, registry.get(GOLD_FRAME_LOCATION));
+        FRAME_MODELS.put(GOLD_FRAME_DOWN_LOCATION, registry.get(GOLD_FRAME_DOWN_LOCATION));
+        FRAME_MODELS.put(IRON_FRAME_LOCATION, registry.get(IRON_FRAME_LOCATION));
+        FRAME_MODELS.put(IRON_FRAME_DOWN_LOCATION, registry.get(IRON_FRAME_DOWN_LOCATION));
+    }
+}

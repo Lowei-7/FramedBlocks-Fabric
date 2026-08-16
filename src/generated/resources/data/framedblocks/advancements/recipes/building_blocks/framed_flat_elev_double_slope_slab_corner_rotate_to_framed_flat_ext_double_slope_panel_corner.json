@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "hasFramedFlatElevDoubleSlopeSlabCorner": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "framedblocks:framed_flat_elev_double_slope_slab_corner"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "framedblocks:framed_flat_elev_double_slope_slab_corner_rotate_to_framed_flat_ext_double_slope_panel_corner"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "hasFramedFlatElevDoubleSlopeSlabCorner",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "framedblocks:framed_flat_elev_double_slope_slab_corner_rotate_to_framed_flat_ext_double_slope_panel_corner"
+    ]
+  },
+  "sends_telemetry_event": false
+}

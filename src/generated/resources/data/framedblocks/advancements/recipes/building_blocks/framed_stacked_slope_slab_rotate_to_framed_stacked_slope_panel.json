@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "hasFramedStackedSlopeSlab": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "framedblocks:framed_stacked_slope_slab"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "framedblocks:framed_stacked_slope_slab_rotate_to_framed_stacked_slope_panel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "hasFramedStackedSlopeSlab",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "framedblocks:framed_stacked_slope_slab_rotate_to_framed_stacked_slope_panel"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "item": "framedblocks:framed_threeway_corner"
+    },
+    "I": {
+      "item": "framedblocks:framed_inner_threeway_corner"
+    }
+  },
+  "pattern": [
+    "IC"
+  ],
+  "result": {
+    "item": "framedblocks:framed_double_threeway_corner"
+  },
+  "show_notification": true
+}

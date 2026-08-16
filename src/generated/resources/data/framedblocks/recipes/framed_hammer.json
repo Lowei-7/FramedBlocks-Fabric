@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "item": "framedblocks:framed_cube"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " F ",
+    " SF",
+    "S  "
+  ],
+  "result": {
+    "item": "framedblocks:framed_hammer"
+  },
+  "show_notification": true
+}

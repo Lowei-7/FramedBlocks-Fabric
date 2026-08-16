@@ -1,0 +1,9 @@
+{
+  "loader": "framedblocks:overlay",
+  "model": {
+    "parent": "minecraft:block/cube_all",
+    "textures": {
+      "all": "framedblocks:block/redstone_frame"
+    }
+  }
+}

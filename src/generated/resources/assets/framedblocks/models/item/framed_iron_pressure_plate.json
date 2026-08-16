@@ -1,0 +1,7 @@
+{
+  "parent": "framedblocks:block/framed_pressure_plate_up",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "background": "minecraft:block/iron_block"
+  }
+}

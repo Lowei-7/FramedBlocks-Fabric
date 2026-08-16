@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "item": "framedblocks:framed_cube"
+    },
+    "G": {
+      "tag": "forge:dusts/glowstone"
+    }
+  },
+  "pattern": [
+    " G ",
+    "GCG",
+    " G "
+  ],
+  "result": {
+    "item": "framedblocks:framed_glowing_cube"
+  },
+  "show_notification": true
+}

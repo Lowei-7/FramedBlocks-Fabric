@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "framedblocks:framed_corner_pillar"
+    }
+  ],
+  "result": {
+    "item": "framedblocks:framed_pillar"
+  }
+}

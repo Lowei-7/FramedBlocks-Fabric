@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "framedblocks:framed_slab"
+    },
+    "H": {
+      "item": "framedblocks:framed_hammer"
+    }
+  },
+  "pattern": [
+    "FFH"
+  ],
+  "result": {
+    "count": 4,
+    "item": "framedblocks:framed_floor_board"
+  },
+  "show_notification": true
+}

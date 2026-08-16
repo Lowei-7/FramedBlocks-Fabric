@@ -1,0 +1,125 @@
+plugins {
+    id 'fabric-loom' version '1.9.2'
+    id 'maven-publish'
+}
+
+version = project.property('mod_version')
+group = project.property('maven_group')
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://libraries.minecraft.net/' }
+    maven { url = 'https://cursemaven.com/' }
+    maven { url = 'https://maven.blamejared.com/' } // JEI
+    maven { url = 'https://maven.shedaniel.me/' } // REI + deps
+    maven { url = 'https://maven.terraformersmc.com/releases/' } // EMI (older MC versions)
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:1.20.1"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:0.16.10"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.92.8+1.20.1"
+    
+    // Add Fabric transfer API for item/energy handling
+    modImplementation "net.fabricmc.fabric-api:fabric-transfer-api-v1:3.1.0+1.20.1"
+    
+    // Add Caffeine cache library
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+    
+    // Add javax.annotation for Nullable annotation
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
+    
+    // ---- Optional mod integration (compile-only, gated at runtime) ----
+    // Recipe viewers
+    modCompileOnly "mezz.jei:jei-1.20.1-fabric:15.3.0.8"
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:12.0.684"
+    modCompileOnly "curse.maven:emi-580555:8081374" // EMI 1.1.24+1.20.1
+    // HUD / info providers
+    modCompileOnly "curse.maven:jade-324717:8478743" // Jade 11.13.3 (Fabric 1.20.1)
+    // Connected textures
+    modCompileOnly "curse.maven:athena-841890:6135648" // Athena 4.2.0 (Fabric)
+    // Create (port) + friends
+    modCompileOnly "curse.maven:create-fabric-624165:7286603" // Create 6.0.8.1 (Fabric 1.20.1, only build with the new com.simibubi.create.api packages)
+    // Supplementaries
+    modCompileOnly "curse.maven:supplementaries-412082:5340614" // Supplementaries 2.8.11 (Fabric)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+}
+
+loom {
+    mixin {
+        defaultRefmapName = 'framedblocks.refmap.json'
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 21
+    options.compilerArgs << '-parameters'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/generated/resources'
+        }
+        java {
+            // Forge datagen API not ported to Fabric (dev-only, not needed at runtime)
+            exclude 'xfacthd/framedblocks/common/datagen/**'
+            // Stub used to detect Forge must not ship in the Fabric jar
+            exclude 'net/minecraftforge/fml/loading/FMLLoader.java'
+            // Mods without a Fabric version (Forge-only): Building Gadgets, XyCraft, CTM, ConTex
+            exclude 'xfacthd/framedblocks/common/compat/buildinggadgets/**'
+            exclude 'xfacthd/framedblocks/common/compat/xycraft/**'
+            exclude 'xfacthd/framedblocks/common/compat/ctm/**'
+            exclude 'xfacthd/framedblocks/common/compat/contex/**'
+            // Depend on external mods (Diagonal Fences/Windows, Atlas Viewer)
+            exclude 'xfacthd/framedblocks/client/model/pillar/FramedDiagonalFenceModel.java'
+            exclude 'xfacthd/framedblocks/client/model/pane/FramedDiagonalPaneModel.java'
+            exclude 'xfacthd/framedblocks/client/render/util/AnimationSplitterSourceAV.java'
+            // Game-test utilities tied to Forge APIs, not ported to Fabric
+            exclude 'xfacthd/framedblocks/api/test/TestUtils.java'
+        }
+    }
+    test {
+        java {
+            // Forge-specific game tests are not applicable on Fabric
+            exclude '**'
+        }
+    }
+}
+
+jar {
+    from('LICENSE') {
+        rename { "${it}_${project.property('archives_base_name')}" }
+    }
+    // Stub provided by the Create (Ponder) mod must not ship and shadow the real class
+    exclude 'net/createmod/**'
+}
+
+tasks.withType(Jar) {
+    manifest {
+        attributes([
+            'Specification-Title': 'FramedBlocks',
+            'Specification-Vendor': 'Lowei-7',
+            'Specification-Version': "${version}",
+            'Implementation-Title': project.name,
+            'Implementation-Version': "${version}",
+            'Implementation-Vendor': 'Lowei-7'
+        ])
+    }
+}
+
+tasks.withType(ProcessResources) {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand 'version': project.version
+    }
+}

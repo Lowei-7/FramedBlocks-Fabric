@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "D": {
+      "item": "framedblocks:framed_door"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "IDI"
+  ],
+  "result": {
+    "item": "framedblocks:framed_iron_door"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/button_inventory",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "texture": "framedblocks:block/framed_block"
+  }
+}

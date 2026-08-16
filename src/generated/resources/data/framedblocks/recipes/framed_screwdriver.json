@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "item": "framedblocks:framed_cube"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "S ",
+    " F"
+  ],
+  "result": {
+    "item": "framedblocks:framed_screwdriver"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "framedblocks:framed_cube"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "F F",
+    "FFF"
+  ],
+  "result": {
+    "item": "framedblocks:framed_chest"
+  },
+  "show_notification": true
+}

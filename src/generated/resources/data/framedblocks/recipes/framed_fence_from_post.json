@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "framedblocks:framed_post"
+    }
+  ],
+  "result": {
+    "item": "framedblocks:framed_fence"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "framedblocks:framed_slope"
+    },
+    "H": {
+      "item": "framedblocks:framed_hammer"
+    }
+  },
+  "pattern": [
+    "FFH"
+  ],
+  "result": {
+    "count": 2,
+    "item": "framedblocks:framed_prism"
+  },
+  "show_notification": true
+}

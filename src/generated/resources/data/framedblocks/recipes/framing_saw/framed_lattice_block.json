@@ -1,0 +1,7 @@
+{
+  "type": "framedblocks:frame",
+  "material": 1024,
+  "result": {
+    "item": "framedblocks:framed_lattice_block"
+  }
+}

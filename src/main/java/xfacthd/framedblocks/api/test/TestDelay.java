@@ -1,0 +1,13 @@
+package xfacthd.framedblocks.api.test;
+
+public record TestDelay(int delay) implements TestRunnable
+{
+    @Override
+    public void run() { }
+
+    @Override
+    public int getDuration()
+    {
+        return delay;
+    }
+}

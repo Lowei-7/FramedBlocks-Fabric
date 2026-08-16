@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "framedblocks:framed_cube"
+    }
+  },
+  "pattern": [
+    "F F",
+    " F "
+  ],
+  "result": {
+    "item": "framedblocks:framed_flower_pot"
+  },
+  "show_notification": true
+}
