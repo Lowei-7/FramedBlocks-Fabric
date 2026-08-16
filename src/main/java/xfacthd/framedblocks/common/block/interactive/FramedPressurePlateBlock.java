@@ -40,14 +40,14 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     );
 
     private final BlockType type;
-    private final Sensitivity sensitivity;
+    private final boolean playerOnly;
 
     @SuppressWarnings("ConstantConditions")
-    protected FramedPressurePlateBlock(BlockType type, Sensitivity sensitivity, Properties props, BlockSetType blockSet)
+    protected FramedPressurePlateBlock(BlockType type, boolean playerOnly, Properties props, BlockSetType blockSet)
     {
-        super(sensitivity, props, blockSet);
+        super(blockSet, props);
         this.type = type;
-        this.sensitivity = sensitivity;
+        this.playerOnly = playerOnly;
         registerDefaultState(defaultBlockState()
                 .setValue(FramedProperties.GLOWING, false)
                 .setValue(FramedProperties.PROPAGATES_SKYLIGHT, false)
@@ -115,7 +115,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     protected int getSignalStrength(Level level, BlockPos pos)
     {
         //noinspection ConstantConditions
-        if (sensitivity == null)
+        if (playerOnly)
         {
             List<Player> players = level.getEntitiesOfClass(Player.class, TOUCH_AABB.move(pos));
             if (!players.isEmpty())
@@ -162,7 +162,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     {
         return new FramedPressurePlateBlock(
                 BlockType.FRAMED_PRESSURE_PLATE,
-                Sensitivity.EVERYTHING,
+                false,
                 IFramedBlock.createProperties(BlockType.FRAMED_PRESSURE_PLATE)
                         .noCollission()
                         .strength(0.5F),
@@ -174,7 +174,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     {
         return new FramedWaterloggablePressurePlateBlock(
                 BlockType.FRAMED_WATERLOGGABLE_PRESSURE_PLATE,
-                Sensitivity.EVERYTHING,
+                false,
                 IFramedBlock.createProperties(BlockType.FRAMED_WATERLOGGABLE_PRESSURE_PLATE)
                         .noCollission()
                         .strength(0.5F),
@@ -186,7 +186,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     {
         return new FramedPressurePlateBlock(
                 BlockType.FRAMED_STONE_PRESSURE_PLATE,
-                Sensitivity.MOBS,
+                false,
                 IFramedBlock.createProperties(BlockType.FRAMED_STONE_PRESSURE_PLATE)
                         .requiresCorrectToolForDrops()
                         .noCollission()
@@ -199,7 +199,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     {
         return new FramedWaterloggablePressurePlateBlock(
                 BlockType.FRAMED_WATERLOGGABLE_STONE_PRESSURE_PLATE,
-                Sensitivity.MOBS,
+                false,
                 IFramedBlock.createProperties(BlockType.FRAMED_WATERLOGGABLE_STONE_PRESSURE_PLATE)
                         .requiresCorrectToolForDrops()
                         .noCollission()
@@ -212,7 +212,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     {
         return new FramedPressurePlateBlock(
                 BlockType.FRAMED_OBSIDIAN_PRESSURE_PLATE,
-                null, //Abuse null for player-only sensitivity
+                true, //Abuse null for player-only sensitivity
                 IFramedBlock.createProperties(BlockType.FRAMED_OBSIDIAN_PRESSURE_PLATE)
                         .requiresCorrectToolForDrops()
                         .noCollission()
@@ -225,7 +225,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     {
         return new FramedWaterloggablePressurePlateBlock(
                 BlockType.FRAMED_WATERLOGGABLE_OBSIDIAN_PRESSURE_PLATE,
-                null, //Abuse null for player-only sensitivity
+                true, //Player-only sensitivity
                 IFramedBlock.createProperties(BlockType.FRAMED_WATERLOGGABLE_OBSIDIAN_PRESSURE_PLATE)
                         .requiresCorrectToolForDrops()
                         .noCollission()

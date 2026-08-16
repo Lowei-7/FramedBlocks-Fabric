@@ -35,7 +35,7 @@ public class FramedTrapDoorBlock extends TrapDoorBlock implements IFramedBlock
 
     private FramedTrapDoorBlock(BlockType type, Properties props, BlockSetType blockSet)
     {
-        super(props, blockSet);
+        super(blockSet, props);
         this.type = type;
         registerDefaultState(defaultBlockState()
                 .setValue(FramedProperties.SOLID, false)

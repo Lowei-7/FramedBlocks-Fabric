@@ -1,10 +1,8 @@
 package xfacthd.framedblocks.common.crafting;
 
+import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
-import net.minecraft.Util;
-
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -24,7 +22,22 @@ public final class FramingSawRecipeCache
     private final List<FramingSawRecipe> recipes = new ArrayList<>();
     private final Map<Item, FramingSawRecipe> recipesByResult = new IdentityHashMap<>();
     private final Map<Item, FramingSawRecipe> recipesWithAdditives = new IdentityHashMap<>();
-    private final Object2IntMap<Item> materialValues = new Object2IntOpenCustomHashMap<>(Util.identityStrategy());
+    private final Object2IntMap<Item> materialValues = new Object2IntOpenCustomHashMap<>(IDENTITY_STRATEGY);
+
+    private static final Hash.Strategy<Item> IDENTITY_STRATEGY = new Hash.Strategy<>()
+    {
+        @Override
+        public int hashCode(Item item)
+        {
+            return System.identityHashCode(item);
+        }
+
+        @Override
+        public boolean equals(Item a, Item b)
+        {
+            return a == b;
+        }
+    };
 
     public void update(RecipeManager recipeManager)
     {

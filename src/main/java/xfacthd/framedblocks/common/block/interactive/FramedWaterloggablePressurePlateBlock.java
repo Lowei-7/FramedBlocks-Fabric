@@ -20,9 +20,9 @@ import xfacthd.framedblocks.common.data.BlockType;
 
 public class FramedWaterloggablePressurePlateBlock extends FramedPressurePlateBlock implements SimpleWaterloggedBlock
 {
-    FramedWaterloggablePressurePlateBlock(BlockType type, Sensitivity sensitivity, Properties props, BlockSetType blockSet)
+    FramedWaterloggablePressurePlateBlock(BlockType type, boolean playerOnly, Properties props, BlockSetType blockSet)
     {
-        super(type, sensitivity, props, blockSet);
+        super(type, playerOnly, props, blockSet);
         registerDefaultState(defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
     }
 

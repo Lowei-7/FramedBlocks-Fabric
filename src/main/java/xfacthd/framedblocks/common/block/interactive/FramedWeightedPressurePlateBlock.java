@@ -42,7 +42,7 @@ public class FramedWeightedPressurePlateBlock extends WeightedPressurePlateBlock
 
     protected FramedWeightedPressurePlateBlock(BlockType type, int maxWeight, Properties props, BlockSetType blockSet)
     {
-        super(maxWeight, props, blockSet);
+        super(maxWeight, blockSet, props);
         this.type = type;
         registerDefaultState(defaultBlockState()
                 .setValue(FramedProperties.GLOWING, false)

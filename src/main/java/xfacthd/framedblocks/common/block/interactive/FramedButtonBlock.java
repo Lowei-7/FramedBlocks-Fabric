@@ -32,17 +32,17 @@ public class FramedButtonBlock extends ButtonBlock implements IFramedBlock
 {
     private final BlockType type;
 
-    protected FramedButtonBlock(BlockType type, int pressTime, boolean arrowsCanPress, BlockSetType blockSet)
+    protected FramedButtonBlock(BlockType type, int pressTime, BlockSetType blockSet)
     {
-        super(Properties.of()
-                .pushReaction(PushReaction.DESTROY)
-                .noCollission()
-                .strength(0.5F)
-                .sound(SoundType.WOOD)
-                .noOcclusion(),
+        super(
                 blockSet,
                 pressTime,
-                arrowsCanPress
+                Properties.of()
+                        .pushReaction(PushReaction.DESTROY)
+                        .noCollission()
+                        .strength(0.5F)
+                        .sound(SoundType.WOOD)
+                        .noOcclusion()
         );
         this.type = type;
         registerDefaultState(defaultBlockState()
@@ -119,7 +119,6 @@ public class FramedButtonBlock extends ButtonBlock implements IFramedBlock
         return new FramedButtonBlock(
                 BlockType.FRAMED_BUTTON,
                 30,
-                true,
                 BlockSetType.OAK
         );
     }
@@ -129,7 +128,6 @@ public class FramedButtonBlock extends ButtonBlock implements IFramedBlock
         return new FramedButtonBlock(
                 BlockType.FRAMED_STONE_BUTTON,
                 20,
-                false,
                 BlockSetType.STONE
         );
     }

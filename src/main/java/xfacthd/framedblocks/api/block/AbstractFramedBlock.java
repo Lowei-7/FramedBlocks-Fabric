@@ -1,9 +1,9 @@
 package xfacthd.framedblocks.api.block;
 
 import com.google.common.base.Preconditions;
+import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenCustomHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -38,6 +38,21 @@ import java.util.function.Consumer;
 public abstract class AbstractFramedBlock extends Block implements IFramedBlock, SimpleWaterloggedBlock
 {
     private static final VoxelShape BEACON_BEAM_SHAPE = box(5, 0, 5, 11, 16, 11);
+
+    private static final Hash.Strategy<BlockState> BLOCK_STATE_IDENTITY_STRATEGY = new Hash.Strategy<>()
+    {
+        @Override
+        public int hashCode(BlockState state)
+        {
+            return System.identityHashCode(state);
+        }
+
+        @Override
+        public boolean equals(BlockState a, BlockState b)
+        {
+            return a == b;
+        }
+    };
     private final IBlockType blockType;
     private final ShapeProvider shapes;
     private final ShapeProvider occlusionShapes;
@@ -337,7 +352,7 @@ public abstract class AbstractFramedBlock extends Block implements IFramedBlock,
             return null;
         }
 
-        Object2BooleanMap<BlockState> beamColorMasking = new Object2BooleanOpenCustomHashMap<>(Util.identityStrategy());
+        Object2BooleanMap<BlockState> beamColorMasking = new Object2BooleanOpenCustomHashMap<>(BLOCK_STATE_IDENTITY_STRATEGY);
 
         shapes.forEach((state, shape) ->
         {

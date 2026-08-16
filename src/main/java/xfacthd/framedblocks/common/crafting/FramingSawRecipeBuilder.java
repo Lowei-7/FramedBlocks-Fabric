@@ -1,23 +1,18 @@
 package xfacthd.framedblocks.common.crafting;
 
 import com.google.common.base.Preconditions;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 import xfacthd.framedblocks.common.FBContent;
 import xfacthd.framedblocks.common.util.fabric.RegistryObject;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.List;
 
 public final class FramingSawRecipeBuilder implements RecipeBuilder
 {
@@ -105,65 +100,13 @@ public final class FramingSawRecipeBuilder implements RecipeBuilder
         Preconditions.checkState(material / count * count == material, "Material value not divisible by result size");
 
         recipeId = recipeId.withPrefix("framing_saw/");
-        output.accept(new Result(recipeId, result, count, material, additives, disabled));
-    }
-
-
-
-    private record Result(
-            ResourceLocation id,
-            Item result,
-            int count,
-            int material,
-            List<FramingSawRecipeAdditive> additives,
-            boolean disabled
-    ) implements FinishedRecipe
-    {
-        @Override
-        public void serializeRecipeData(JsonObject json)
-        {
-            json.addProperty("material", material);
-
-            if (additives != null)
-            {
-                JsonArray additiveArr = new JsonArray();
-                additives.forEach(add ->
-                {
-                    JsonObject additive = new JsonObject();
-                    additive.add("ingredient", add.ingredient().toJson(false));
-                    additive.addProperty("count", add.count());
-                    additiveArr.add(additive);
-                });
-                json.add("additives", additiveArr);
-            }
-
-            JsonObject resultObj = new JsonObject();
-            resultObj.addProperty("count", count);
-            resultObj.addProperty("id", Objects.requireNonNull(net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(result)).toString());
-            json.add("result", resultObj);
-
-            if (disabled)
-            {
-                json.addProperty("disabled", true);
-            }
-        }
-
-        @Override
-        public AdvancementHolder advancement()
-        {
-            return null;
-        }
-
-        @Override
-        public ResourceLocation id()
-        {
-            return id;
-        }
-
-        @Override
-        public RecipeSerializer<?> type()
-        {
-            return FBContent.RECIPE_SERIALIZER_FRAMING_SAW_RECIPE.get();
-        }
+        FramingSawRecipe recipe = new FramingSawRecipe(
+                material,
+                additives != null ? additives : List.of(),
+                new ItemStack(result, count),
+                disabled
+        );
+        recipe.setId(recipeId);
+        output.accept(recipeId, recipe, null);
     }
 }

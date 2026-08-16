@@ -33,7 +33,7 @@ public class FramedDoorBlock extends DoorBlock implements IFramedBlock
 
     private FramedDoorBlock(BlockType type, Properties props, BlockSetType blockSet)
     {
-        super(props, blockSet);
+        super(blockSet, props);
         this.type = type;
         registerDefaultState(defaultBlockState()
                 .setValue(FramedProperties.SOLID, false)
