@@ -3,7 +3,7 @@
   "id": "framedblocks",
   "version": "${version}",
   "name": "FramedBlocks",
-  "description": "Fabric port of FramedBlocks for Minecraft 1.20.1.",
+  "description": "Fabric port of FramedBlocks for Minecraft 1.20.2.",
   "authors": [
     "Lowei-7",
     "XFactHD"
@@ -32,9 +32,9 @@
     "framedblocks.mixin.json"
   ],
   "depends": {
-    "fabricloader": ">=0.15.10",
-    "minecraft": "~1.20.1",
-    "java": ">=17",
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.20.2",
+    "java": ">=21",
     "fabric-api": "*"
   }
 }

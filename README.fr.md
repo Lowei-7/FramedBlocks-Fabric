@@ -1,6 +1,6 @@
 # FramedBlocks (Fabric)
 
-**Port Fabric de [FramedBlocks](https://github.com/XFactHD/FramedBlocks) pour Minecraft 1.20.1.**
+**Port Fabric de [FramedBlocks](https://github.com/XFactHD/FramedBlocks) pour Minecraft 1.20.2.**
 
 FramedBlocks ajoute à Minecraft une vaste collection de blocs décoratifs encadrables. Chaque bloc
 encadrable accepte un camouflage de n'importe quel autre bloc, ce qui permet de construire des
@@ -28,21 +28,21 @@ casser le rendu visuel de votre construction.
 
 | Dépendance    | Version            |
 |---------------|--------------------|
-| Minecraft     | 1.20.1             |
-| Fabric Loader | 0.15.10 ou plus    |
-| Fabric API    | 0.92.8 ou plus     |
-| Java          | 17 ou plus         |
+| Minecraft     | 1.20.2             |
+| Fabric Loader | 0.16.0 ou plus     |
+| Fabric API    | 0.91.6 ou plus     |
+| Java          | 21 ou plus         |
 
 ## Installation
 
-1. Installez le [Fabric Loader](https://fabricmc.net/use/) pour Minecraft 1.20.1.
+1. Installez le [Fabric Loader](https://fabricmc.net/use/) pour Minecraft 1.20.2.
 2. Installez [Fabric API](https://modrinth.com/mod/fabric-api) dans le dossier `mods`.
 3. Déposez le jar de FramedBlocks dans le dossier `mods`.
 4. Lancez le jeu.
 
 ## Compilation depuis les sources
 
-Un JDK 17 ou plus est requis.
+Un JDK 21 est requis.
 
 ```bash
 ./gradlew build
@@ -56,6 +56,7 @@ Chaque version de Minecraft prise en charge vit sur sa propre branche. Les branc
 
 | Branche  | Minecraft | Statut            |
 |----------|-----------|-------------------|
+| `1.20.2` | 1.20.2    | En développement  |
 | `1.20.1` | 1.20.1    | Publiée           |
 
 Les branches sont créées au fur et à mesure que le portage de chaque version de
@@ -71,7 +72,7 @@ de XFactHD (également en LGPL-3.0) ; voir [NOTICE](./NOTICE) pour l'attribution
 ## Crédits
 
 - **XFactHD** — mod FramedBlocks original (design, code, ressources).
-- **Lowei-7** — port Forge → Fabric pour Minecraft 1.20.1.
+- **Lowei-7** — port Forge → Fabric pour Minecraft 1.20.2.
 - Tous les utilisateurs et contributeurs qui signalent des bugs, suggèrent des fonctionnalités et
   aident à améliorer le projet.
 

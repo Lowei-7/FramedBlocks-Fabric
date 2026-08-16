@@ -1,6 +1,6 @@
 # FramedBlocks (Fabric)
 
-**Fabric port of [FramedBlocks](https://github.com/XFactHD/FramedBlocks) for Minecraft 1.20.1.**
+**Fabric port of [FramedBlocks](https://github.com/XFactHD/FramedBlocks) for Minecraft 1.20.2.**
 
 FramedBlocks adds a huge collection of decorative framing blocks to Minecraft. Every framing
 block accepts a camouflage from any other block, letting you build seamless structures, slopes,
@@ -25,21 +25,21 @@ stairs, panels, doors and much more without breaking the visual look of your bui
 
 | Dependency     | Version            |
 |----------------|--------------------|
-| Minecraft      | 1.20.1             |
-| Fabric Loader  | 0.15.10 or higher  |
-| Fabric API     | 0.92.8 or higher   |
-| Java           | 17 or higher       |
+| Minecraft      | 1.20.2             |
+| Fabric Loader  | 0.16.0 or higher   |
+| Fabric API     | 0.91.6 or higher   |
+| Java           | 21 or higher       |
 
 ## Installation
 
-1. Install the [Fabric Loader](https://fabricmc.net/use/) for Minecraft 1.20.1.
+1. Install the [Fabric Loader](https://fabricmc.net/use/) for Minecraft 1.20.2.
 2. Install [Fabric API](https://modrinth.com/mod/fabric-api) into the `mods` folder.
 3. Drop the FramedBlocks jar into the `mods` folder.
 4. Launch the game.
 
 ## Building from source
 
-A JDK 17+ is required.
+A JDK 21 is required.
 
 ```bash
 ./gradlew build
@@ -53,6 +53,7 @@ Each supported Minecraft version lives on its own branch. The current branches a
 
 | Branch  | Minecraft | Status            |
 |---------|-----------|-------------------|
+| `1.20.2`| 1.20.2    | In development    |
 | `1.20.1`| 1.20.1    | Released          |
 
 Branches are created as the port for each Minecraft version is completed and
@@ -67,7 +68,7 @@ by XFactHD (also LGPL-3.0); see [NOTICE](./NOTICE) for attribution.
 ## Credits
 
 - **XFactHD** — original FramedBlocks mod (design, code, assets).
-- **Lowei-7** — Forge → Fabric port for Minecraft 1.20.1.
+- **Lowei-7** — Forge → Fabric port for Minecraft 1.20.2.
 - All users and contributors who report issues, suggest features and help improve the project.
 
 ## Documentation

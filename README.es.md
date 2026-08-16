@@ -1,6 +1,6 @@
 # FramedBlocks (Fabric)
 
-**Port para Fabric de [FramedBlocks](https://github.com/XFactHD/FramedBlocks) para Minecraft 1.20.1.**
+**Port para Fabric de [FramedBlocks](https://github.com/XFactHD/FramedBlocks) para Minecraft 1.20.2.**
 
 FramedBlocks añade una enorme colección de bloques decorativos con marco a Minecraft. Cada bloque
 con marco acepta un camuflaje de cualquier otro bloque, lo que permite construir estructuras sin
@@ -26,21 +26,21 @@ construcción.
 
 | Dependencia  | Versión            |
 |--------------|--------------------|
-| Minecraft    | 1.20.1             |
-| Fabric Loader| 0.15.10 o superior |
-| Fabric API   | 0.92.8 o superior  |
-| Java         | 17 o superior      |
+| Minecraft    | 1.20.2             |
+| Fabric Loader| 0.16.0 o superior  |
+| Fabric API   | 0.91.6 o superior  |
+| Java         | 21 o superior      |
 
 ## Instalación
 
-1. Instala el [Fabric Loader](https://fabricmc.net/use/) para Minecraft 1.20.1.
+1. Instala el [Fabric Loader](https://fabricmc.net/use/) para Minecraft 1.20.2.
 2. Instala [Fabric API](https://modrinth.com/mod/fabric-api) en la carpeta `mods`.
 3. Coloca el jar de FramedBlocks en la carpeta `mods`.
 4. Inicia el juego.
 
 ## Compilación desde el código fuente
 
-Se requiere un JDK 17 o superior.
+Se requiere un JDK 21.
 
 ```bash
 ./gradlew build
@@ -54,6 +54,7 @@ Cada versión compatible de Minecraft vive en su propia rama. Las ramas actuales
 
 | Rama    | Minecraft | Estado           |
 |---------|-----------|------------------|
+| `1.20.2`| 1.20.2    | En desarrollo    |
 | `1.20.1`| 1.20.1    | Publicada        |
 
 Las ramas se crean cuando se completa y prueba el port de cada versión de Minecraft.
@@ -68,7 +69,7 @@ de XFactHD (también LGPL-3.0); consulta [NOTICE](./NOTICE) para la atribución.
 ## Créditos
 
 - **XFactHD** — mod original FramedBlocks (diseño, código, recursos).
-- **Lowei-7** — port de Forge a Fabric para Minecraft 1.20.1.
+- **Lowei-7** — port de Forge a Fabric para Minecraft 1.20.2.
 - Todos los usuarios y contribuidores que informan de errores, sugieren funciones y ayudan a
   mejorar el proyecto.
 
