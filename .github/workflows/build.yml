@@ -68,3 +68,4 @@ jobs:
         with:
           files: artifacts/*.jar
           generate_release_notes: true
+          make_latest: false
