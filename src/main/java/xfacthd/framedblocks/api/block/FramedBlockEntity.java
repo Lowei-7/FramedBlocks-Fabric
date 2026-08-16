@@ -3,6 +3,7 @@ package xfacthd.framedblocks.api.block;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -10,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.*;
@@ -360,7 +362,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
         {
             setReinforced(false);
 
-            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
 
             ItemStack result = new ItemStack(Utils.framedReinforcement());
             if (!player.getInventory().add(result))
@@ -899,7 +901,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
     @Override
     public final ClientboundBlockEntityDataPacket getUpdatePacket()
     {
-        return ClientboundBlockEntityDataPacket.create(this, be ->
+        return ClientboundBlockEntityDataPacket.create(this, (be, registryAccess) ->
         {
             CompoundTag tag = new CompoundTag();
             ((FramedBlockEntity) be).writeToDataPacket(tag);
@@ -980,9 +982,9 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
     }
 
     @Override
-    public CompoundTag getUpdateTag()
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries)
     {
-        CompoundTag nbt = super.getUpdateTag();
+        CompoundTag nbt = super.getUpdateTag(registries);
 
         nbt.put(CAMO_NBT_KEY, CamoContainer.writeToNetwork(camoContainer));
         nbt.putByte("flags", writeFlags());
@@ -1065,11 +1067,11 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
 
     public CompoundTag writeToBlueprint()
     {
-        return saveWithoutMetadata();
+        return saveWithoutMetadata(level.registryAccess());
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
         nbt.put(CAMO_NBT_KEY, CamoContainer.save(camoContainer));
         nbt.putBoolean("glowing", glowing);
@@ -1077,13 +1079,13 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
         nbt.putBoolean("reinforced", reinforced);
         nbt.putByte("updated", (byte) DATA_VERSION);
 
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt, registries);
 
         InternalAPI.INSTANCE.updateCamoNbt(nbt, "camo_state", "camo_stack", CAMO_NBT_KEY);
 

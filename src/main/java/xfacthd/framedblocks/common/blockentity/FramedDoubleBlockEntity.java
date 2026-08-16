@@ -1,6 +1,7 @@
 package xfacthd.framedblocks.common.blockentity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.*;
@@ -369,9 +370,9 @@ public abstract class FramedDoubleBlockEntity extends FramedBlockEntity implemen
     }
 
     @Override
-    public CompoundTag getUpdateTag()
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries)
     {
-        CompoundTag nbt = super.getUpdateTag();
+        CompoundTag nbt = super.getUpdateTag(registries);
 
         nbt.put("camo_two", CamoContainer.writeToNetwork(camoContainer));
 
@@ -424,17 +425,17 @@ public abstract class FramedDoubleBlockEntity extends FramedBlockEntity implemen
      */
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
         nbt.put("camo_two", CamoContainer.save(camoContainer));
 
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt, registries);
 
         InternalAPI.INSTANCE.updateCamoNbt(nbt, "camo_state_two", "camo_stack_two", "camo_two");
 

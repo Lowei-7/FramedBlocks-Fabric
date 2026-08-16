@@ -2,7 +2,9 @@ package xfacthd.framedblocks.client.data.ghost;
 
 import net.minecraftforge.client.model.data.ModelData;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -27,9 +29,10 @@ public final class CollapsibleCopycatBlockGhostRenderBehaviour implements GhostR
     {
         BlockState state = GhostRenderBehaviour.super.getRenderState(stack, proxiedStack, hit, ctx, hitState, secondPass);
         //noinspection ConstantConditions
-        if (state != null && stack.hasTag() && stack.getTag().contains("BlockEntityTag"))
+        CustomData blockEntityData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+        if (state != null && blockEntityData != null)
         {
-            int offsets = stack.getTag().getCompound("BlockEntityTag").getInt("offsets");
+            int offsets = blockEntityData.getUnsafe().getInt("offsets");
             int solidFaces = FramedCollapsibleCopycatBlockEntity.computeSolidFaces(offsets);
             state = state.setValue(PropertyHolder.SOLID_FACES, solidFaces);
         }
@@ -47,9 +50,10 @@ public final class CollapsibleCopycatBlockGhostRenderBehaviour implements GhostR
     )
     {
         //noinspection ConstantConditions
-        if (stack.hasTag() && stack.getTag().contains("BlockEntityTag"))
+        CustomData blockEntityData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+        if (blockEntityData != null)
         {
-            int offsets = stack.getTag().getCompound("BlockEntityTag").getInt("offsets");
+            int offsets = blockEntityData.getUnsafe().getInt("offsets");
             FramedBlockData frame = data.get(FramedBlockData.PROPERTY);
             if (frame != null)
             {

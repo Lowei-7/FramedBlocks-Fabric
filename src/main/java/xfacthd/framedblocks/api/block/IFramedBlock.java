@@ -3,6 +3,7 @@ package xfacthd.framedblocks.api.block;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -11,6 +12,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -102,7 +104,7 @@ public interface IFramedBlock extends EntityBlock
         }
 
         //noinspection ConstantConditions
-        if (stack.hasTag() && stack.getTag().contains("BlockEntityTag"))
+        if (stack.has(DataComponents.BLOCK_ENTITY_DATA))
         {
             if (level.getBlockEntity(pos) instanceof FramedBlockEntity be)
             {
@@ -166,6 +168,15 @@ public interface IFramedBlock extends EntityBlock
         return InteractionResult.FAIL;
     }
 
+    default ItemInteractionResult convertUseResult(InteractionResult result, Level level)
+    {
+        if (!result.consumesAction())
+        {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        return result == InteractionResult.SUCCESS ? ItemInteractionResult.sidedSuccess(level.isClientSide()) : ItemInteractionResult.CONSUME;
+    }
+
     // Fabric: removed @Override, method has no supertype in Fabric
     default int getLightEmission(BlockState state, BlockGetter level, BlockPos pos)
     {
@@ -218,7 +229,7 @@ public interface IFramedBlock extends EntityBlock
                 return camo.getSoundType();
             }
         }
-        return ((Block) this).getSoundType(state);
+        return state.getSoundType();
     }
 
     default List<ItemStack> getCamoDrops(List<ItemStack> drops, LootParams.Builder builder)

@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.level.block.Block;
 import xfacthd.framedblocks.FramedBlocks;
@@ -26,6 +25,7 @@ import xfacthd.framedblocks.client.screen.*;
 import xfacthd.framedblocks.client.util.*;
 import xfacthd.framedblocks.common.FBContent;
 import xfacthd.framedblocks.common.data.BlockType;
+import xfacthd.framedblocks.mixin.MenuScreensAccessor;
 
 public final class FBClient implements ClientModInitializer
 {
@@ -53,9 +53,9 @@ public final class FBClient implements ClientModInitializer
         AnimationSplitterSource.register();
 
         // ---- Screens ----
-        ScreenRegistry.register(FBContent.MENU_TYPE_FRAMED_STORAGE.get(), FramedStorageScreen::new);
-        ScreenRegistry.register(FBContent.MENU_TYPE_FRAMING_SAW.get(), FramingSawScreen::new);
-        ScreenRegistry.register(FBContent.MENU_TYPE_POWERED_FRAMING_SAW.get(), PoweredFramingSawScreen::new);
+        MenuScreensAccessor.framedblocks$register(FBContent.MENU_TYPE_FRAMED_STORAGE.get(), FramedStorageScreen::new);
+        MenuScreensAccessor.framedblocks$register(FBContent.MENU_TYPE_FRAMING_SAW.get(), FramingSawScreen::new);
+        MenuScreensAccessor.framedblocks$register(FBContent.MENU_TYPE_POWERED_FRAMING_SAW.get(), PoweredFramingSawScreen::new);
 
         // ---- Render layers ----
         BlockRenderLayerMap.INSTANCE.putBlock(FBContent.BLOCK_FRAMING_SAW.get(), RenderType.cutout());

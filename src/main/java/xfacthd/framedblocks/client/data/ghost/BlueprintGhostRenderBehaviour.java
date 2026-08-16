@@ -4,8 +4,10 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -30,11 +32,12 @@ public final class BlueprintGhostRenderBehaviour implements GhostRenderBehaviour
         {
             ItemStack proxied = new ItemStack(item);
             //noinspection ConstantConditions
-            if (stack.hasTag() && stack.getTag().contains("blueprint_data"))
+            CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+            if (customData != null && customData.contains("blueprint_data"))
             {
-                proxied.getOrCreateTag().put(
-                        "BlockEntityTag",
-                        stack.getTag().getCompound("blueprint_data").getCompound("camo_data")
+                proxied.set(
+                        DataComponents.BLOCK_ENTITY_DATA,
+                        CustomData.of(customData.getUnsafe().getCompound("blueprint_data").getCompound("camo_data"))
                 );
             }
             return proxied;
@@ -112,9 +115,10 @@ public final class BlueprintGhostRenderBehaviour implements GhostRenderBehaviour
     public CamoPair readCamo(ItemStack stack, @Nullable ItemStack proxiedStack, boolean secondPass)
     {
         //noinspection ConstantConditions
-        if (proxiedStack != null && stack.hasTag() && stack.getTag().contains("blueprint_data"))
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (proxiedStack != null && customData != null && customData.contains("blueprint_data"))
         {
-            CompoundTag tag = stack.getOrCreateTagElement("blueprint_data");
+            CompoundTag tag = customData.getUnsafe().getCompound("blueprint_data");
             Set<CamoContainer> camos = FramedBlueprintItem.getCamoContainers((BlockItem) proxiedStack.getItem(), tag);
 
             Iterator<CamoContainer> it = camos.iterator();

@@ -2,11 +2,13 @@ package xfacthd.framedblocks.common.data.blueprint;
 
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -76,7 +78,7 @@ public final class DoorCopyBehaviour implements BlueprintCopyBehaviour
         if (level.getBlockEntity(topPos) instanceof FramedBlockEntity)
         {
             //noinspection ConstantConditions
-            dummyStack.getOrCreateTag().put("BlockEntityTag", blueprintData.get(SECOND_CAMO_KEY));
+            dummyStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(blueprintData.getCompound(SECOND_CAMO_KEY)));
             BlockItem.updateCustomBlockEntityTag(level, player, topPos, dummyStack);
         }
     }

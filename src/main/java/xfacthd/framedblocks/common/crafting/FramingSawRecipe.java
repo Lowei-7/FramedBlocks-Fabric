@@ -1,6 +1,6 @@
 package xfacthd.framedblocks.common.crafting;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -115,7 +115,7 @@ public final class FramingSawRecipe implements Recipe<Container>
     }
 
     @Override
-    public ItemStack assemble(Container container, RegistryAccess access)
+    public ItemStack assemble(Container container, HolderLookup.Provider access)
     {
         return result.copy();
     }
@@ -142,7 +142,7 @@ public final class FramingSawRecipe implements Recipe<Container>
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess access)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return result;
     }

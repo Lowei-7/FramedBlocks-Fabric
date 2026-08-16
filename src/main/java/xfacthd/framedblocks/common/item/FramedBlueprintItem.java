@@ -3,6 +3,7 @@ package xfacthd.framedblocks.common.item;
 import com.google.common.base.Preconditions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
@@ -11,10 +12,10 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -27,7 +28,6 @@ import xfacthd.framedblocks.common.data.*;
 import xfacthd.framedblocks.api.block.FramedBlockEntity;
 import xfacthd.framedblocks.common.util.ServerConfig;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class FramedBlueprintItem extends FramedToolItem
@@ -56,12 +56,6 @@ public class FramedBlueprintItem extends FramedToolItem
     }
 
     @Override
-    public boolean doesSneakBypassUse(ItemStack stack, LevelReader level, BlockPos pos, Player player)
-    {
-        return false;
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
@@ -69,10 +63,12 @@ public class FramedBlueprintItem extends FramedToolItem
         {
             if (!level.isClientSide())
             {
-                CompoundTag tag = stack.getOrCreateTagElement("blueprint_data");
-                tag.remove("framed_block");
-                tag.remove("camo_data");
-                tag.remove("camo_data_two");
+                CustomData.update(DataComponents.CUSTOM_DATA, stack, tag ->
+                {
+                    tag.remove("framed_block");
+                    tag.remove("camo_data");
+                    tag.remove("camo_data_two");
+                });
             }
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
         }
@@ -91,11 +87,17 @@ public class FramedBlueprintItem extends FramedToolItem
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
 
-        CompoundTag tag = context.getItemInHand().getOrCreateTagElement("blueprint_data");
+        ItemStack stack = context.getItemInHand();
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
 
         if (player.isShiftKeyDown())
         {
-            return writeBlueprint(level, pos, tag);
+            InteractionResult result = writeBlueprint(level, pos, tag);
+            if (!tag.isEmpty())
+            {
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+            }
+            return result;
         }
         else if (!tag.isEmpty())
         {
@@ -228,7 +230,7 @@ public class FramedBlueprintItem extends FramedToolItem
     private static InteractionResult tryPlace(UseOnContext context, Player player, BlockItem item, CompoundTag tag)
     {
         ItemStack dummyStack = new ItemStack(item, 1);
-        dummyStack.getOrCreateTag().put("BlockEntityTag", tag.getCompound("camo_data").copy());
+        dummyStack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag.getCompound("camo_data")));
 
         UseOnContext placeContext = new UseOnContext(
                 context.getLevel(),
@@ -370,16 +372,16 @@ public class FramedBlueprintItem extends FramedToolItem
 
     public static Block getTargetBlock(ItemStack stack)
     {
-        CompoundTag tag = stack.getOrCreateTagElement("blueprint_data");
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(tag.getString("framed_block")));
         Objects.requireNonNull(block);
         return block;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> components, TooltipFlag flag)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> components, TooltipFlag flag)
     {
-        CompoundTag tag = stack.getOrCreateTagElement("blueprint_data");
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (tag.isEmpty())
         {
             components.add(Component.translatable(CONTAINED_BLOCK, BLOCK_NONE).withStyle(ChatFormatting.GOLD));

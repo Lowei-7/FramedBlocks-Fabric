@@ -1,6 +1,6 @@
 package xfacthd.framedblocks.mixin;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
 import net.minecraft.client.renderer.texture.atlas.SpriteSourceType;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface SpriteSourcesAccessor
 {
     @Invoker("register")
-    static SpriteSourceType register(String name, Codec<? extends SpriteSource> codec)
+    static SpriteSourceType register(String name, MapCodec<? extends SpriteSource> codec)
     {
         throw new AssertionError("Mixin not applied");
     }

@@ -1,6 +1,7 @@
 package xfacthd.framedblocks.mixin.client;
 
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -28,10 +29,10 @@ public abstract class MixinClientPacketListener
             method = "method_38542",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/block/entity/BlockEntity;load(Lnet/minecraft/nbt/CompoundTag;)V"
+                    target = "Lnet/minecraft/world/level/block/entity/BlockEntity;loadWithComponents(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/core/HolderLookup$Provider;)V"
             )
     )
-    private void framedblocks$redirectLoad(BlockEntity blockEntity, CompoundTag tag, ClientboundBlockEntityDataPacket packet)
+    private void framedblocks$redirectLoad(BlockEntity blockEntity, CompoundTag tag, HolderLookup.Provider registries, ClientboundBlockEntityDataPacket packet)
     {
         if (blockEntity instanceof FramedBlockEntity framedBe)
         {
@@ -40,7 +41,7 @@ public abstract class MixinClientPacketListener
         }
         else
         {
-            blockEntity.load(tag);
+            blockEntity.loadWithComponents(tag, registries);
         }
     }
 }

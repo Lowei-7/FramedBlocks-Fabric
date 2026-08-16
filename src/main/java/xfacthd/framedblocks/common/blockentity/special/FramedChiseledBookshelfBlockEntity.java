@@ -2,6 +2,7 @@ package xfacthd.framedblocks.common.blockentity.special;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
@@ -108,38 +109,38 @@ public class FramedChiseledBookshelfBlockEntity extends FramedBlockEntity
     @Override //Prevent writing inventory contents
     public CompoundTag writeToBlueprint()
     {
-        CompoundTag tag = saveWithoutMetadata();
+        CompoundTag tag = saveWithoutMetadata(level.registryAccess());
         tag.remove(INVENTORY_NBT_KEY);
         tag.remove(LAST_SLOT_NBT_KEY);
         return tag;
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
         CompoundTag inventoryTag = new CompoundTag();
         for (int i = 0; i < inventory.length; i++)
         {
             if (!inventory[i].isEmpty())
             {
-                inventoryTag.put("Slot" + i, inventory[i].save(new CompoundTag()));
+                inventoryTag.put("Slot" + i, inventory[i].save(registries, new CompoundTag()));
             }
         }
         nbt.put(INVENTORY_NBT_KEY, inventoryTag);
         nbt.putInt(LAST_SLOT_NBT_KEY, lastInteractedSlot);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt, registries);
         CompoundTag inventoryTag = nbt.getCompound(INVENTORY_NBT_KEY);
         for (int i = 0; i < inventory.length; i++)
         {
             if (inventoryTag.contains("Slot" + i))
             {
-                inventory[i] = ItemStack.of(inventoryTag.getCompound("Slot" + i));
+                inventory[i] = ItemStack.parse(registries, inventoryTag.getCompound("Slot" + i)).orElse(ItemStack.EMPTY);
             }
             else
             {

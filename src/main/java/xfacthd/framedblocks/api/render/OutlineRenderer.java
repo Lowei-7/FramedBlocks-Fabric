@@ -87,9 +87,8 @@ public interface OutlineRenderer
         nZ = nZ / nLen;
 
         Matrix4f pose = poseStack.last().pose();
-        Matrix3f normal = poseStack.last().normal();
-        builder.vertex(pose, (float)x1, (float)y1, (float)z1).color(0.0F, 0.0F, 0.0F, 0.4F).normal(normal, nX, nY, nZ).endVertex();
-        builder.vertex(pose, (float)x2, (float)y2, (float)z2).color(0.0F, 0.0F, 0.0F, 0.4F).normal(normal, nX, nY, nZ).endVertex();
+        builder.vertex(pose, (float)x1, (float)y1, (float)z1).color(0.0F, 0.0F, 0.0F, 0.4F).normal(poseStack.last(), nX, nY, nZ).endVertex();
+        builder.vertex(pose, (float)x2, (float)y2, (float)z2).color(0.0F, 0.0F, 0.0F, 0.4F).normal(poseStack.last(), nX, nY, nZ).endVertex();
     }
 
 

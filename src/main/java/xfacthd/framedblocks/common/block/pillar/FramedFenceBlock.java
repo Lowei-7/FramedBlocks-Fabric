@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -45,14 +46,12 @@ public class FramedFenceBlock extends FenceBlock implements IFramedBlock
     }
 
     @Override
-    public final InteractionResult use(
-            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         InteractionResult result = handleUse(state, level, pos, player, hand, hit);
-        if (result.consumesAction()) { return result; }
-
-        return super.use(state, level, pos, player, hand, hit);
+        return result.consumesAction() ? convertUseResult(result, level) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override

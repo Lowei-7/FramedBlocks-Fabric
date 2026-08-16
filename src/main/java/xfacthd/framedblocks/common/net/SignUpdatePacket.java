@@ -1,34 +1,31 @@
 package xfacthd.framedblocks.common.net;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 
-public record SignUpdatePacket(BlockPos pos, boolean front, String[] lines)
+import java.util.Arrays;
+
+public record SignUpdatePacket(BlockPos pos, boolean front, String[] lines) implements CustomPacketPayload
 {
-    public static SignUpdatePacket decode(FriendlyByteBuf buffer)
+    public static final CustomPacketPayload.Type<SignUpdatePacket> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation("framedblocks", "sign_update"));
+    private static final StreamCodec<ByteBuf, String[]> LINES_CODEC = ByteBufCodecs.STRING_UTF8
+            .apply(ByteBufCodecs.list())
+            .map(lines -> lines.toArray(String[]::new), Arrays::asList);
+    public static final StreamCodec<FriendlyByteBuf, SignUpdatePacket> STREAM_CODEC = StreamCodec.composite(
+            BlockPos.STREAM_CODEC, SignUpdatePacket::pos,
+            ByteBufCodecs.BOOL, SignUpdatePacket::front,
+            LINES_CODEC, SignUpdatePacket::lines,
+            SignUpdatePacket::new
+    );
+
+    @Override
+    public CustomPacketPayload.Type<? extends CustomPacketPayload> type()
     {
-        BlockPos pos = buffer.readBlockPos();
-        boolean front = buffer.readBoolean();
-
-        int count = buffer.readByte();
-        String[] lines = new String[count];
-        for (int i = 0; i < count; i++)
-        {
-            lines[i] = buffer.readUtf(384);
-        }
-
-        return new SignUpdatePacket(pos, front, lines);
-    }
-
-    public void encode(FriendlyByteBuf buffer)
-    {
-        buffer.writeBlockPos(pos);
-        buffer.writeBoolean(front);
-
-        buffer.writeByte(lines.length);
-        for (String line : lines)
-        {
-            buffer.writeUtf(line);
-        }
+        return TYPE;
     }
 }

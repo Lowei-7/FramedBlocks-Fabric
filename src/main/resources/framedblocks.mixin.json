@@ -10,7 +10,9 @@
         "MixinMapItemSavedData",
         "MixinPoweredRailBlock",
         "MixinDetectorRailBlock",
-        "SpriteSourcesAccessor"
+        "SpriteSourcesAccessor",
+        "MenuScreensAccessor",
+        "ItemPropertiesInvoker"
     ],
     "client": [
         "client.MixinLevelRenderer",

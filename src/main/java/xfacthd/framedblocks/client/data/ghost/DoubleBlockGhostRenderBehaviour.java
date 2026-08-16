@@ -1,7 +1,9 @@
 package xfacthd.framedblocks.client.data.ghost;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.Nullable;
 import xfacthd.framedblocks.api.camo.CamoContainer;
 import xfacthd.framedblocks.api.camo.EmptyCamoContainer;
@@ -20,9 +22,10 @@ public sealed class DoubleBlockGhostRenderBehaviour implements GhostRenderBehavi
     public static CamoPair readDoubleCamo(ItemStack stack)
     {
         //noinspection ConstantConditions
-        if (stack.hasTag() && stack.getTag().contains("BlockEntityTag"))
+        CustomData blockEntityData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+        if (blockEntityData != null)
         {
-            CompoundTag blockEntityTag = stack.getTag().getCompound("BlockEntityTag");
+            CompoundTag blockEntityTag = blockEntityData.getUnsafe();
             CamoContainer camo = EmptyCamoContainer.EMPTY;
             CamoContainer camoTwo = EmptyCamoContainer.EMPTY;
             if (blockEntityTag.contains("camo"))

@@ -12,6 +12,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.*;
@@ -26,15 +27,12 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import xfacthd.framedblocks.FramedBlocks;
 import xfacthd.framedblocks.api.util.Utils;
 import xfacthd.framedblocks.common.FBContent;
 import xfacthd.framedblocks.common.block.FramedBlock;
 import xfacthd.framedblocks.common.data.BlockType;
 import xfacthd.framedblocks.common.blockentity.special.FramedSignBlockEntity;
-import xfacthd.framedblocks.common.net.NetworkingHandler;
 import xfacthd.framedblocks.common.net.OpenSignScreenPacket;
 
 import java.util.Arrays;
@@ -57,18 +55,17 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
     }
 
     @Override
-    public InteractionResult use(
-            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         //Makes sure the block can have a camo applied, even when the sign can execute a command
-        InteractionResult result = super.use(state, level, pos, player, hand, hit);
+        InteractionResult result = handleUse(state, level, pos, player, hand, hit);
         if (result != InteractionResult.PASS || preventUse(state, level, pos, player, hand, hit))
         {
-            return result;
+            return convertUseResult(result, level);
         }
 
-        ItemStack stack = player.getItemInHand(hand);
         SignInteraction interaction = SignInteraction.from(stack);
         boolean canInteract = interaction != null && player.getAbilities().mayBuild;
 
@@ -76,7 +73,7 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
         {
             if (level.isClientSide())
             {
-                return canInteract || sign.isWaxed() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+                return canInteract || sign.isWaxed() ? ItemInteractionResult.SUCCESS : ItemInteractionResult.CONSUME;
             }
 
             boolean front = sign.isFacingFrontText(player);
@@ -84,9 +81,9 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
             {
                 if (sign.canExecuteCommands(front, player) && sign.tryExecuteCommands(player, level, pos, front))
                 {
-                    return InteractionResult.SUCCESS;
+                    return ItemInteractionResult.SUCCESS;
                 }
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
             else if (canInteract && notBlockedByOtherPlayer(player, sign) && interaction.interact(level, pos, player, stack, front, sign))
             {
@@ -97,16 +94,16 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
                 }
                 player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
             else if (notBlockedByOtherPlayer(player, sign) && canEdit(player, sign, front))
             {
                 openEditScreen(player, sign, front);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             }
         }
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     protected boolean preventUse(
@@ -127,9 +124,9 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    public boolean isPathfindable(BlockState state, PathComputationType type)
     {
-        return type != PathComputationType.WATER || level.getFluidState(pos).is(FluidTags.WATER);
+        return type != PathComputationType.WATER || state.getFluidState().is(FluidTags.WATER);
     }
 
     @Override
@@ -186,12 +183,9 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
     public static void openEditScreen(Player player, FramedSignBlockEntity sign, boolean frontText)
     {
         sign.setEditingPlayer(player.getUUID());
-        FriendlyByteBuf buf = new FriendlyByteBuf(io.netty.buffer.Unpooled.buffer());
-        new OpenSignScreenPacket(sign.getBlockPos(), frontText).encode(buf);
         ServerPlayNetworking.send(
                 (ServerPlayer) player,
-                NetworkingHandler.OPEN_SIGN_SCREEN_ID,
-                buf
+                new OpenSignScreenPacket(sign.getBlockPos(), frontText)
         );
     }
 

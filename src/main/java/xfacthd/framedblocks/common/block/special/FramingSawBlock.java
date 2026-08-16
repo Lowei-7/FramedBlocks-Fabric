@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -55,8 +56,8 @@ public class FramingSawBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(
-            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         if (!level.isClientSide())
@@ -76,7 +77,7 @@ public class FramingSawBlock extends Block
                 }
             });
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override

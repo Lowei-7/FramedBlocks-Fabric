@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import xfacthd.framedblocks.api.render.OutlineRenderer;
 import xfacthd.framedblocks.api.render.Quaternions;
@@ -195,9 +194,8 @@ public final class CollapsibleBlockIndicatorRenderer
         nZ = nZ / nLen;
 
         Matrix4f pose = poseStack.last().pose();
-        Matrix3f normal = poseStack.last().normal();
-        builder.vertex(pose, (float)x1, (float)y1, (float)z1).color(1f, 0F, 0F, .6F).normal(normal, nX, nY, nZ).endVertex();
-        builder.vertex(pose, (float)x2, (float)y2, (float)z2).color(1f, 0F, 0F, .6F).normal(normal, nX, nY, nZ).endVertex();
+        builder.vertex(pose, (float)x1, (float)y1, (float)z1).color(1f, 0F, 0F, .6F).normal(poseStack.last(), nX, nY, nZ).endVertex();
+        builder.vertex(pose, (float)x2, (float)y2, (float)z2).color(1f, 0F, 0F, .6F).normal(poseStack.last(), nX, nY, nZ).endVertex();
     }
 
 

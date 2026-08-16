@@ -13,7 +13,7 @@ public class ForgeGui extends Gui
 {
     public ForgeGui(net.minecraft.client.Minecraft minecraft)
     {
-        super(minecraft, minecraft.getItemRenderer());
+        super(minecraft);
     }
 
     public void setupOverlayRenderState(boolean blend, boolean depthTest)

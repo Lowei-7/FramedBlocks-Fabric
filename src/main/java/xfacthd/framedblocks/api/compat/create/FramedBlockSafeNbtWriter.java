@@ -25,7 +25,7 @@ public class FramedBlockSafeNbtWriter implements SafeNbtWriterRegistry.SafeNbtWr
     {
         if (be instanceof FramedBlockEntity fbe)
         {
-            tag.merge(be.saveWithFullMetadata());
+            tag.merge(be.saveWithFullMetadata(be.getLevel().registryAccess()));
 
             CamoContainer camoOne = fbe.getCamo();
             if (!camoOne.getType().isBlock())

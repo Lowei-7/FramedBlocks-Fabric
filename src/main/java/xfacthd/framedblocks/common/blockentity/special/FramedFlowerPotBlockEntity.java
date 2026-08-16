@@ -1,6 +1,7 @@
 package xfacthd.framedblocks.common.blockentity.special;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -86,9 +87,9 @@ public class FramedFlowerPotBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public CompoundTag getUpdateTag()
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries)
     {
-        CompoundTag nbt = super.getUpdateTag();
+        CompoundTag nbt = super.getUpdateTag(registries);
 
         //noinspection ConstantConditions
         nbt.putString("flower", net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(flowerBlock).toString());
@@ -99,7 +100,7 @@ public class FramedFlowerPotBlockEntity extends FramedBlockEntity
     @Override
     public CompoundTag writeToBlueprint()
     {
-        CompoundTag tag = saveWithoutMetadata();
+        CompoundTag tag = saveWithoutMetadata(level.registryAccess());
         tag.remove("flower");
         return tag;
     }
@@ -117,17 +118,17 @@ public class FramedFlowerPotBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
         //noinspection ConstantConditions
         nbt.putString("flower", net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(flowerBlock).toString());
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt, registries);
         flowerBlock = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(new ResourceLocation(nbt.getString("flower")));
     }
 }

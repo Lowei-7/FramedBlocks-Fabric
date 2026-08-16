@@ -599,11 +599,7 @@ public final class Utils
         }
 
         String result = stack.getCount() + "x " + stack.getItem() + "[";
-        CompoundTag tag = stack.getTag();
-        if (tag != null)
-        {
-            result += tag;
-        }
+        result += stack.getComponents();
         return result + "]";
     }
 

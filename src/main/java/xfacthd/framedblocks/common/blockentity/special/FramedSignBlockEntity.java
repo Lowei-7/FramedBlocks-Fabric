@@ -4,6 +4,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.*;
@@ -267,9 +268,9 @@ public final class FramedSignBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public CompoundTag getUpdateTag()
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries)
     {
-        CompoundTag nbt = super.getUpdateTag();
+        CompoundTag nbt = super.getUpdateTag(registries);
         writeToNbt(nbt);
         return nbt;
     }
@@ -341,7 +342,7 @@ public final class FramedSignBlockEntity extends FramedBlockEntity
     @Override //Prevent writing sign data
     public CompoundTag writeToBlueprint()
     {
-        CompoundTag tag = saveWithoutMetadata();
+        CompoundTag tag = saveWithoutMetadata(level.registryAccess());
         tag.remove("front_text");
         tag.remove("back_text");
         tag.remove("waxed");
@@ -349,23 +350,23 @@ public final class FramedSignBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
         writeToNbt(nbt);
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt, registries);
 
         if (nbt.contains("text0") || nbt.contains("text1") || nbt.contains("text2") || nbt.contains("text3") || nbt.contains("glowingText") || nbt.contains("color"))
         {
             for (int i = 0; i < 4; i++)
             {
                 String text = nbt.getString("text" + i);
-                Component line = Component.Serializer.fromJson(text.isEmpty() ? "\"\"" : text);
+                Component line = Component.Serializer.fromJson(text.isEmpty() ? "\"\"" : text, registries);
                 if (line != null)
                 {
                     frontText.setMessage(i, line);

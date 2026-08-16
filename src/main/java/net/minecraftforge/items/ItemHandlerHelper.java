@@ -12,7 +12,7 @@ public class ItemHandlerHelper {
     
     public static boolean canItemStacksStack(ItemStack a, ItemStack b) {
         if (a.isEmpty() || b.isEmpty()) return false;
-        return ItemStack.isSameItemSameTags(a, b);
+        return ItemStack.isSameItemSameComponents(a, b);
     }
     
     public static ItemStack insertItem(IItemHandler dest, ItemStack stack, boolean simulate) {

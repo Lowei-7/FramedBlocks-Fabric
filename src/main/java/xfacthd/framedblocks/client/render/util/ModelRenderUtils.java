@@ -95,7 +95,7 @@ public final class ModelRenderUtils
                 green = FastColor.ARGB32.green(tint) / 255F;
                 blue = FastColor.ARGB32.blue(tint) / 255F;
             }
-            consumer.putBulkData(pose, quad, red, green, blue, packedLight, packedOverlay);
+            consumer.putBulkData(pose, quad, red, green, blue, 1F, packedLight, packedOverlay);
         }
     }
 

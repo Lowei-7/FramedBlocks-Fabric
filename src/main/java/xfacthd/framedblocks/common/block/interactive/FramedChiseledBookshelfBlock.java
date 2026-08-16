@@ -2,11 +2,13 @@ package xfacthd.framedblocks.common.block.interactive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.*;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -66,7 +68,7 @@ public class FramedChiseledBookshelfBlock extends FramedBlock
         super.setPlacedBy(level, pos, state, placer, stack);
 
         //noinspection ConstantConditions
-        if (level.isClientSide() || !stack.hasTag() || !stack.getTag().contains("BlockEntityTag"))
+        if (level.isClientSide() || !stack.has(DataComponents.BLOCK_ENTITY_DATA))
         {
             return;
         }
@@ -78,40 +80,35 @@ public class FramedChiseledBookshelfBlock extends FramedBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+    )
     {
-        InteractionResult result = super.use(state, level, pos, player, hand, hit);
-        if (result != InteractionResult.PASS)
-        {
-            return result;
-        }
-
         if (level.getBlockEntity(pos) instanceof FramedChiseledBookshelfBlockEntity be)
         {
             Direction dir = state.getValue(FramedProperties.FACING_HOR);
             Optional<Vec2> optional = getRelativeHitCoordinatesForBlockFace(hit, dir);
             if (optional.isEmpty())
             {
-                return InteractionResult.PASS;
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
 
             int slot = getHitSlot(optional.get());
             if (state.getValue(ChiseledBookShelfBlock.SLOT_OCCUPIED_PROPERTIES.get(slot)))
             {
                 takeBook(level, pos, player, be, slot);
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                return convertUseResult(InteractionResult.sidedSuccess(level.isClientSide()), level);
             }
 
-            ItemStack stack = player.getItemInHand(hand);
             if (!stack.is(ItemTags.BOOKSHELF_BOOKS))
             {
-                return InteractionResult.CONSUME;
+                return convertUseResult(InteractionResult.CONSUME, level);
             }
 
             placeBook(level, pos, player, be, stack, slot);
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return convertUseResult(InteractionResult.sidedSuccess(level.isClientSide()), level);
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     private static void placeBook(

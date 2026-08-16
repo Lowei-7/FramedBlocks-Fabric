@@ -3,6 +3,7 @@ package xfacthd.framedblocks.client.render.util;
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.SpriteContents;
@@ -24,7 +25,7 @@ import java.util.Optional;
 public class AnimationSplitterSource implements SpriteSource
 {
     private static SpriteSourceType TYPE = null;
-    private static final Codec<AnimationSplitterSource> CODEC = RecordCodecBuilder.create(inst -> inst.group(
+    private static final MapCodec<AnimationSplitterSource> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
             ResourceLocation.CODEC.fieldOf("resource").forGetter(s -> s.resource),
             ExtraCodecs.nonEmptyList(Frame.CODEC.listOf()).fieldOf("frames").forGetter(s -> s.frames)
     ).apply(inst, AnimationSplitterSource::new));

@@ -1,5 +1,6 @@
 package xfacthd.framedblocks.mixin.client;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -23,10 +24,10 @@ public abstract class MixinLevelChunk
             method = "method_31716",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/block/entity/BlockEntity;load(Lnet/minecraft/nbt/CompoundTag;)V"
+                    target = "Lnet/minecraft/world/level/block/entity/BlockEntity;loadWithComponents(Lnet/minecraft/nbt/CompoundTag;Lnet/minecraft/core/HolderLookup$Provider;)V"
             )
     )
-    private void framedblocks$redirectChunkDataLoad(BlockEntity blockEntity, CompoundTag tag)
+    private void framedblocks$redirectChunkDataLoad(BlockEntity blockEntity, CompoundTag tag, HolderLookup.Provider registries)
     {
         if (blockEntity instanceof FramedBlockEntity framedBe)
         {
@@ -34,7 +35,7 @@ public abstract class MixinLevelChunk
         }
         else
         {
-            blockEntity.load(tag);
+            blockEntity.loadWithComponents(tag, registries);
         }
     }
 }

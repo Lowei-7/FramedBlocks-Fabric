@@ -5,8 +5,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.*;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -101,19 +103,19 @@ public class FramedGateBlock extends FramedBlock
     }
 
     @Override
-    public final InteractionResult use(
-            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
-        InteractionResult result = super.use(state, level, pos, player, hand, hit);
+        InteractionResult result = handleUse(state, level, pos, player, hand, hit);
         if (result.consumesAction())
         {
-            return result;
+            return convertUseResult(result, level);
         }
 
         if (this == FBContent.BLOCK_FRAMED_IRON_GATE.get())
         {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         state = state.cycle(BlockStateProperties.OPEN);
@@ -123,7 +125,7 @@ public class FramedGateBlock extends FramedBlock
         playSound(player, level, pos, open);
         level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override
@@ -165,7 +167,7 @@ public class FramedGateBlock extends FramedBlock
     }
 
     @Override
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    public boolean isPathfindable(BlockState state, PathComputationType type)
     {
         return switch (type)
         {

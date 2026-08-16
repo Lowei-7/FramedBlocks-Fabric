@@ -1,9 +1,11 @@
 package xfacthd.framedblocks.common.block.cube;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -32,16 +34,10 @@ public class FramedStorageBlock extends FramedBlock
     }
 
     @Override
-    public InteractionResult use(
-            BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+    protected ItemInteractionResult useItemOn(
+            ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
-        InteractionResult result = super.use(state, level, pos, player, hand, hit);
-        if (result != InteractionResult.PASS)
-        {
-            return result;
-        }
-
         if (!level.isClientSide())
         {
             if (level.getBlockEntity(pos) instanceof FramedStorageBlockEntity be)
@@ -49,7 +45,7 @@ public class FramedStorageBlock extends FramedBlock
                 be.open((ServerPlayer) player);
             }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return convertUseResult(InteractionResult.sidedSuccess(level.isClientSide()), level);
     }
 
     @Override
@@ -71,7 +67,7 @@ public class FramedStorageBlock extends FramedBlock
     {
         super.setPlacedBy(level, pos, state, placer, stack);
 
-        if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof FramedStorageBlockEntity be)
+        if (stack.has(DataComponents.CUSTOM_NAME) && level.getBlockEntity(pos) instanceof FramedStorageBlockEntity be)
         {
             be.setCustomName(stack.getHoverName());
         }

@@ -1,6 +1,7 @@
 package xfacthd.framedblocks.common.blockentity.special;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -276,9 +277,9 @@ public class PoweredFramingSawBlockEntity extends BlockEntity
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, registries);
         if (selectedRecipe != null)
         {
             tag.putString("recipe", selectedRecipe.getId().toString());
@@ -289,7 +290,7 @@ public class PoweredFramingSawBlockEntity extends BlockEntity
             ItemStack stack = itemHandler.getStackInSlot(i);
             if (!stack.isEmpty())
             {
-                inventoryTag.put("Slot" + i, stack.save(new CompoundTag()));
+                inventoryTag.put("Slot" + i, stack.save(registries, new CompoundTag()));
             }
         }
         tag.put("inventory", inventoryTag);
@@ -298,9 +299,9 @@ public class PoweredFramingSawBlockEntity extends BlockEntity
     }
 
     @Override
-    public void load(CompoundTag tag)
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries)
     {
-        super.load(tag);
+        super.loadAdditional(tag, registries);
         if (tag.contains("recipe"))
         {
             selectedRecipeId = new ResourceLocation(tag.getString("recipe"));
@@ -310,7 +311,7 @@ public class PoweredFramingSawBlockEntity extends BlockEntity
         {
             if (inventoryTag.contains("Slot" + i))
             {
-                itemHandler.setStackInSlot(i, ItemStack.of(inventoryTag.getCompound("Slot" + i)));
+                itemHandler.setStackInSlot(i, ItemStack.parse(registries, inventoryTag.getCompound("Slot" + i)).orElse(ItemStack.EMPTY));
             }
         }
         energyStorage.setEnergy(tag.getInt("energy"));

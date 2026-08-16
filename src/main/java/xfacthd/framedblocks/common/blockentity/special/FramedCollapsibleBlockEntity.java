@@ -1,6 +1,7 @@
 package xfacthd.framedblocks.common.blockentity.special;
 
 import net.minecraft.core.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -246,9 +247,9 @@ public class FramedCollapsibleBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public CompoundTag getUpdateTag()
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries)
     {
-        CompoundTag nbt = super.getUpdateTag();
+        CompoundTag nbt = super.getUpdateTag(registries);
         nbt.putInt("offsets", packedOffsets);
         nbt.putByte("face", (byte) (collapsedFace == null ? -1 : collapsedFace.get3DDataValue()));
         return nbt;
@@ -267,17 +268,17 @@ public class FramedCollapsibleBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
         nbt.putInt("offsets", packedOffsets);
         nbt.putInt("face", collapsedFace == null ? -1 : collapsedFace.get3DDataValue());
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt, registries);
         packedOffsets = nbt.getInt("offsets");
         vertexOffsets = unpackOffsets(packedOffsets);
         int face = nbt.getInt("face");

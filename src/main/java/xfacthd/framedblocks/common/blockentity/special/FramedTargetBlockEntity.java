@@ -1,6 +1,7 @@
 package xfacthd.framedblocks.common.blockentity.special;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -41,9 +42,9 @@ public class FramedTargetBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public CompoundTag getUpdateTag()
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries)
     {
-        CompoundTag tag = super.getUpdateTag();
+        CompoundTag tag = super.getUpdateTag(registries);
         tag.putInt("overlay_color", overlayColor.getId());
         return tag;
     }
@@ -82,16 +83,16 @@ public class FramedTargetBlockEntity extends FramedBlockEntity
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag)
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries)
     {
-        super.saveAdditional(tag);
+        super.saveAdditional(tag, registries);
         tag.putInt("overlay_color", overlayColor.getId());
     }
 
     @Override
-    public void load(CompoundTag tag)
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries)
     {
-        super.load(tag);
+        super.loadAdditional(tag, registries);
         if (tag.contains("overlay_color"))
         {
             overlayColor = DyeColor.byId(tag.getInt("overlay_color"));

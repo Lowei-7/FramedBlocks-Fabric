@@ -6,11 +6,13 @@ import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -172,9 +174,10 @@ public interface GhostRenderBehaviour
     default CamoPair readCamo(ItemStack stack, @Nullable ItemStack proxiedStack, boolean secondPass)
     {
         //noinspection ConstantConditions
-        if (stack.hasTag() && stack.getTag().contains("BlockEntityTag"))
+        CustomData blockEntityData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+        if (blockEntityData != null)
         {
-            CompoundTag blockEntityTag = stack.getTag().getCompound("BlockEntityTag");
+            CompoundTag blockEntityTag = blockEntityData.getUnsafe();
             if (blockEntityTag.contains("camo"))
             {
                 CompoundTag tag = blockEntityTag.getCompound("camo");

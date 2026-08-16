@@ -2,9 +2,10 @@ package xfacthd.framedblocks.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.*;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.saveddata.maps.*;
@@ -17,6 +18,7 @@ import xfacthd.framedblocks.common.blockentity.special.FramedItemFrameBlockEntit
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Mixin(MapItemSavedData.class)
 @SuppressWarnings("MethodMayBeStatic")
@@ -27,29 +29,27 @@ public abstract class MixinMapItemSavedData implements FramedItemFrameBlockEntit
 
     @Shadow @Final private boolean trackingPosition;
 
-    @Shadow protected abstract void addDecoration(MapDecoration.Type pType, @Nullable LevelAccessor pLevel, String pDecorationName, double pLevelX, double pLevelZ, double pRotation, @Nullable Component pName);
-    @Shadow protected abstract void removeDecoration(String pIdentifier);
+    @Shadow @Final private Map<String, MapDecoration> decorations;
 
     @ModifyExpressionValue(method = "tickCarriedBy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isFramed()Z", ordinal = 0))
     private boolean framedblocks$checkVanillaFramedOrCustomFramed(boolean isFramed, Player player, ItemStack stack)
     {
         //noinspection ConstantConditions
-        return isFramed || (stack.hasTag() && stack.getTag().contains(FramedItemFrameBlockEntity.NBT_KEY_FRAMED_MAP));
+        return isFramed || framedblocks$getFramedMapData(stack) != null;
     }
 
     @ModifyExpressionValue(method = "tickCarriedBy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isFramed()Z", ordinal = 1))
     private boolean framedblocks$checkNotVanillaFramedAndNotCustomFramed(boolean isFramed, Player player, ItemStack stack)
     {
         //noinspection ConstantConditions
-        return isFramed || (stack.hasTag() && stack.getTag().contains(FramedItemFrameBlockEntity.NBT_KEY_FRAMED_MAP));
+        return isFramed || framedblocks$getFramedMapData(stack) != null;
     }
 
-    @Inject(method = "tickCarriedBy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getTag()Lnet/minecraft/nbt/CompoundTag;"))
+    @Inject(method = "tickCarriedBy", at = @At("RETURN"))
     private void framedblocks$updateFramedItemFrameMarker(Player player, ItemStack mapStack, CallbackInfo ci)
     {
-        CompoundTag tag;
-        //noinspection ConstantConditions
-        if (trackingPosition && mapStack.hasTag() && (tag = mapStack.getTag().getCompound(FramedItemFrameBlockEntity.NBT_KEY_FRAMED_MAP)) != null)
+        CompoundTag tag = framedblocks$getFramedMapData(mapStack);
+        if (trackingPosition && tag != null)
         {
             BlockPos pos = BlockPos.of(tag.getLong("pos"));
             String frameId = FramedItemFrameBlockEntity.FramedMap.makeFrameId(pos);
@@ -90,7 +90,7 @@ public abstract class MixinMapItemSavedData implements FramedItemFrameBlockEntit
     public void framedblocks$removeMapMarker(BlockPos pos)
     {
         String frameId = FramedItemFrameBlockEntity.FramedMap.makeFrameId(pos);
-        removeDecoration(frameId);
+        decorations.remove(frameId);
         framedblocks$frameMarkers.remove(frameId);
     }
 
@@ -101,7 +101,14 @@ public abstract class MixinMapItemSavedData implements FramedItemFrameBlockEntit
     {
         BlockPos pos = framedMap.pos();
         int rot = framedMap.yRot();
-        addDecoration(MapDecoration.Type.FRAME, level, frameId, pos.getX(), pos.getZ(), rot, null);
+        decorations.put(frameId, new MapDecoration(MapDecorationTypes.FRAME, (byte) pos.getX(), (byte) pos.getZ(), (byte) rot, Optional.empty()));
         framedblocks$frameMarkers.put(frameId, framedMap);
+    }
+
+    @Unique
+    private static CompoundTag framedblocks$getFramedMapData(ItemStack stack)
+    {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        return customData != null ? customData.getUnsafe() : null;
     }
 }

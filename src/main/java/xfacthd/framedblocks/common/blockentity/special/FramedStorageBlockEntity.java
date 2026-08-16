@@ -2,6 +2,7 @@ package xfacthd.framedblocks.common.blockentity.special;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -144,14 +145,14 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
     @Override //Prevent writing inventory contents
     public CompoundTag writeToBlueprint()
     {
-        CompoundTag tag = saveWithoutMetadata();
+        CompoundTag tag = saveWithoutMetadata(level.registryAccess());
         tag.remove(INVENTORY_NBT_KEY);
         tag.remove("custom_name");
         return tag;
     }
 
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
         ListTag itemsTag = new ListTag();
         for (int i = 0; i < inventory.getContainerSize(); i++)
@@ -161,7 +162,7 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
             {
                 CompoundTag itemTag = new CompoundTag();
                 itemTag.putByte("Slot", (byte)i);
-                stack.save(itemTag);
+                stack.save(registries, itemTag);
                 itemsTag.add(itemTag);
             }
         }
@@ -172,15 +173,15 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
 
         if (customName != null)
         {
-            nbt.putString("custom_name", Component.Serializer.toJson(customName));
+            nbt.putString("custom_name", Component.Serializer.toJson(customName, registries));
         }
-        super.saveAdditional(nbt);
+        super.saveAdditional(nbt, registries);
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt, registries);
 
         inventory.clearContent();
         if (nbt.contains(INVENTORY_NBT_KEY, Tag.TAG_LIST))
@@ -192,14 +193,14 @@ public class FramedStorageBlockEntity extends FramedBlockEntity implements MenuP
                 int slot = itemTag.getByte("Slot") & 0xFF;
                 if (slot >= 0 && slot < inventory.getContainerSize())
                 {
-                    inventory.setItem(slot, ItemStack.of(itemTag));
+                    inventory.setItem(slot, ItemStack.parse(registries, itemTag).orElse(ItemStack.EMPTY));
                 }
             }
         }
 
         if (nbt.contains("custom_name", Tag.TAG_STRING))
         {
-            customName = Component.Serializer.fromJson(nbt.getString("custom_name"));
+            customName = Component.Serializer.fromJson(nbt.getString("custom_name"), registries);
         }
     }
 
