@@ -35,8 +35,9 @@ casser le rendu visuel de votre construction.
 
 ## Téléchargement
 
-Les jars précompilés pour chaque version de Minecraft sont disponibles sur la page
-[Releases](https://github.com/Lowei-7/FramedBlocks-Fabric/releases).
+Les jars ne sont pas publiés sous forme de GitHub Releases. Chaque version de Minecraft
+prise en charge vit sur sa propre branche, et vous pouvez compiler le jar de votre version
+depuis les sources (voir ci-dessous).
 
 ## Installation
 

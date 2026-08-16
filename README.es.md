@@ -33,8 +33,8 @@ construcción.
 
 ## Descarga
 
-Los jars precompilados para cada versión de Minecraft están disponibles en la página de
-[Releases](https://github.com/Lowei-7/FramedBlocks-Fabric/releases).
+Los jars no se publican como GitHub Releases. Cada versión compatible de Minecraft vive en
+su propia rama, y puedes compilar el jar de tu versión desde el código fuente (ver más abajo).
 
 ## Instalación
 
