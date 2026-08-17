@@ -2,9 +2,9 @@ package xfacthd.framedblocks.common.block.stairs;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.*;
@@ -52,11 +53,11 @@ public class FramedStairsBlock extends StairBlock implements IFramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
-        return convertUseResult(handleUse(state, level, pos, player, hand, hit), level);
+        return handleUse(state, level, pos, player, hand, hit);
     }
 
     @Override
@@ -68,16 +69,18 @@ public class FramedStairsBlock extends StairBlock implements IFramedBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState facingState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos currentPos,
-            BlockPos facingPos
+            Direction facing,
+            BlockPos facingPos,
+            BlockState facingState,
+            RandomSource random
     )
     {
         BlockState newState = updateShapeLockable(
-                state, level, currentPos,
-                () -> super.updateShape(state, facing, facingState, level, currentPos, facingPos)
+                state, level, tickAccess, currentPos,
+                () -> super.updateShape(state, level, tickAccess, currentPos, facing, facingPos, facingState, random)
         );
 
         if (newState == state)
@@ -89,7 +92,7 @@ public class FramedStairsBlock extends StairBlock implements IFramedBlock
 
     @Override
     public void neighborChanged(
-            BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving
+            BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving
     )
     {
         updateCulling(level, pos);
@@ -102,9 +105,9 @@ public class FramedStairsBlock extends StairBlock implements IFramedBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
-        return getCamoOcclusionShape(state, level, pos, null);
+        return getCamoOcclusionShape(state, null);
     }
 
     @Override
@@ -120,7 +123,7 @@ public class FramedStairsBlock extends StairBlock implements IFramedBlock
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state)
     {
         return state.getValue(FramedProperties.PROPAGATES_SKYLIGHT);
     }

@@ -126,7 +126,7 @@ public abstract class CamoContainer
      */
     public boolean isSolid(BlockGetter level, BlockPos pos)
     {
-        return getState().isSolidRender(level, pos);
+        return getState().isSolidRender();
     }
 
     /**

@@ -3,9 +3,12 @@ package xfacthd.framedblocks.common.block.pillar;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -83,11 +86,13 @@ public class FramedLatticeBlock extends FramedBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState facingState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos pos,
-            BlockPos facingPos
+            Direction facing,
+            BlockPos facingPos,
+            BlockState facingState,
+            RandomSource random
     )
     {
         if (!state.getValue(FramedProperties.STATE_LOCKED))
@@ -99,10 +104,10 @@ public class FramedLatticeBlock extends FramedBlock
             );
         }
 
-        return super.updateShape(state, facing, facingState, level, pos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
     }
 
-    private boolean canConnectTo(LevelAccessor level, BlockPos pos, Direction side)
+    private boolean canConnectTo(LevelReader level, BlockPos pos, Direction side)
     {
         BlockState state = level.getBlockState(pos.relative(side));
         return canConnectTo(state, side);

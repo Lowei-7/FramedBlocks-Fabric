@@ -2,14 +2,15 @@ package xfacthd.framedblocks.common.block.door;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -53,12 +54,12 @@ public class FramedTrapDoorBlock extends TrapDoorBlock implements IFramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         InteractionResult result = handleUse(state, level, pos, player, hand, hit);
-        return result.consumesAction() ? convertUseResult(result, level) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return result.consumesAction() ? result : InteractionResult.PASS;
     }
 
     @Override
@@ -70,14 +71,16 @@ public class FramedTrapDoorBlock extends TrapDoorBlock implements IFramedBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction facing,
-            BlockState facingState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos currentPos,
-            BlockPos facingPos
+            Direction facing,
+            BlockPos facingPos,
+            BlockState facingState,
+            RandomSource random
     )
     {
-        BlockState newState = super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        BlockState newState = super.updateShape(state, level, tickAccess, currentPos, facing, facingPos, facingState, random);
         if (newState == state)
         {
             updateCulling(level, currentPos);
@@ -87,10 +90,10 @@ public class FramedTrapDoorBlock extends TrapDoorBlock implements IFramedBlock
 
     @Override
     public void neighborChanged(
-            BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving
+            BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving
     )
     {
-        super.neighborChanged(state, level, pos, block, fromPos, isMoving);
+        super.neighborChanged(state, level, pos, block, orientation, isMoving);
         updateCulling(level, pos);
     }
 
@@ -101,9 +104,9 @@ public class FramedTrapDoorBlock extends TrapDoorBlock implements IFramedBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
-        return getCamoOcclusionShape(state, level, pos, null);
+        return getCamoOcclusionShape(state, null);
     }
 
     @Override
@@ -119,7 +122,7 @@ public class FramedTrapDoorBlock extends TrapDoorBlock implements IFramedBlock
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state)
     {
         return state.getValue(FramedProperties.PROPAGATES_SKYLIGHT);
     }

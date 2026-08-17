@@ -56,7 +56,7 @@ public class FramedFancyRailModel extends FramedBlockModel
     protected void transformQuad(Map<Direction, List<BakedQuad>> quadMap, BakedQuad quad)
     {
         Pair<List<BakedQuad>, Direction> result;
-        if (shape.isAscending())
+        if (shape.isSlope())
         {
             result = makeAscendingRailSleepers(quad, mainDir);
         }

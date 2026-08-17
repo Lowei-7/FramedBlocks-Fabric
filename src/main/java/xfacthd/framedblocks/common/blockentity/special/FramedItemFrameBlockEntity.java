@@ -92,7 +92,7 @@ public class FramedItemFrameBlockEntity extends FramedBlockEntity
                 setChanged();
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         else if (!stack.isEmpty() && !hasItem())
         {
@@ -108,7 +108,7 @@ public class FramedItemFrameBlockEntity extends FramedBlockEntity
 
                 playSound(glowing ? SoundEvents.GLOW_ITEM_FRAME_ADD_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM);
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }

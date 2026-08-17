@@ -3,14 +3,19 @@ package xfacthd.framedblocks.common.crafting;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.resources.ResourceKey;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import org.jetbrains.annotations.Nullable;
 import xfacthd.framedblocks.api.type.IBlockType;
 import xfacthd.framedblocks.api.util.FramedConstants;
-import xfacthd.framedblocks.common.FBContent;
+import xfacthd.framedblocks.common.net.ClientboundFramingSawRecipesPayload;
 
 import java.util.*;
 
@@ -41,10 +46,17 @@ public final class FramingSawRecipeCache
 
     public void update(RecipeManager recipeManager)
     {
+        update(recipeManager.getRecipes().stream()
+                .filter(holder -> holder.value() instanceof FramingSawRecipe)
+                .map(holder -> new RecipeHolder<>((ResourceKey<Recipe<?>>) holder.id(), (FramingSawRecipe) holder.value()))
+                .toList());
+    }
+
+    public void update(Collection<RecipeHolder<FramingSawRecipe>> recipeList)
+    {
         clear();
 
-        recipes.addAll(recipeManager.getAllRecipesFor(FBContent.RECIPE_TYPE_FRAMING_SAW_RECIPE.get())
-                .stream()
+        recipes.addAll(recipeList.stream()
                 .peek(holder -> holder.value().setId(holder.id()))
                 .map(RecipeHolder::value)
                 .toList());
@@ -125,6 +137,14 @@ public final class FramingSawRecipeCache
     public static FramingSawRecipeCache get(boolean client)
     {
         return client ? CLIENT_INSTANCE : SERVER_INSTANCE;
+    }
+
+    public static void sendToPlayer(ServerPlayer player)
+    {
+        List<RecipeHolder<FramingSawRecipe>> recipeHolders = SERVER_INSTANCE.recipes.stream()
+                .map(recipe -> new RecipeHolder<FramingSawRecipe>(recipe.getId(), recipe))
+                .toList();
+        ServerPlayNetworking.send(player, new ClientboundFramingSawRecipesPayload(recipeHolders));
     }
 
     private static int sortRecipes(FramingSawRecipe r1, FramingSawRecipe r2)

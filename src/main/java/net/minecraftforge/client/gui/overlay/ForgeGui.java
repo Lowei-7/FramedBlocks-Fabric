@@ -21,7 +21,7 @@ public class ForgeGui extends Gui
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        
         if (depthTest)
         {
             RenderSystem.enableDepthTest();

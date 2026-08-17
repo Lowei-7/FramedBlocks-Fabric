@@ -35,8 +35,8 @@ public class FramedSoulTorchBlock extends FramedTorchBlock
         return new StandingAndWallBlockItem(
                 FBContent.BLOCK_FRAMED_SOUL_TORCH.get(),
                 FBContent.BLOCK_FRAMED_SOUL_WALL_TORCH.get(),
-                new Item.Properties(),
-                Direction.DOWN
+                                Direction.DOWN,
+                new Item.Properties()
         );
     }
 }

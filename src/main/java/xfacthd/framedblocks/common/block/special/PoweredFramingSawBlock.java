@@ -43,7 +43,7 @@ public class PoweredFramingSawBlock extends FramingSawBlock implements EntityBlo
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
         return FramingSawBlock.SHAPE;
     }

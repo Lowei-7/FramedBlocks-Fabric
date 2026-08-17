@@ -11,6 +11,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import xfacthd.framedblocks.FramedBlocks;
 import xfacthd.framedblocks.api.block.update.CullingUpdatePacket;
 import xfacthd.framedblocks.common.blockentity.special.FramedSignBlockEntity;
+import xfacthd.framedblocks.common.crafting.FramingSawRecipeCache;
 import xfacthd.framedblocks.common.menu.IFramingSawMenu;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public final class NetworkingHandler {
         PayloadTypeRegistry.playC2S().register(SelectFramingSawRecipePacket.TYPE, SelectFramingSawRecipePacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(OpenSignScreenPacket.TYPE, OpenSignScreenPacket.STREAM_CODEC);
         PayloadTypeRegistry.playS2C().register(CullingUpdatePacket.TYPE, CullingUpdatePacket.STREAM_CODEC);
+        PayloadTypeRegistry.playS2C().register(ClientboundFramingSawRecipesPayload.TYPE, ClientboundFramingSawRecipesPayload.STREAM_CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(SignUpdatePacket.TYPE, (packet, context) -> {
             handleSignUpdate(context.player(), packet);
@@ -39,6 +41,9 @@ public final class NetworkingHandler {
         });
         ClientPlayNetworking.registerGlobalReceiver(OpenSignScreenPacket.TYPE, (packet, context) -> {
             context.client().execute(() -> FramedSignScreenOpener.openScreen(context.client(), packet));
+        });
+        ClientPlayNetworking.registerGlobalReceiver(ClientboundFramingSawRecipesPayload.TYPE, (packet, context) -> {
+            context.client().execute(() -> FramingSawRecipeCache.get(true).update(packet.recipes()));
         });
     }
 

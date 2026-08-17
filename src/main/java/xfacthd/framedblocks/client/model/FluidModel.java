@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.BakedOverrides;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -110,9 +110,9 @@ public final class FluidModel implements BakedModel
     }
 
     @Override
-    public ItemOverrides getOverrides()
+    public BakedOverrides overrides()
     {
-        return ItemOverrides.EMPTY;
+        return BakedOverrides.EMPTY;
     }
 
 

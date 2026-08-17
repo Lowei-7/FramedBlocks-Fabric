@@ -23,7 +23,7 @@ public class FramedSignItem extends StandingAndWallBlockItem
 
     public FramedSignItem(Block standing, Block wall, Direction attachmentDirection)
     {
-        super(standing, wall, new Properties(), attachmentDirection);
+        super(standing, wall, attachmentDirection, new Properties());
     }
 
     @Override

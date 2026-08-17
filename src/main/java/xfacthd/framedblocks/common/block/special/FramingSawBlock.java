@@ -56,7 +56,7 @@ public class FramingSawBlock extends Block
 
     @Override
     @SuppressWarnings("deprecation")
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
@@ -77,7 +77,7 @@ public class FramingSawBlock extends Block
                 }
             });
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override

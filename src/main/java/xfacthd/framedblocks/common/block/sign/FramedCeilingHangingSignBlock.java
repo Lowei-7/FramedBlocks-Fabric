@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -109,18 +110,20 @@ public class FramedCeilingHangingSignBlock extends AbstractFramedHangingSignBloc
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction dir,
-            BlockState facingState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos pos,
-            BlockPos facingPos
+            Direction dir,
+            BlockPos facingPos,
+            BlockState facingState,
+            RandomSource random
     )
     {
         if (dir == Direction.UP && !canSurvive(state, level, pos))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, dir, facingState, level, pos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, dir, facingPos, facingState, random);
     }
 
     @Override

@@ -5,26 +5,15 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.network.protocol.game.ClientboundUpdateRecipesPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import xfacthd.framedblocks.api.block.FramedBlockEntity;
-import xfacthd.framedblocks.common.crafting.FramingSawRecipeCache;
 
 @Mixin(ClientPacketListener.class)
 public abstract class MixinClientPacketListener
 {
-    @Inject(method = "handleUpdateRecipes", at = @At("RETURN"))
-    private void framedblocks$onRecipesUpdated(ClientboundUpdateRecipesPacket packet, CallbackInfo ci)
-    {
-        ClientPacketListener self = (ClientPacketListener) (Object) this;
-        FramingSawRecipeCache.get(true).update(self.getRecipeManager());
-    }
-
     @Redirect(
             method = "method_38542",
             at = @At(

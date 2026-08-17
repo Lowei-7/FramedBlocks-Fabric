@@ -149,7 +149,7 @@ public final class FramingSawRecipeCategory implements IRecipeCategory<FramingSa
         for (FramingSawRecipeAdditive additive : additives)
         {
             int addCount = additive.count() * (outputCount / recipe.getResult().getCount());
-            List<ItemStack> additiveStacks = Stream.of(additive.ingredient().getItems())
+            List<ItemStack> additiveStacks = additive.ingredient().items().stream().map(h -> h.value().getDefaultInstance())
                     .map(ItemStack::copy)
                     .peek(s -> s.setCount(addCount))
                     .toList();

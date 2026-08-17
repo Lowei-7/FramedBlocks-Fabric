@@ -164,7 +164,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
             setCamo(EmptyCamoContainer.EMPTY, secondary);
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     private InteractionResult clearFluidCamo(Player player, InteractionHand hand, CamoContainer camo, ItemStack stack, boolean secondary)
@@ -197,7 +197,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
 
                 setCamo(EmptyCamoContainer.EMPTY, secondary);
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }
@@ -224,7 +224,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
                 }
             }
 
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.CONSUME;
     }
@@ -261,7 +261,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
 
                 setCamo(camo, secondary);
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.CONSUME;
     }
@@ -291,7 +291,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
                 doLightUpdate();
             }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     private InteractionResult rotateCamo(CamoContainer camo)
@@ -304,7 +304,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
                 setChanged();
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }
@@ -321,7 +321,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
 
             setIntangible(true);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     private InteractionResult removeIntangibility(Player player)
@@ -337,7 +337,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
                 player.drop(result, false);
             }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     private InteractionResult applyReinforcement(Player player, ItemStack stack)
@@ -352,7 +352,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
 
             setReinforced(true);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     private InteractionResult removeReinforcement(Player player, ItemStack stack, InteractionHand hand)
@@ -370,7 +370,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
                 player.drop(result, false);
             }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     protected final boolean isValidBlock(BlockState state, Player player)
@@ -399,7 +399,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
         }
 
         BlockGetter level = Objects.requireNonNullElse(this.level, EmptyBlockGetter.INSTANCE);
-        if (state.isSolidRender(level, worldPosition) || state.is(Utils.FRAMEABLE) || state.getBlock() instanceof LiquidBlock)
+        if (state.isSolidRender() || state.is(Utils.FRAMEABLE) || state.getBlock() instanceof LiquidBlock)
         {
             return true;
         }
@@ -504,7 +504,7 @@ public class FramedBlockEntity extends BlockEntity implements net.fabricmc.fabri
     protected boolean doesCamoPropagateSkylightDown()
     {
         //noinspection ConstantConditions
-        return camoContainer.getState().propagatesSkylightDown(level, worldPosition);
+        return camoContainer.getState().propagatesSkylightDown();
     }
 
     public final void checkCamoSolid()

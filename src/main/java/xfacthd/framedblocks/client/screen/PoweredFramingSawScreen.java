@@ -5,6 +5,7 @@ import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -97,7 +98,7 @@ public class PoweredFramingSawScreen extends AbstractContainerScreen<PoweredFram
     {
         renderBackground(graphics, mouseX, mouseY, partialTick);
 
-        graphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        graphics.blit(RenderType::guiTextured, BACKGROUND, leftPos, topPos, 0F, 0F, imageWidth, imageHeight, 256, 256);
 
         int tx = leftPos + TITLE_TARGETBLOCK_X - font.width(TITLE_TARGETBLOCK);
         int ty = topPos + TITLE_TARGETBLOCK_Y;
@@ -134,11 +135,11 @@ public class PoweredFramingSawScreen extends AbstractContainerScreen<PoweredFram
                 {
                     int ax = leftPos + additiveSlot.x;
                     int ay = topPos + additiveSlot.y;
-                    graphics.blit(BACKGROUND, ax, ay, CROSS_U, CROSS_V, CROSS_SIZE, CROSS_SIZE);
+                    graphics.blit(RenderType::guiTextured, BACKGROUND, ax, ay, (float) CROSS_U, (float) CROSS_V, CROSS_SIZE, CROSS_SIZE, 256, 256);
                 }
                 else if (!additiveSlot.hasItem())
                 {
-                    ItemStack[] items = additives.get(i).ingredient().getItems();
+                    ItemStack[] items = additives.get(i).ingredient().items().stream().map(h -> h.value().getDefaultInstance()).toArray(ItemStack[]::new);
                     if (items.length == 0)
                     {
                         // Additive ingredient resolves to no items on this side; nothing to display
@@ -157,7 +158,7 @@ public class PoweredFramingSawScreen extends AbstractContainerScreen<PoweredFram
                 if (progress > 0F)
                 {
                     int width = Math.round(PROGRESS_WIDTH * progress);
-                    graphics.blit(BACKGROUND, leftPos + PROGRESS_X, topPos + PROGRESS_Y, PROGRESS_U, PROGRESS_V, width, PROGRESS_HEIGHT);
+                    graphics.blit(RenderType::guiTextured, BACKGROUND, leftPos + PROGRESS_X, topPos + PROGRESS_Y, (float) PROGRESS_U, (float) PROGRESS_V, width, PROGRESS_HEIGHT, 256, 256);
                 }
             }
         }
@@ -194,7 +195,7 @@ public class PoweredFramingSawScreen extends AbstractContainerScreen<PoweredFram
         float energy = (float) menu.getEnergy() / (float) PoweredFramingSawBlockEntity.ENERGY_CAPACITY;
         int height = (int) (energy * ENERGY_HEIGHT);
         int y = topPos + ENERGY_Y + (ENERGY_HEIGHT - height);
-        graphics.blit(BACKGROUND, leftPos + ENERGY_X, y, ENERGY_U, ENERGY_V + (ENERGY_HEIGHT - height), ENERGY_WIDTH, height);
+        graphics.blit(RenderType::guiTextured, BACKGROUND, leftPos + ENERGY_X, y, (float) ENERGY_U, (float) (ENERGY_V + (ENERGY_HEIGHT - height)), ENERGY_WIDTH, height, 256, 256);
 
         int minX = leftPos + ENERGY_X;
         int minY = topPos + ENERGY_Y;

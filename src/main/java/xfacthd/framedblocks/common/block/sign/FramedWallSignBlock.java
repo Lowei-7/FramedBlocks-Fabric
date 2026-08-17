@@ -3,9 +3,10 @@ package xfacthd.framedblocks.common.block.sign;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -68,18 +69,20 @@ public class FramedWallSignBlock extends AbstractFramedSignBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction dir,
-            BlockState facingState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos pos,
-            BlockPos facingPos
+            Direction dir,
+            BlockPos facingPos,
+            BlockState facingState,
+            RandomSource random
     )
     {
         if (dir.getOpposite() == state.getValue(FramedProperties.FACING_HOR) && !state.canSurvive(level, pos))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, dir, facingState, level, pos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, dir, facingPos, facingState, random);
     }
 
     @Override

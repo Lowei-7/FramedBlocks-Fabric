@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.entity.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.*;
@@ -69,7 +69,7 @@ public final class Utils
 
     private static final Long2ObjectMap<Direction> DIRECTION_BY_NORMAL = Arrays.stream(Direction.values())
             .collect(Collectors.toMap(
-                    side -> new BlockPos(side.getNormal()).asLong(),
+                    side -> new BlockPos(side.getUnitVec3i()).asLong(),
                     Function.identity(),
                     (sideA, sideB) -> { throw new IllegalArgumentException("Duplicate keys"); },
                     Long2ObjectOpenHashMap::new
@@ -281,7 +281,7 @@ public final class Utils
      * @param mirror The {@link Mirror} to apply to the state
      * @apiNote The given property must support at least all four cardinal directions
      */
-    public static BlockState mirrorFaceBlock(BlockState state, DirectionProperty property, Mirror mirror)
+    public static BlockState mirrorFaceBlock(BlockState state, EnumProperty<Direction> property, Mirror mirror)
     {
         if (mirror == Mirror.NONE)
         {
@@ -315,7 +315,7 @@ public final class Utils
      * @param mirror The {@link Mirror} to apply to the state
      * @apiNote The given property must support at least all four cardinal directions
      */
-    public static BlockState mirrorCornerBlock(BlockState state, DirectionProperty property, Mirror mirror)
+    public static BlockState mirrorCornerBlock(BlockState state, EnumProperty<Direction> property, Mirror mirror)
     {
         if (mirror == Mirror.NONE)
         {
@@ -402,7 +402,7 @@ public final class Utils
             return Fluids.EMPTY.defaultFluidState();
         }
 
-        Fluid fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(tag.getString("Name")));
+        Fluid fluid = BuiltInRegistries.FLUID.getOptional(ResourceLocation.parse(tag.getString("Name"))).orElse(Fluids.EMPTY);
         if (fluid == Fluids.EMPTY) {
             return Fluids.EMPTY.defaultFluidState();
         }
@@ -440,7 +440,7 @@ public final class Utils
             {
                 return prop;
             }
-            else if (prop instanceof DirectionProperty)
+            else if (prop instanceof EnumProperty<?> enumProp && enumProp.getValueClass() == Direction.class)
             {
                 return prop;
             }
@@ -522,7 +522,7 @@ public final class Utils
             return level.holderLookup(Registries.BLOCK);
         }
         //noinspection deprecation
-        return BuiltInRegistries.BLOCK.asLookup();
+        return BuiltInRegistries.BLOCK;
     }
 
     public static ResourceLocation rl(String path)

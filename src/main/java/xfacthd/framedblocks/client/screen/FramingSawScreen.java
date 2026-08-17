@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -95,18 +95,17 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
     {
         renderBackground(graphics, mouseX, mouseY, partialTick);
 
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+                RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
-        graphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        graphics.blit(RenderType::guiTextured, BACKGROUND, leftPos, topPos, 0F, 0F, imageWidth, imageHeight, 256, 256);
         int offset = (int) ((SCROLL_BAR_HEIGHT - SCROLL_BTN_HEIGHT) * scrollOffset);
         int scrollU = SCROLL_BTN_TEX_X + (isScrollBarActive() ? 0 : SCROLL_BTN_WIDTH);
-        graphics.blit(BACKGROUND, leftPos + SCROLL_BAR_X, topPos + SCROLL_BAR_Y + offset, scrollU, imageHeight, SCROLL_BTN_WIDTH, SCROLL_BTN_HEIGHT);
+        graphics.blit(RenderType::guiTextured, BACKGROUND, leftPos + SCROLL_BAR_X, topPos + SCROLL_BAR_Y + offset, (float) scrollU, (float) imageHeight, SCROLL_BTN_WIDTH, SCROLL_BTN_HEIGHT, 256, 256);
 
         ItemStack input = menu.getInputStack();
         if (!input.isEmpty() && cache.containsAdditive(input.getItem()))
         {
-            graphics.blit(WARNING_ICON, leftPos + WARNING_X, topPos + WARNING_Y, 8, 8, 24, 24, 32, 32);
+            graphics.blit(RenderType::guiTextured, WARNING_ICON, leftPos + WARNING_X, topPos + WARNING_Y, 8F, 8F, 24, 24, 32, 32);
         }
 
         int idx = menu.getSelectedRecipeIndex();
@@ -138,7 +137,7 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
                     continue;
                 }
 
-                ItemStack[] items = additives.get(i).ingredient().getItems();
+                ItemStack[] items = additives.get(i).ingredient().items().stream().map(h -> h.value().getDefaultInstance()).toArray(ItemStack[]::new);
                 if (items.length == 0)
                 {
                     // Additive ingredient resolves to no items on this side; nothing to display
@@ -327,16 +326,16 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
     private static void appendAdditiveItemOptions(List<Component> components, FramingSawRecipe recipe, int additiveSlot)
     {
         Ingredient additive = recipe.getAdditives().get(additiveSlot).ingredient();
-        if (additive.getItems().length <= 1)
+        if (additive.items().size() <= 1)
         {
             return;
         }
 
         if (hasShiftDown())
         {
-            for (ItemStack option : additive.getItems())
+            for (ItemStack option : additive.items().stream().map(h -> h.value().getDefaultInstance()).toArray(ItemStack[]::new))
             {
-                components.add(Component.literal("- ").append(option.getItem().getDescription()).withStyle(ChatFormatting.GOLD));
+                components.add(Component.literal("- ").append(option.getItem().getName()).withStyle(ChatFormatting.GOLD));
             }
         }
         else
@@ -351,7 +350,7 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
 
     private static MutableComponent makeHaveButNeedTooltip(Component present, Ingredient additive)
     {
-        ItemStack[] options = additive.getItems();
+        ItemStack[] options = additive.items().stream().map(h -> h.value().getDefaultInstance()).toArray(ItemStack[]::new);
         if (options.length == 0)
         {
             // Ingredient resolves to no items on this side (e.g. the matching item
@@ -408,7 +407,7 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
                 RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
             }
 
-            graphics.blit(BACKGROUND, recX, recY, u, imageHeight, RECIPE_WIDTH, RECIPE_HEIGHT);
+            graphics.blit(RenderType::guiTextured, BACKGROUND, recX, recY, (float) u, (float) imageHeight, RECIPE_WIDTH, RECIPE_HEIGHT, 256, 256);
         }
     }
 

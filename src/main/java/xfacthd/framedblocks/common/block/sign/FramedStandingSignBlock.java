@@ -2,6 +2,7 @@ package xfacthd.framedblocks.common.block.sign;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
@@ -53,7 +54,7 @@ public class FramedStandingSignBlock extends AbstractFramedSignBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
         return Shapes.empty();
     }
@@ -61,18 +62,20 @@ public class FramedStandingSignBlock extends AbstractFramedSignBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction dir,
-            BlockState facingState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos pos,
-            BlockPos facingPos
+            Direction dir,
+            BlockPos facingPos,
+            BlockState facingState,
+            RandomSource random
     )
     {
         if (dir == Direction.DOWN && !canSurvive(state, level, pos))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, dir, facingState, level, pos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, dir, facingPos, facingState, random);
     }
 
     @Override

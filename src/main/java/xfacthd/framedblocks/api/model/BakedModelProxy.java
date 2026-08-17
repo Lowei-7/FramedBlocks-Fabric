@@ -58,9 +58,9 @@ public abstract class BakedModelProxy implements BakedModel
     }
 
     @Override
-    public ItemOverrides getOverrides()
+    public BakedOverrides overrides()
     {
-        return baseModel.getOverrides();
+        return baseModel.overrides();
     }
 
     @Override

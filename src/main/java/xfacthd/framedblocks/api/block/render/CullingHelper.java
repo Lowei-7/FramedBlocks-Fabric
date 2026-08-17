@@ -48,7 +48,7 @@ public final class CullingHelper
             adjFramed = true;
             adjBlock = block;
         }
-        else if (adjState.isSolidRender(level, adjPos))
+        else if (adjState.isSolidRender())
         {
             // Let the game handle culling against fully solid cubes automatically,
             // prevents xray issues with block tool modifications like farmland tilling
@@ -173,7 +173,7 @@ public final class CullingHelper
             return FramedBlocksAPI.getInstance().canCullBlockNextTo(camoState, adjCamoState);
         }
         // Always cull the face if the other camo is solid, even if the camo being culled is non-solid
-        return adjCamoState.isSolidRender(level, pos.relative(side));
+        return adjCamoState.isSolidRender();
     }
 
     /**

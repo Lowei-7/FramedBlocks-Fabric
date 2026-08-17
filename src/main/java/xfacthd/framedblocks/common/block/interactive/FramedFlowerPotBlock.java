@@ -2,11 +2,11 @@ package xfacthd.framedblocks.common.block.interactive;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -61,18 +61,20 @@ public class FramedFlowerPotBlock extends FramedBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction side,
-            BlockState sideState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos pos,
-            BlockPos sidePos
+            Direction side,
+            BlockPos sidePos,
+            BlockState sideState,
+            RandomSource random
     )
     {
         if (state.getValue(PropertyHolder.HANGING) && side == Direction.UP && !state.canSurvive(level, pos))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, side, sideState, level, pos, sidePos);
+        return super.updateShape(state, level, tickAccess, pos, side, sidePos, sideState, random);
     }
 
     @Override
@@ -87,7 +89,7 @@ public class FramedFlowerPotBlock extends FramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
@@ -126,15 +128,15 @@ public class FramedFlowerPotBlock extends FramedBlock
                 }
 
                 level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-                return convertUseResult(InteractionResult.sidedSuccess(level.isClientSide()), level);
+                return InteractionResult.SUCCESS;
             }
             else
             {
-                return convertUseResult(InteractionResult.CONSUME, level);
+                return InteractionResult.CONSUME;
             }
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     @Override

@@ -5,7 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import xfacthd.framedblocks.api.block.FramedProperties;
 
@@ -73,7 +73,7 @@ public final class CommonShapes
         };
     }
 
-    public static ShapeGenerator createPanelGenerator(DirectionProperty dirProp)
+    public static ShapeGenerator createPanelGenerator(EnumProperty<Direction> dirProp)
     {
         return states ->
         {
@@ -89,7 +89,7 @@ public final class CommonShapes
         };
     }
 
-    public static ShapeGenerator createPanelGenerator(DirectionProperty dirProp, BooleanProperty invProp)
+    public static ShapeGenerator createPanelGenerator(EnumProperty<Direction> dirProp, BooleanProperty invProp)
     {
         return states ->
         {

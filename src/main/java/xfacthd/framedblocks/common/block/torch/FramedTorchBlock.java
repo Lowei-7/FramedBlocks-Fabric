@@ -6,7 +6,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -62,11 +61,11 @@ public class FramedTorchBlock extends TorchBlock implements IFramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
-        return convertUseResult(handleUse(state, level, pos, player, hand, hit), level);
+        return handleUse(state, level, pos, player, hand, hit);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class FramedTorchBlock extends TorchBlock implements IFramedBlock
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state)
     {
         return state.getValue(FramedProperties.PROPAGATES_SKYLIGHT);
     }
@@ -110,8 +109,8 @@ public class FramedTorchBlock extends TorchBlock implements IFramedBlock
         return new StandingAndWallBlockItem(
                 FBContent.BLOCK_FRAMED_TORCH.get(),
                 FBContent.BLOCK_FRAMED_WALL_TORCH.get(),
-                new Item.Properties(),
-                Direction.DOWN
+                                Direction.DOWN,
+                new Item.Properties()
         );
     }
 

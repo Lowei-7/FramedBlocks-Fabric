@@ -88,7 +88,7 @@ public class FramedWallHangingSignBlock extends AbstractFramedHangingSignBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
         return Shapes.empty();
     }

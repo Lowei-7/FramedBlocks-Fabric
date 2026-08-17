@@ -1,13 +1,12 @@
 package xfacthd.framedblocks.common.crafting;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.Lazy;
 import xfacthd.framedblocks.api.type.IBlockType;
 import xfacthd.framedblocks.common.FBContent;
 
@@ -17,9 +16,8 @@ public final class FramingSawRecipe implements Recipe<RecipeInput>
 {
     public static final int CUBE_MATERIAL_VALUE = 6144; // Empirically determined value
     public static final int MAX_ADDITIVE_COUNT = 3;
-    private static final Lazy<ItemStack> TOAST_ICON = Lazy.of(() -> new ItemStack(FBContent.BLOCK_FRAMING_SAW.get()));
 
-    private ResourceLocation id;
+    private ResourceKey<Recipe<?>> id;
     private final int materialAmount;
     private final List<FramingSawRecipeAdditive> additives;
     private final ItemStack result;
@@ -35,12 +33,12 @@ public final class FramingSawRecipe implements Recipe<RecipeInput>
         this.disabled = disabled;
     }
 
-    void setId(ResourceLocation id)
+    void setId(ResourceKey<Recipe<?>> id)
     {
         this.id = id;
     }
 
-    public ResourceLocation getId()
+    public ResourceKey<Recipe<?>> getId()
     {
         return id;
     }
@@ -131,12 +129,6 @@ public final class FramingSawRecipe implements Recipe<RecipeInput>
         return container;
     }
 
-    @Override
-    public boolean canCraftInDimensions(int width, int height)
-    {
-        return true;
-    }
-
     public int getMaterialAmount()
     {
         return materialAmount;
@@ -148,12 +140,6 @@ public final class FramingSawRecipe implements Recipe<RecipeInput>
     }
 
     public ItemStack getResult()
-    {
-        return result;
-    }
-
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return result;
     }
@@ -175,19 +161,42 @@ public final class FramingSawRecipe implements Recipe<RecipeInput>
     }
 
     @Override
-    public ItemStack getToastSymbol()
+    public PlacementInfo placementInfo()
     {
-        return TOAST_ICON.get();
+        if (disabled)
+        {
+            return PlacementInfo.NOT_PLACEABLE;
+        }
+
+        List<Optional<Ingredient>> ingredients = new ArrayList<>(MAX_ADDITIVE_COUNT);
+        for (int i = 0; i < MAX_ADDITIVE_COUNT; i++)
+        {
+            if (i < additives.size())
+            {
+                ingredients.add(Optional.of(additives.get(i).ingredient()));
+            }
+            else
+            {
+                ingredients.add(Optional.empty());
+            }
+        }
+        return PlacementInfo.createFromOptionals(ingredients);
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer()
+    public RecipeBookCategory recipeBookCategory()
+    {
+        return FBContent.RECIPE_BOOK_CATEGORY_FRAMING_SAW.get();
+    }
+
+    @Override
+    public RecipeSerializer<FramingSawRecipe> getSerializer()
     {
         return FBContent.RECIPE_SERIALIZER_FRAMING_SAW_RECIPE.get();
     }
 
     @Override
-    public RecipeType<?> getType()
+    public RecipeType<FramingSawRecipe> getType()
     {
         return FBContent.RECIPE_TYPE_FRAMING_SAW_RECIPE.get();
     }
