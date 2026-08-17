@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.9.2'
+    id 'fabric-loom' version '1.17.19'
     id 'maven-publish'
 }
 
@@ -25,10 +25,10 @@ repositories {
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:1.21"
+    minecraft "com.mojang:minecraft:1.21.3"
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:0.19.3"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:0.102.0+1.21"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:0.114.1+1.21.3"
     
     // Add Caffeine cache library (bundled via jar-in-jar so it is present at runtime)
     implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
