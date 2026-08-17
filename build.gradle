@@ -33,8 +33,9 @@ dependencies {
     // Add Fabric transfer API for item/energy handling
     modImplementation "net.fabricmc.fabric-api:fabric-transfer-api-v1:3.3.13+4944b5a5a0"
     
-    // Add Caffeine cache library
+    // Add Caffeine cache library (bundled via jar-in-jar so it is present at runtime)
     implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+    include 'com.github.ben-manes.caffeine:caffeine:3.1.8'
     
     // Add javax.annotation for Nullable annotation
     implementation "com.google.code.findbugs:jsr305:3.0.2"
