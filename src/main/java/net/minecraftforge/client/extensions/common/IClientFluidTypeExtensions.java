@@ -14,12 +14,12 @@ public interface IClientFluidTypeExtensions
 
     default ResourceLocation getStillTexture()
     {
-        return new ResourceLocation("minecraft", "block/water_still");
+        return ResourceLocation.fromNamespaceAndPath("minecraft", "block/water_still");
     }
 
     default ResourceLocation getFlowingTexture()
     {
-        return new ResourceLocation("minecraft", "block/water_flow");
+        return ResourceLocation.fromNamespaceAndPath("minecraft", "block/water_flow");
     }
 
     default ResourceLocation getOverlayTexture()

@@ -382,7 +382,7 @@ public final class Utils
 
     public static TagKey<Block> blockTag(String modid, String name)
     {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(modid, name));
+        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(modid, name));
     }
 
     public static TagKey<Item> itemTag(String name)
@@ -392,7 +392,7 @@ public final class Utils
 
     public static TagKey<Item> itemTag(String modid, String name)
     {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(modid, name));
+        return TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(modid, name));
     }
 
     public static FluidState readFluidStateFromNbt(CompoundTag tag)
@@ -402,7 +402,7 @@ public final class Utils
             return Fluids.EMPTY.defaultFluidState();
         }
 
-        Fluid fluid = BuiltInRegistries.FLUID.get(new ResourceLocation(tag.getString("Name")));
+        Fluid fluid = BuiltInRegistries.FLUID.get(ResourceLocation.parse(tag.getString("Name")));
         if (fluid == Fluids.EMPTY) {
             return Fluids.EMPTY.defaultFluidState();
         }
@@ -527,7 +527,7 @@ public final class Utils
 
     public static ResourceLocation rl(String path)
     {
-        return new ResourceLocation(FramedConstants.MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(FramedConstants.MOD_ID, path);
     }
 
     public static MethodHandle unreflectMethod(Class<?> clazz, String srgMethodName, Class<?>... paramTypes)

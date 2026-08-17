@@ -75,7 +75,7 @@ public class FramedFlowerPotBlockEntity extends FramedBlockEntity
     @Override
     protected boolean readFromDataPacket(CompoundTag nbt)
     {
-        Block flower = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(new ResourceLocation(nbt.getString("flower")));
+        Block flower = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(ResourceLocation.parse(nbt.getString("flower")));
 
         boolean update = flower != flowerBlock;
         if (update)
@@ -110,7 +110,7 @@ public class FramedFlowerPotBlockEntity extends FramedBlockEntity
     {
         super.handleUpdateTag(nbt);
 
-        Block flower = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(new ResourceLocation(nbt.getString("flower")));
+        Block flower = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(ResourceLocation.parse(nbt.getString("flower")));
         if (flower != flowerBlock)
         {
             flowerBlock = flower;
@@ -129,6 +129,6 @@ public class FramedFlowerPotBlockEntity extends FramedBlockEntity
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries)
     {
         super.loadAdditional(nbt, registries);
-        flowerBlock = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(new ResourceLocation(nbt.getString("flower")));
+        flowerBlock = net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(ResourceLocation.parse(nbt.getString("flower")));
     }
 }

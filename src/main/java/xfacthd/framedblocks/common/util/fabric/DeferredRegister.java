@@ -23,7 +23,7 @@ public class DeferredRegister<T> {
     }
 
     public <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> sup) {
-        ResourceLocation id = new ResourceLocation(modid, name);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(modid, name);
         RegistryObject<I> ro = new RegistryObject<>(id, sup);
         entries.add((RegistryObject<T>) ro);
         return ro;

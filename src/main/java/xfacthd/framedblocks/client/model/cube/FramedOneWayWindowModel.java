@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -72,9 +73,9 @@ public class FramedOneWayWindowModel extends FramedBlockModel
 
 
 
-    public static void captureTintedGlassModel(Map<ResourceLocation, BakedModel> models)
+    public static void captureTintedGlassModel(Map<ModelResourceLocation, BakedModel> models)
     {
-        ResourceLocation loc = BlockModelShaper.stateToModelLocation(Blocks.TINTED_GLASS.defaultBlockState());
+        ModelResourceLocation loc = BlockModelShaper.stateToModelLocation(Blocks.TINTED_GLASS.defaultBlockState());
         tintedGlassModel = models.get(loc);
     }
 }

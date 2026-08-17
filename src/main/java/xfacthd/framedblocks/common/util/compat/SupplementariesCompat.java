@@ -6,7 +6,7 @@ import net.minecraft.world.level.LevelReader;
 
 public final class SupplementariesCompat
 {
-    public static final ResourceLocation HANGING_MODEL_LOCATION = new ResourceLocation("supplementaries", "block/hanging_flower_pot_rope");
+    public static final ResourceLocation HANGING_MODEL_LOCATION = ResourceLocation.fromNamespaceAndPath("supplementaries", "block/hanging_flower_pot_rope");
     private static boolean loaded = false;
 
     public static void init()

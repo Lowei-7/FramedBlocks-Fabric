@@ -3,6 +3,7 @@ package xfacthd.framedblocks.client.model.interactive;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -28,7 +29,7 @@ public class FramedMarkedPressurePlateModel extends FramedPressurePlateModel
     public static final ResourceLocation GOLD_FRAME_DOWN_LOCATION = Utils.rl("block/gold_plate_down_frame");
     public static final ResourceLocation IRON_FRAME_LOCATION = Utils.rl("block/iron_plate_frame");
     public static final ResourceLocation IRON_FRAME_DOWN_LOCATION = Utils.rl("block/iron_plate_down_frame");
-    private static final Map<ResourceLocation, BakedModel> FRAME_MODELS = new HashMap<>();
+    private static final Map<ModelResourceLocation, BakedModel> FRAME_MODELS = new HashMap<>();
 
     private final BakedModel frameModel;
 
@@ -37,7 +38,7 @@ public class FramedMarkedPressurePlateModel extends FramedPressurePlateModel
     )
     {
         super(state, baseModel, powered);
-        frameModel = FRAME_MODELS.get(frameLocation);
+        frameModel = FRAME_MODELS.get(new ModelResourceLocation(frameLocation, "fabric_resource"));
     }
 
     @Override
@@ -135,17 +136,17 @@ public class FramedMarkedPressurePlateModel extends FramedPressurePlateModel
         locations.add(FramedMarkedPressurePlateModel.IRON_FRAME_DOWN_LOCATION);
     }
 
-    public static void cacheFrameModels(Map<ResourceLocation, BakedModel> registry)
+    public static void cacheFrameModels(Map<ModelResourceLocation, BakedModel> registry)
     {
         FRAME_MODELS.clear();
 
-        FRAME_MODELS.put(STONE_FRAME_LOCATION, registry.get(STONE_FRAME_LOCATION));
-        FRAME_MODELS.put(STONE_FRAME_DOWN_LOCATION, registry.get(STONE_FRAME_DOWN_LOCATION));
-        FRAME_MODELS.put(OBSIDIAN_FRAME_LOCATION, registry.get(OBSIDIAN_FRAME_LOCATION));
-        FRAME_MODELS.put(OBSIDIAN_FRAME_DOWN_LOCATION, registry.get(OBSIDIAN_FRAME_DOWN_LOCATION));
-        FRAME_MODELS.put(GOLD_FRAME_LOCATION, registry.get(GOLD_FRAME_LOCATION));
-        FRAME_MODELS.put(GOLD_FRAME_DOWN_LOCATION, registry.get(GOLD_FRAME_DOWN_LOCATION));
-        FRAME_MODELS.put(IRON_FRAME_LOCATION, registry.get(IRON_FRAME_LOCATION));
-        FRAME_MODELS.put(IRON_FRAME_DOWN_LOCATION, registry.get(IRON_FRAME_DOWN_LOCATION));
+        FRAME_MODELS.put(new ModelResourceLocation(STONE_FRAME_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(STONE_FRAME_LOCATION, "fabric_resource")));
+        FRAME_MODELS.put(new ModelResourceLocation(STONE_FRAME_DOWN_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(STONE_FRAME_DOWN_LOCATION, "fabric_resource")));
+        FRAME_MODELS.put(new ModelResourceLocation(OBSIDIAN_FRAME_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(OBSIDIAN_FRAME_LOCATION, "fabric_resource")));
+        FRAME_MODELS.put(new ModelResourceLocation(OBSIDIAN_FRAME_DOWN_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(OBSIDIAN_FRAME_DOWN_LOCATION, "fabric_resource")));
+        FRAME_MODELS.put(new ModelResourceLocation(GOLD_FRAME_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(GOLD_FRAME_LOCATION, "fabric_resource")));
+        FRAME_MODELS.put(new ModelResourceLocation(GOLD_FRAME_DOWN_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(GOLD_FRAME_DOWN_LOCATION, "fabric_resource")));
+        FRAME_MODELS.put(new ModelResourceLocation(IRON_FRAME_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(IRON_FRAME_LOCATION, "fabric_resource")));
+        FRAME_MODELS.put(new ModelResourceLocation(IRON_FRAME_DOWN_LOCATION, "fabric_resource"), registry.get(new ModelResourceLocation(IRON_FRAME_DOWN_LOCATION, "fabric_resource")));
     }
 }

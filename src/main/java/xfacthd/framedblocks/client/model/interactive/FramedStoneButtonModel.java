@@ -3,6 +3,7 @@ package xfacthd.framedblocks.client.model.interactive;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -115,9 +116,9 @@ public class FramedStoneButtonModel extends FramedButtonModel
         locations.add(FRAME_PRESSED_LOCATION);
     }
 
-    public static void cacheFrameModels(Map<ResourceLocation, BakedModel> registry)
+    public static void cacheFrameModels(Map<ModelResourceLocation, BakedModel> registry)
     {
-        frameNormalModel = registry.get(FRAME_LOCATION);
-        framePressedModel = registry.get(FRAME_PRESSED_LOCATION);
+        frameNormalModel = registry.get(new ModelResourceLocation(FRAME_LOCATION, "fabric_resource"));
+        framePressedModel = registry.get(new ModelResourceLocation(FRAME_PRESSED_LOCATION, "fabric_resource"));
     }
 }

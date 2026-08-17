@@ -34,7 +34,7 @@ import java.util.function.*;
 public final class ClientUtils
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final ResourceLocation DUMMY_TEXTURE = new ResourceLocation("framedblocks", "block/white");
+    public static final ResourceLocation DUMMY_TEXTURE = ResourceLocation.fromNamespaceAndPath("framedblocks", "block/white");
     /** List of properties which are always present and always need to be ignored */
     public static final List<Property<?>> IGNORE_ALWAYS = List.of(FramedProperties.GLOWING, FramedProperties.PROPAGATES_SKYLIGHT);
     /** {@link ClientUtils#IGNORE_ALWAYS} + solid */
@@ -61,7 +61,7 @@ public final class ClientUtils
      */
     public static void replaceModels(
             RegistryObject<Block> block,
-            Map<ResourceLocation, BakedModel> models,
+            Map<ModelResourceLocation, BakedModel> models,
             BiFunction<BlockState, BakedModel, BakedModel> blockModelGen,
             @Nullable List<Property<?>> ignoredProps
     )
@@ -81,7 +81,7 @@ public final class ClientUtils
      */
     public static void replaceModels(
             RegistryObject<Block> block,
-            Map<ResourceLocation, BakedModel> models,
+            Map<ModelResourceLocation, BakedModel> models,
             BiFunction<BlockState, BakedModel, BakedModel> blockModelGen,
             @Nullable BlockState itemModelSource,
             @Nullable List<Property<?>> ignoredProps
@@ -102,7 +102,7 @@ public final class ClientUtils
      */
     public static void replaceModelsSpecial(
             RegistryObject<Block> block,
-            Map<ResourceLocation, BakedModel> models,
+            Map<ModelResourceLocation, BakedModel> models,
             BiFunction<BlockState, BakedModel, BakedModel> blockModelGen,
             Function<BlockState, BlockState> stateMerger
     )
@@ -123,7 +123,7 @@ public final class ClientUtils
      */
     public static void replaceModelsSpecial(
             RegistryObject<Block> block,
-            Map<ResourceLocation, BakedModel> models,
+            Map<ModelResourceLocation, BakedModel> models,
             BiFunction<BlockState, BakedModel, BakedModel> blockModelGen,
             @Nullable BlockState itemModelSource,
             Function<BlockState, BlockState> stateMerger
@@ -133,7 +133,7 @@ public final class ClientUtils
 
         for (BlockState state : block.get().getStateDefinition().getPossibleStates())
         {
-            ResourceLocation location = BlockModelShaper.stateToModelLocation(state);
+            ModelResourceLocation location = BlockModelShaper.stateToModelLocation(state);
             BakedModel baseModel = models.get(location);
             BakedModel replacement = visitedStates.computeIfAbsent(
                     stateMerger.apply(state),
@@ -144,7 +144,7 @@ public final class ClientUtils
 
         if (itemModelSource != null)
         {
-            ResourceLocation location = new ModelResourceLocation(block.getId(), "inventory");
+            ModelResourceLocation location = new ModelResourceLocation(block.getId(), "inventory");
             BakedModel replacement = models.get(BlockModelShaper.stateToModelLocation(itemModelSource));
             models.put(location, replacement);
         }
@@ -153,7 +153,7 @@ public final class ClientUtils
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void reuseModels(
             RegistryObject<Block> block,
-            Map<ResourceLocation, BakedModel> models,
+            Map<ModelResourceLocation, BakedModel> models,
             RegistryObject<Block> sourceBlock,
             @Nullable List<Property<?>> ignoredProps
     )
@@ -173,8 +173,8 @@ public final class ClientUtils
                 }
             }
 
-            ResourceLocation location = BlockModelShaper.stateToModelLocation(state);
-            ResourceLocation sourceLocation = BlockModelShaper.stateToModelLocation(sourceState);
+            ModelResourceLocation location = BlockModelShaper.stateToModelLocation(state);
+            ModelResourceLocation sourceLocation = BlockModelShaper.stateToModelLocation(sourceState);
             models.put(location, models.get(sourceLocation));
         }
     }

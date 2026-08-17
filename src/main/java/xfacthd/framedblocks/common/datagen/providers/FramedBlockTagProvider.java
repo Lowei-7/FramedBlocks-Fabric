@@ -147,6 +147,6 @@ public final class FramedBlockTagProvider extends BlockTagsProvider
 
     private static ResourceLocation rl(String modid, String path)
     {
-        return new ResourceLocation(modid, path);
+        return ResourceLocation.fromNamespaceAndPath(modid, path);
     }
 }

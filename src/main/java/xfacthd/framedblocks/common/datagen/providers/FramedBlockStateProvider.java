@@ -1086,7 +1086,7 @@ public final class FramedBlockStateProvider extends BlockStateProvider
         {
             path += "_" + suffix;
         }
-        return models().getExistingFile(new ResourceLocation(name.getNamespace(), path));
+        return models().getExistingFile(ResourceLocation.parse(name.getNamespace(), path));
     }
 
     @SuppressWarnings({ "UnusedReturnValue", "SameParameterValue" })

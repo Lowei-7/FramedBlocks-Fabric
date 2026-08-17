@@ -3,6 +3,7 @@ package xfacthd.framedblocks.common.crafting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -12,7 +13,7 @@ import xfacthd.framedblocks.common.FBContent;
 
 import java.util.*;
 
-public final class FramingSawRecipe implements Recipe<Container>
+public final class FramingSawRecipe implements Recipe<RecipeInput>
 {
     public static final int CUBE_MATERIAL_VALUE = 6144; // Empirically determined value
     public static final int MAX_ADDITIVE_COUNT = 3;
@@ -45,9 +46,9 @@ public final class FramingSawRecipe implements Recipe<Container>
     }
 
     @Override
-    public boolean matches(Container container, Level level)
+    public boolean matches(RecipeInput container, Level level)
     {
-        return matchWithResult(container, level).success();
+        return matchWithResult(toContainer(container), level).success();
     }
 
     public FramingSawRecipeMatchResult matchWithResult(Container container, Level level)
@@ -115,9 +116,19 @@ public final class FramingSawRecipe implements Recipe<Container>
     }
 
     @Override
-    public ItemStack assemble(Container container, HolderLookup.Provider access)
+    public ItemStack assemble(RecipeInput container, HolderLookup.Provider access)
     {
         return result.copy();
+    }
+
+    private static Container toContainer(RecipeInput input)
+    {
+        SimpleContainer container = new SimpleContainer(input.size());
+        for (int i = 0; i < input.size(); i++)
+        {
+            container.setItem(i, input.getItem(i));
+        }
+        return container;
     }
 
     @Override

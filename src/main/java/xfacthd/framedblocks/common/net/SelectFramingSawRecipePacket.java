@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record SelectFramingSawRecipePacket(int containerId, int recipeIdx) implements CustomPacketPayload
 {
-    public static final CustomPacketPayload.Type<SelectFramingSawRecipePacket> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation("framedblocks", "select_framing_saw_recipe"));
+    public static final CustomPacketPayload.Type<SelectFramingSawRecipePacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath("framedblocks", "select_framing_saw_recipe"));
     public static final StreamCodec<FriendlyByteBuf, SelectFramingSawRecipePacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, SelectFramingSawRecipePacket::containerId,
             ByteBufCodecs.INT, SelectFramingSawRecipePacket::recipeIdx,

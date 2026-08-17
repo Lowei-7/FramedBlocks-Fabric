@@ -373,7 +373,7 @@ public class FramedBlueprintItem extends FramedToolItem
     public static Block getTargetBlock(ItemStack stack)
     {
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(tag.getString("framed_block")));
+        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(tag.getString("framed_block")));
         Objects.requireNonNull(block);
         return block;
     }
@@ -388,7 +388,7 @@ public class FramedBlueprintItem extends FramedToolItem
         }
         else
         {
-            Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(tag.getString("framed_block")));
+            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(tag.getString("framed_block")));
             Component blockName = block == null ? BLOCK_INVALID : block.getName().withStyle(ChatFormatting.WHITE);
 
             CompoundTag beTag = tag.getCompound("camo_data");

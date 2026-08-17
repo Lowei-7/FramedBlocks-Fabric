@@ -13,7 +13,7 @@ import org.jetbrains.annotations.ApiStatus;
 @ApiStatus.Internal
 public record CullingUpdatePacket(LongSet positions) implements CustomPacketPayload
 {
-    public static final CustomPacketPayload.Type<CullingUpdatePacket> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation("framedblocks", "culling_update"));
+    public static final CustomPacketPayload.Type<CullingUpdatePacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath("framedblocks", "culling_update"));
     public static final StreamCodec<FriendlyByteBuf, CullingUpdatePacket> STREAM_CODEC = StreamCodec.of(
             (buf, packet) ->
             {

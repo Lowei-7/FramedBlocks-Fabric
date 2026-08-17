@@ -10,7 +10,7 @@ import xfacthd.framedblocks.common.menu.FramedStorageMenu;
 
 public class FramedStorageScreen extends AbstractContainerScreen<FramedStorageMenu>
 {
-    private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
+    private static final ResourceLocation CHEST_GUI_TEXTURE = ResourceLocation.parse("textures/gui/container/generic_54.png");
 
     public FramedStorageScreen(FramedStorageMenu container, Inventory inv, Component title)
     {

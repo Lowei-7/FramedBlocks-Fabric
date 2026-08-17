@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public record SignUpdatePacket(BlockPos pos, boolean front, String[] lines) implements CustomPacketPayload
 {
-    public static final CustomPacketPayload.Type<SignUpdatePacket> TYPE = new CustomPacketPayload.Type<>(new ResourceLocation("framedblocks", "sign_update"));
+    public static final CustomPacketPayload.Type<SignUpdatePacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath("framedblocks", "sign_update"));
     private static final StreamCodec<ByteBuf, String[]> LINES_CODEC = ByteBufCodecs.STRING_UTF8
             .apply(ByteBufCodecs.list())
             .map(lines -> lines.toArray(String[]::new), Arrays::asList);

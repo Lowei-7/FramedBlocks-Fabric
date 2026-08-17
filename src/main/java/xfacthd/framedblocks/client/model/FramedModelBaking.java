@@ -3,6 +3,7 @@ package xfacthd.framedblocks.client.model;
 import com.google.common.base.Stopwatch;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -89,7 +90,7 @@ public final class FramedModelBaking
         });
     }
 
-    public static void onModelsBaked(Map<ResourceLocation, BakedModel> registry)
+    public static void onModelsBaked(Map<ModelResourceLocation, BakedModel> registry)
     {
         StateCacheBuilder.ensureStateCachesInitialized();
 
@@ -322,7 +323,7 @@ public final class FramedModelBaking
 
 
     private static void replaceDoubleBlockModels(
-            RegistryObject<Block> block, Map<ResourceLocation, BakedModel> models,
+            RegistryObject<Block> block, Map<ModelResourceLocation, BakedModel> models,
             @Nullable BlockState itemModelSource,
             @Nullable List<Property<?>> ignoredProps
     )
@@ -331,7 +332,7 @@ public final class FramedModelBaking
     }
 
     private static void replaceDoubleBlockModels(
-            RegistryObject<Block> block, Map<ResourceLocation, BakedModel> models,
+            RegistryObject<Block> block, Map<ModelResourceLocation, BakedModel> models,
             @Nullable Vec3 handTransform,
             @Nullable BlockState itemModelSource,
             @Nullable List<Property<?>> ignoredProps

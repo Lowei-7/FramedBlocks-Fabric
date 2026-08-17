@@ -2,6 +2,7 @@ package xfacthd.framedblocks.client.model.cube;
 
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -205,8 +206,8 @@ public class FramedCollapsibleCopycatBlockModel extends FramedBlockModel
 
 
 
-    public static void captureAltBaseModel(Map<ResourceLocation, BakedModel> models)
+    public static void captureAltBaseModel(Map<ModelResourceLocation, BakedModel> models)
     {
-        altBaseModel = models.get(ALT_BASE_MODEL_LOC);
+        altBaseModel = models.get(new ModelResourceLocation(ALT_BASE_MODEL_LOC, "fabric_resource"));
     }
 }

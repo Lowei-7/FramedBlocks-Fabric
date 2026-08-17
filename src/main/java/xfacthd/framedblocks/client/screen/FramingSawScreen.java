@@ -47,7 +47,7 @@ public class FramingSawScreen extends AbstractContainerScreen<FramingSawMenu>
     public static final Component TOOLTIP_HAVE_ITEM_NONE = Utils.translate("tooltip", "framing_saw.have_item_none").withStyle(ChatFormatting.GOLD);
     public static final String TOOLTIP_PRESS_TO_SHOW = Utils.translationKey("tooltip", "framing_saw.press_to_show");
     private static final ResourceLocation BACKGROUND = Utils.rl("textures/gui/framing_saw.png");
-    public static final ResourceLocation WARNING_ICON = new ResourceLocation("forge", "textures/gui/experimental_warning.png");
+    public static final ResourceLocation WARNING_ICON = ResourceLocation.fromNamespaceAndPath("forge", "textures/gui/experimental_warning.png");
     private static final int IMAGE_WIDTH = 256;
     private static final int IMAGE_HEIGHT = 233;
     private static final int RECIPES_X = 48;

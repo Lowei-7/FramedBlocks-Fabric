@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -30,17 +31,17 @@ import java.util.stream.Collectors;
 
 public class FramedFlowerPotModel extends FramedBlockModel
 {
-    private static final ResourceLocation POT_TEXTURE = new ResourceLocation("minecraft:block/flower_pot");
-    private static final ResourceLocation DIRT_TEXTURE = new ResourceLocation("minecraft:block/dirt");
+    private static final ResourceLocation POT_TEXTURE = ResourceLocation.parse("minecraft:block/flower_pot");
+    private static final ResourceLocation DIRT_TEXTURE = ResourceLocation.parse("minecraft:block/dirt");
 
     private final boolean hanging;
     private final BakedModel hangingPotModel;
 
-    public FramedFlowerPotModel(BlockState state, BakedModel baseModel, Map<ResourceLocation, BakedModel> registry)
+    public FramedFlowerPotModel(BlockState state, BakedModel baseModel, Map<ModelResourceLocation, BakedModel> registry)
     {
         super(state, baseModel);
         this.hanging = SupplementariesCompat.isLoaded() && state.getValue(PropertyHolder.HANGING);
-        this.hangingPotModel = hanging ? registry.get(SupplementariesCompat.HANGING_MODEL_LOCATION) : null;
+        this.hangingPotModel = hanging ? registry.get(new ModelResourceLocation(SupplementariesCompat.HANGING_MODEL_LOCATION, "fabric_resource")) : null;
     }
 
     @Override

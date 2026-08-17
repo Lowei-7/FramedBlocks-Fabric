@@ -3,6 +3,7 @@ package xfacthd.framedblocks.client.model.cube;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -25,12 +26,12 @@ public class FramedMarkedCubeModel extends FramedCubeBaseModel
     public FramedMarkedCubeModel(
             BlockState state,
             BakedModel baseModel,
-            Map<ResourceLocation, BakedModel> registry,
+            Map<ModelResourceLocation, BakedModel> registry,
             ResourceLocation frameLocation
     )
     {
         super(state, baseModel);
-        frameModel = registry.get(frameLocation);
+        frameModel = registry.get(new ModelResourceLocation(frameLocation, "fabric_resource"));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class FramedMarkedCubeModel extends FramedCubeBaseModel
 
 
     public static FramedCubeBaseModel slime(
-            BlockState state, BakedModel baseModel, Map<ResourceLocation, BakedModel> registry
+            BlockState state, BakedModel baseModel, Map<ModelResourceLocation, BakedModel> registry
     )
     {
         if (ClientConfig.INSTANCE.showSpecialCubeOverlay())
@@ -75,7 +76,7 @@ public class FramedMarkedCubeModel extends FramedCubeBaseModel
     }
 
     public static FramedCubeBaseModel redstone(
-            BlockState state, BakedModel baseModel, Map<ResourceLocation, BakedModel> registry
+            BlockState state, BakedModel baseModel, Map<ModelResourceLocation, BakedModel> registry
     )
     {
         if (ClientConfig.INSTANCE.showSpecialCubeOverlay())

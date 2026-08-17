@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -706,9 +707,9 @@ public abstract class FramedBlockModel extends BakedModelProxy implements Fabric
 
 
 
-    public static void captureReinforcementModel(Map<ResourceLocation, BakedModel> models)
+    public static void captureReinforcementModel(Map<ModelResourceLocation, BakedModel> models)
     {
-        reinforcementModel = models.get(REINFORCEMENT_LOCATION);
+        reinforcementModel = models.get(new ModelResourceLocation(REINFORCEMENT_LOCATION, "fabric_resource"));
     }
 
 

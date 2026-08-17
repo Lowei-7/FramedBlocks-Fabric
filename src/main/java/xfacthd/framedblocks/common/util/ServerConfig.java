@@ -66,7 +66,7 @@ public final class ServerConfig
                         String itemName = json.get("intangibleMarkerItem").getAsString();
                         try
                         {
-                            ResourceLocation key = new ResourceLocation(itemName);
+                            ResourceLocation key = ResourceLocation.parse(itemName);
                             // In Fabric, we can't easily validate items without registry access, so we'll just use the default
                             intangibleMarkerItem = Items.PHANTOM_MEMBRANE;
                         }

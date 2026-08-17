@@ -3,6 +3,7 @@ package xfacthd.framedblocks.client.model.cube;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -23,10 +24,10 @@ public class FramedTargetModel extends FramedBlockModel
 
     private final BakedModel overlayModel;
 
-    public FramedTargetModel(BlockState state, BakedModel baseModel, Map<ResourceLocation, BakedModel> registry)
+    public FramedTargetModel(BlockState state, BakedModel baseModel, Map<ModelResourceLocation, BakedModel> registry)
     {
         super(state, baseModel);
-        this.overlayModel = registry.get(OVERLAY_LOCATION);
+        this.overlayModel = registry.get(new ModelResourceLocation(OVERLAY_LOCATION, "fabric_resource"));
     }
 
     @Override

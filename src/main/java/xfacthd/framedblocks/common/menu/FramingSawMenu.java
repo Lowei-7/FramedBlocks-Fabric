@@ -191,7 +191,7 @@ public class FramingSawMenu extends AbstractContainerMenu implements IFramingSaw
                         inputContainer, level.isClientSide()
                 );
 
-                ItemStack result = recipe.assemble(inputContainer, level.registryAccess());
+                ItemStack result = recipe.getResult().copy();
                 result.setCount(calc.getOutputCount());
                 resultContainer.setRecipeUsed(new net.minecraft.world.item.crafting.RecipeHolder<>(holder.getId(), recipe));
                 resultSlot.set(result);

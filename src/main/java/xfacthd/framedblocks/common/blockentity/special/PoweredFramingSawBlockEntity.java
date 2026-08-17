@@ -304,7 +304,7 @@ public class PoweredFramingSawBlockEntity extends BlockEntity
         super.loadAdditional(tag, registries);
         if (tag.contains("recipe"))
         {
-            selectedRecipeId = new ResourceLocation(tag.getString("recipe"));
+            selectedRecipeId = ResourceLocation.parse(tag.getString("recipe"));
         }
         CompoundTag inventoryTag = tag.getCompound("inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++)
