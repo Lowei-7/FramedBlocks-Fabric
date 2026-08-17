@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,12 +52,12 @@ public class FramedLeverBlock extends LeverBlock implements IFramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         InteractionResult result = handleUse(state, level, pos, player, hand, hit);
-        return result.consumesAction() ? convertUseResult(result, level) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return result.consumesAction() ? result : InteractionResult.PASS;
     }
 
     @Override
@@ -74,7 +73,7 @@ public class FramedLeverBlock extends LeverBlock implements IFramedBlock
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state)
     {
         return state.getValue(FramedProperties.PROPAGATES_SKYLIGHT);
     }

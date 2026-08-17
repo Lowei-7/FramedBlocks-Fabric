@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
@@ -91,9 +91,9 @@ public final class ModelRenderUtils
             if (quad.isTinted())
             {
                 int tint = blockColors.getColor(state, level, pos, quad.getTintIndex());
-                red = FastColor.ARGB32.red(tint) / 255F;
-                green = FastColor.ARGB32.green(tint) / 255F;
-                blue = FastColor.ARGB32.blue(tint) / 255F;
+                red = ARGB.red(tint) / 255F;
+                green = ARGB.green(tint) / 255F;
+                blue = ARGB.blue(tint) / 255F;
             }
             consumer.putBulkData(pose, quad, red, green, blue, 1F, packedLight, packedOverlay);
         }

@@ -226,14 +226,14 @@ public abstract class FramedDoubleBlockEntity extends FramedBlockEntity implemen
         }
 
         //noinspection ConstantConditions
-        return super.isCamoSolid() && camoContainer.getState().isSolidRender(level, worldPosition);
+        return super.isCamoSolid() && camoContainer.getState().isSolidRender();
     }
 
     @Override
     protected boolean doesCamoPropagateSkylightDown()
     {
         //noinspection ConstantConditions
-        if (!camoContainer.getState().propagatesSkylightDown(level, worldPosition))
+        if (!camoContainer.getState().propagatesSkylightDown())
         {
             return false;
         }

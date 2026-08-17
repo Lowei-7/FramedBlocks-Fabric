@@ -2,9 +2,9 @@ package xfacthd.framedblocks.common.block.rail;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -52,14 +53,16 @@ public class FramedFancyRailBlock extends RailBlock implements IFramedBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState neighborState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos currentPos,
-            BlockPos neighborPos
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     )
     {
-        BlockState newState = super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+        BlockState newState = super.updateShape(state, level, tickAccess, currentPos, direction, neighborPos, neighborState, random);
         if (newState == state)
         {
             updateCulling(level, currentPos);
@@ -69,20 +72,20 @@ public class FramedFancyRailBlock extends RailBlock implements IFramedBlock
 
     @Override
     public void neighborChanged(
-            BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving
+            BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving
     )
     {
-        super.neighborChanged(state, level, pos, block, fromPos, isMoving);
+        super.neighborChanged(state, level, pos, block, orientation, isMoving);
         updateCulling(level, pos);
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         InteractionResult result = handleUse(state, level, pos, player, hand, hit);
-        return result.consumesAction() ? convertUseResult(result, level) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return result.consumesAction() ? result : InteractionResult.PASS;
     }
 
     @Override
@@ -98,9 +101,9 @@ public class FramedFancyRailBlock extends RailBlock implements IFramedBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
-        return getCamoOcclusionShape(state, level, pos);
+        return getCamoOcclusionShape(state, null);
     }
 
     @Override
@@ -116,7 +119,7 @@ public class FramedFancyRailBlock extends RailBlock implements IFramedBlock
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state)
     {
         return state.getValue(FramedProperties.PROPAGATES_SKYLIGHT);
     }

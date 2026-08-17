@@ -14,6 +14,7 @@ import xfacthd.framedblocks.common.util.fabric.RegistryObject;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.Registry;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.world.flag.FeatureFlags;
 import xfacthd.framedblocks.api.block.FramedBlockEntity;
 import xfacthd.framedblocks.api.block.IFramedBlock;
@@ -79,6 +80,7 @@ public final class FBContent
     private static final DeferredRegister<MenuType<?>> CONTAINER_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, FramedConstants.MOD_ID);
     private static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, FramedConstants.MOD_ID);
     private static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, FramedConstants.MOD_ID);
+    private static final DeferredRegister<RecipeBookCategory> RECIPE_BOOK_CATEGORIES = DeferredRegister.create(BuiltInRegistries.RECIPE_BOOK_CATEGORY, FramedConstants.MOD_ID);
     private static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, FramedConstants.MOD_ID);
 
     public static final Registry<CamoContainer.Factory> CAMO_CONTAINER_FACTORY_REGISTRY = FabricRegistryBuilder.createSimple(CamoContainer.Factory.class, FramedConstants.CAMO_CONTAINER_FACTORY_REGISTRY_NAME).buildAndRegister();
@@ -634,6 +636,13 @@ public final class FBContent
     );
     // endregion
 
+    // region RecipeBookCategories
+    public static final RegistryObject<RecipeBookCategory> RECIPE_BOOK_CATEGORY_FRAMING_SAW = RECIPE_BOOK_CATEGORIES.register(
+            "framing_saw",
+            RecipeBookCategory::new
+    );
+    // endregion
+
     // region CreativeModeTabs
     public static final RegistryObject<CreativeModeTab> MAIN_TAB = CREATIVE_TABS.register(
             "framed_blocks", FramedCreativeTab::makeTab
@@ -665,6 +674,7 @@ public final class FBContent
         CONTAINER_TYPES.register();
         RECIPE_TYPES.register();
         RECIPE_SERIALIZERS.register();
+        RECIPE_BOOK_CATEGORIES.register();
         CREATIVE_TABS.register();
         CAMO_CONTAINER_FACTORIES.register();
     }
@@ -765,7 +775,7 @@ public final class FBContent
         RegisteredBE<T> result = new RegisteredBE<>(BE_TYPES.register(name, () ->
         {
             //noinspection ConstantConditions
-            return BlockEntityType.Builder.of(factory, blocks.get()).build(null);
+            return FabricBlockEntityTypeBuilder.create(factory::create, blocks.get()).build();
         }));
         if (isFramedBE)
         {

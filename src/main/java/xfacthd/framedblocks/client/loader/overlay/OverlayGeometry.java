@@ -21,21 +21,19 @@ record OverlayGeometry(BlockModel wrapped, Vector3f offset, Vector3f scale) impl
             IGeometryBakingContext context,
             ModelBaker bakery,
             Function<Material, TextureAtlasSprite> spriteGetter,
-            ModelState transform,
-            ItemOverrides overrides,
-            ResourceLocation modelLocation
+            ModelState transform
     )
     {
         Transformation transformation = transform.getRotation().compose(new Transformation(offset, null, scale, null));
         transform = new SimpleModelState(transformation, transform.isUvLocked());
 
-        BakedModel model = wrapped.bake(bakery, wrapped, spriteGetter, transform, true);
+        BakedModel model = wrapped.bake(bakery, spriteGetter, transform);
         return offset.equals(VEC_ZERO) ? model : new OverlayModel(model, offset, scale);
     }
 
     @Override
-    public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context)
+    public void resolveDependencies(UnbakedModel.Resolver resolver, IGeometryBakingContext context)
     {
-        wrapped.resolveParents(modelGetter);
+        wrapped.resolveDependencies(resolver);
     }
 }

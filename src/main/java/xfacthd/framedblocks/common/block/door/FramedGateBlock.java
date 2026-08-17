@@ -3,9 +3,9 @@ package xfacthd.framedblocks.common.block.door;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.*;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -103,19 +103,19 @@ public class FramedGateBlock extends FramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         InteractionResult result = handleUse(state, level, pos, player, hand, hit);
         if (result.consumesAction())
         {
-            return convertUseResult(result, level);
+            return result;
         }
 
         if (this == FBContent.BLOCK_FRAMED_IRON_GATE.get())
         {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         }
 
         state = state.cycle(BlockStateProperties.OPEN);
@@ -125,12 +125,12 @@ public class FramedGateBlock extends FramedBlock
         playSound(player, level, pos, open);
         level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 
-        return ItemInteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Override
     public void neighborChanged(
-            BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving
+            BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving
     )
     {
         boolean powered = level.hasNeighborSignal(pos);

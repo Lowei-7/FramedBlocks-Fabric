@@ -169,7 +169,18 @@ public final class ModelUtils
             normal[vert][2] = v2.z;
         }
 
-        return Direction.getNearest(v2.x, v2.y, v2.z);
+        Direction dir = Direction.NORTH;
+        float maxDot = -Float.MAX_VALUE;
+        for (Direction d : Direction.values())
+        {
+            float dot = v2.x * d.getStepX() + v2.y * d.getStepY() + v2.z * d.getStepZ();
+            if (dot > maxDot)
+            {
+                maxDot = dot;
+                dir = d;
+            }
+        }
+        return dir;
     }
 
     /**
@@ -365,7 +376,8 @@ public final class ModelUtils
                 encodeSecondaryTintIndex(quad.getTintIndex()),
                 quad.getDirection(),
                 quad.getSprite(),
-                quad.isShade()
+                quad.isShade(),
+                quad.getLightEmission()
         );
     }
 

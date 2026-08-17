@@ -151,7 +151,8 @@ public final class QuadModifier
                 tintIndex == -1 ? data.quad.getTintIndex() : tintIndex,
                 normalDir,
                 data.quad.getSprite(),
-                !noShade && data.quad.isShade()
+                !noShade && data.quad.isShade(),
+                data.quad.getLightEmission()
         );
         quadConsumer.accept(newQuad);
     }

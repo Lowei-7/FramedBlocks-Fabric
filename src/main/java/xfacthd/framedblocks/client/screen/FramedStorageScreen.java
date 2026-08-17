@@ -3,6 +3,7 @@ package xfacthd.framedblocks.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
@@ -36,7 +37,7 @@ public class FramedStorageScreen extends AbstractContainerScreen<FramedStorageMe
         int left = (this.width - this.imageWidth) / 2;
         int top = (this.height - this.imageHeight) / 2;
 
-        graphics.blit(CHEST_GUI_TEXTURE, left, top, 0, 0, imageWidth, 71);
-        graphics.blit(CHEST_GUI_TEXTURE, left, top + 71, 0, 126, imageWidth, 96);
+        graphics.blit(RenderType::guiTextured, CHEST_GUI_TEXTURE, left, top, 0F, 0F, imageWidth, 71, 256, 256);
+        graphics.blit(RenderType::guiTextured, CHEST_GUI_TEXTURE, left, top + 71, 0F, 126F, imageWidth, 96, 256, 256);
     }
 }

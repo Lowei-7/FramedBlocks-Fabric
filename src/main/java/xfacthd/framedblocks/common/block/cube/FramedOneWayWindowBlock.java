@@ -87,13 +87,13 @@ public class FramedOneWayWindowBlock extends FramedBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
         if (state.getValue(PropertyHolder.NULLABLE_FACE) != NullableDirection.NONE)
         {
             return Shapes.empty();
         }
-        return super.getOcclusionShape(state, level, pos);
+        return super.getOcclusionShape(state);
     }
 
     @Override

@@ -3,11 +3,11 @@ package xfacthd.framedblocks.common.block.interactive;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -79,18 +79,20 @@ public class FramedItemFrameBlock extends FramedBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState neighborState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos currentPos,
-            BlockPos neighborPos
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     )
     {
         if (!canSurvive(state, level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+        return super.updateShape(state, level, tickAccess, currentPos, direction, neighborPos, neighborState, random);
     }
 
     @Override
@@ -101,15 +103,15 @@ public class FramedItemFrameBlock extends FramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
         if (level.getBlockEntity(pos) instanceof FramedItemFrameBlockEntity be)
         {
-            return convertUseResult(be.handleFrameInteraction(player, hand), level);
+            return be.handleFrameInteraction(player, hand);
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     @Override

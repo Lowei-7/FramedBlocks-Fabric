@@ -3,7 +3,6 @@ package xfacthd.framedblocks.common.block.interactive;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -63,11 +62,11 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
-        return convertUseResult(handleUse(state, level, pos, player, hand, hit), level);
+        return handleUse(state, level, pos, player, hand, hit);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class FramedPressurePlateBlock extends PressurePlateBlock implements IFra
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state)
     {
         return state.getValue(FramedProperties.PROPAGATES_SKYLIGHT);
     }

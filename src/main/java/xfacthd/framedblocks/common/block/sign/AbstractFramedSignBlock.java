@@ -8,11 +8,11 @@ import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.*;
@@ -55,7 +55,7 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
@@ -63,7 +63,7 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
         InteractionResult result = handleUse(state, level, pos, player, hand, hit);
         if (result != InteractionResult.PASS || preventUse(state, level, pos, player, hand, hit))
         {
-            return convertUseResult(result, level);
+            return result;
         }
 
         SignInteraction interaction = SignInteraction.from(stack);
@@ -73,7 +73,7 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
         {
             if (level.isClientSide())
             {
-                return canInteract || sign.isWaxed() ? ItemInteractionResult.SUCCESS : ItemInteractionResult.CONSUME;
+                return canInteract || sign.isWaxed() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
             }
 
             boolean front = sign.isFacingFrontText(player);
@@ -81,9 +81,9 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
             {
                 if (sign.canExecuteCommands(front, player) && sign.tryExecuteCommands(player, level, pos, front))
                 {
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.PASS;
             }
             else if (canInteract && notBlockedByOtherPlayer(player, sign) && interaction.interact(level, pos, player, stack, front, sign))
             {
@@ -94,16 +94,16 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
                 }
                 player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             else if (notBlockedByOtherPlayer(player, sign) && canEdit(player, sign, front))
             {
                 openEditScreen(player, sign, front);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     protected boolean preventUse(
@@ -114,13 +114,13 @@ public abstract class AbstractFramedSignBlock extends FramedBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction dir, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction dir, BlockPos facingPos, BlockState facingState, RandomSource random)
     {
         if (state.getValue(BlockStateProperties.WATERLOGGED))
         {
-            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return super.updateShape(state, dir, facingState, level, pos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, dir, facingPos, facingState, random);
     }
 
     @Override

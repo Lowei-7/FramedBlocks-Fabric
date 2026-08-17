@@ -111,7 +111,7 @@ public final class FramedUtils
         }
 
         MinecraftServer server = slevel.getServer();
-        server.tell(new TickTask(server.getTickCount() + delay, task));
+        server.execute(new TickTask(server.getTickCount() + delay, task));
     }
 
     public static void addPlayerInvSlots(Consumer<Slot> slotConsumer, Inventory playerInv, int x, int y)

@@ -12,7 +12,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -142,7 +141,7 @@ public interface IFramedBlock extends EntityBlock
     {
         if (getBlockType().canLockState() && hand == InteractionHand.MAIN_HAND && lockState(level, pos, player, player.getItemInHand(hand)))
         {
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         if (player.getItemInHand(hand).is(Utils.WRENCH))
@@ -155,7 +154,7 @@ public interface IFramedBlock extends EntityBlock
                 {
                     level.setBlockAndUpdate(pos, newState);
                 }
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                return InteractionResult.SUCCESS;
             }
 
             return InteractionResult.FAIL;
@@ -166,15 +165,6 @@ public interface IFramedBlock extends EntityBlock
             return be.handleInteraction(player, hand, hit);
         }
         return InteractionResult.FAIL;
-    }
-
-    default ItemInteractionResult convertUseResult(InteractionResult result, Level level)
-    {
-        if (!result.consumesAction())
-        {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        }
-        return result == InteractionResult.SUCCESS ? ItemInteractionResult.sidedSuccess(level.isClientSide()) : ItemInteractionResult.CONSUME;
     }
 
     // Fabric: removed @Override, method has no supertype in Fabric
@@ -443,22 +433,11 @@ public interface IFramedBlock extends EntityBlock
     }
 
     /**
-     * @deprecated Use overload with {@link ShapeProvider} param instead
-     */
-    @Deprecated(forRemoval = true)
-    default VoxelShape getCamoOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
-    {
-        return getCamoOcclusionShape(state, level, pos, null);
-    }
-
-    /**
      * {@return the shape to use for occlusion checks}
      * @param state This block's state
-     * @param level The level this block is in
-     * @param pos The position of this block in the level
      * @param occlusionShapes The {@link ShapeProvider} to get the shape from if this block uses separate main and occlusion shapes
      */
-    default VoxelShape getCamoOcclusionShape(BlockState state, BlockGetter level, BlockPos pos, @Nullable ShapeProvider occlusionShapes)
+    default VoxelShape getCamoOcclusionShape(BlockState state, @Nullable ShapeProvider occlusionShapes)
     {
         if (getBlockType().canOccludeWithSolidCamo() && !state.getValue(FramedProperties.SOLID))
         {
@@ -468,7 +447,7 @@ public interface IFramedBlock extends EntityBlock
         {
             return occlusionShapes.get(state);
         }
-        return state.getShape(level, pos);
+        return state.getShape(EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
     }
 
     default VoxelShape getCamoVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
@@ -594,7 +573,7 @@ public interface IFramedBlock extends EntityBlock
     }
 
     default BlockState updateShapeLockable(
-            BlockState state, LevelAccessor level, BlockPos pos, Supplier<BlockState> updateShape
+            BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Supplier<BlockState> updateShape
     )
     {
         if (!state.getValue(FramedProperties.STATE_LOCKED))
@@ -604,7 +583,7 @@ public interface IFramedBlock extends EntityBlock
 
         if (getBlockType().supportsWaterLogging() && state.getValue(BlockStateProperties.WATERLOGGED))
         {
-            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
         return state;
     }

@@ -61,7 +61,8 @@ public class FramedGlowingCubeModel extends FramedCubeBaseModel
                     quad.getTintIndex(),
                     quad.getDirection(),
                     quad.getSprite(),
-                    false
+                    false,
+                    quad.getLightEmission()
             );
             setMaxEmissivity(newQuad);
             fullbrightQuads.add(newQuad);

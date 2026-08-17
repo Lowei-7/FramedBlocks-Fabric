@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.level.ServerLevel;
 import xfacthd.framedblocks.api.block.FramedBlockEntity;
 import xfacthd.framedblocks.api.block.IFramedBlock;
@@ -24,6 +25,7 @@ public final class EventHandler
         ServerLifecycleEvents.SERVER_STOPPED.register(EventHandler::onServerShutdown);
         ServerLifecycleEvents.SERVER_STARTED.register(EventHandler::onServerStarted);
         ServerTickEvents.END_SERVER_TICK.register(EventHandler::onServerTick);
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> FramingSawRecipeCache.sendToPlayer(handler.getPlayer()));
     }
 
     public static void onServerStarted(net.minecraft.server.MinecraftServer server)

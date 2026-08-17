@@ -185,7 +185,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_IRON_DOOR)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 2)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_IRON, 2))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_IRON), 2))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_TRAP_DOOR)
@@ -194,7 +194,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_IRON_TRAP_DOOR)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_IRON))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_IRON)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_PRESSURE_PLATE)
@@ -203,22 +203,22 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_STONE_PRESSURE_PLATE)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.STONE))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.STONE)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_OBSIDIAN_PRESSURE_PLATE)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.OBSIDIAN))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.OBSIDIAN)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_GOLD_PRESSURE_PLATE)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_GOLD))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_GOLD)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_IRON_PRESSURE_PLATE)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_IRON))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_IRON)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_LADDER)
@@ -231,7 +231,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_STONE_BUTTON)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 8)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.STONE))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.STONE)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_LARGE_BUTTON)
@@ -240,12 +240,12 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_LARGE_STONE_BUTTON)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.STONE))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.STONE)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_LEVER)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.COBBLESTONE))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.COBBLESTONE)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_SIGN)
@@ -263,7 +263,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_ADJ_DOUBLE_COPYCAT_SLAB)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_COPPER))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_COPPER)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_ADJ_DOUBLE_PANEL)
@@ -272,7 +272,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_ADJ_DOUBLE_COPYCAT_PANEL)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_COPPER))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_COPPER)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_DOUBLE_SLOPE)
@@ -293,20 +293,20 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_TORCH, 4)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(ItemTags.COALS))
+                .additive(FramingSawRecipeAdditive.of(tag(ItemTags.COALS)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_SOUL_TORCH, 4)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
                 .additives(List.of(
-                        FramingSawRecipeAdditive.of(ItemTags.COALS),
+                        FramingSawRecipeAdditive.of(tag(ItemTags.COALS)),
                         FramingSawRecipeAdditive.of(Items.SOUL_SAND)
                 ))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_REDSTONE_TORCH, 4)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.DUSTS_REDSTONE))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.DUSTS_REDSTONE)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_FLOOR)
@@ -392,17 +392,17 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_COLLAPSIBLE_COPYCAT_BLOCK)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_COPPER))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_COPPER)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_BOUNCY_CUBE)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.SLIMEBALLS, 4))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.SLIMEBALLS), 4))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_REDSTONE_BLOCK)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.DUSTS_REDSTONE, 8))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.DUSTS_REDSTONE), 8))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_PRISM)
@@ -619,7 +619,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_GLOWING_CUBE)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.DUSTS_GLOWSTONE, 4))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.DUSTS_GLOWSTONE), 4))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_PYRAMID)
@@ -634,7 +634,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
                 .additives(List.of(
                         FramingSawRecipeAdditive.of(Items.HAY_BLOCK),
-                        FramingSawRecipeAdditive.of(Tags.Items.DUSTS_REDSTONE, 4)
+                        FramingSawRecipeAdditive.of(tag(Tags.Items.DUSTS_REDSTONE), 4)
                 ))
                 .save(consumer);
 
@@ -644,40 +644,40 @@ public final class FramingSawRecipeProvider extends RecipeProvider
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_IRON_GATE)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_IRON))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_IRON)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_GLOWING_ITEM_FRAME)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
                 .additives(List.of(
-                        FramingSawRecipeAdditive.of(Tags.Items.LEATHER),
+                        FramingSawRecipeAdditive.of(tag(Tags.Items.LEATHER)),
                         FramingSawRecipeAdditive.of(Items.GLOW_INK_SAC)
                 ))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_ITEM_FRAME)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE / 4)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.LEATHER))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.LEATHER)))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_FANCY_RAIL, 16)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
-                .additive(FramingSawRecipeAdditive.of(Tags.Items.INGOTS_IRON, 6))
+                .additive(FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_IRON), 6))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_FANCY_POWERED_RAIL, 6)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
                 .additives(List.of(
-                        FramingSawRecipeAdditive.of(Tags.Items.INGOTS_GOLD, 6),
-                        FramingSawRecipeAdditive.of(Tags.Items.DUSTS_REDSTONE)
+                        FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_GOLD), 6),
+                        FramingSawRecipeAdditive.of(tag(Tags.Items.DUSTS_REDSTONE))
                 ))
                 .save(consumer);
 
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_FANCY_DETECTOR_RAIL, 6)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
                 .additives(List.of(
-                        FramingSawRecipeAdditive.of(Tags.Items.INGOTS_IRON, 6),
-                        FramingSawRecipeAdditive.of(Tags.Items.DUSTS_REDSTONE),
+                        FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_IRON), 6),
+                        FramingSawRecipeAdditive.of(tag(Tags.Items.DUSTS_REDSTONE)),
                         FramingSawRecipeAdditive.of(Items.STONE_PRESSURE_PLATE)
                 ))
                 .save(consumer);
@@ -685,7 +685,7 @@ public final class FramingSawRecipeProvider extends RecipeProvider
         FramingSawRecipeBuilder.builder(FBContent.BLOCK_FRAMED_FANCY_ACTIVATOR_RAIL, 6)
                 .material(FramingSawRecipe.CUBE_MATERIAL_VALUE)
                 .additives(List.of(
-                        FramingSawRecipeAdditive.of(Tags.Items.INGOTS_IRON, 6),
+                        FramingSawRecipeAdditive.of(tag(Tags.Items.INGOTS_IRON), 6),
                         FramingSawRecipeAdditive.of(Items.REDSTONE_TORCH)
                 ))
                 .save(consumer);

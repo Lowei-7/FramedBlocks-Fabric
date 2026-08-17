@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -52,10 +52,10 @@ public final class BlockOutlineRenderer
         if (TestProperties.ENABLE_OCCLUSION_SHAPE_DEBUG_RENDERER)
         {
             VertexConsumer builder = world.consumers().getBuffer(net.minecraft.client.renderer.RenderType.lines());
-            VoxelShape shape = state.getOcclusionShape(Minecraft.getInstance().level, pos);
+            VoxelShape shape = state.getOcclusionShape();
             mstack.pushPose();
             mstack.translate(offset.x, offset.y, offset.z);
-            LevelRenderer.renderLineBox(mstack, builder, shape.bounds(), 0F, 0F, 0F, .4F);
+            ShapeRenderer.renderShape(mstack, builder, shape, 0D, 0D, 0D, 0x66000000);
             mstack.popPose();
             return false;
         }

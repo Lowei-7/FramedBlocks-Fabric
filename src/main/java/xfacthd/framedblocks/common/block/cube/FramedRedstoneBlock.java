@@ -2,14 +2,15 @@ package xfacthd.framedblocks.common.block.cube;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.block.PoweredBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -47,11 +48,11 @@ public class FramedRedstoneBlock extends PoweredBlock implements IFramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
-        return convertUseResult(handleUse(state, level, pos, player, hand, hit), level);
+        return handleUse(state, level, pos, player, hand, hit);
     }
 
     @Override
@@ -63,20 +64,22 @@ public class FramedRedstoneBlock extends PoweredBlock implements IFramedBlock
     @Override
     public BlockState updateShape(
             BlockState state,
-            Direction direction,
-            BlockState neighborState,
-            LevelAccessor level,
+            LevelReader level,
+            ScheduledTickAccess tickAccess,
             BlockPos currentPos,
-            BlockPos neighborPos
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
+            RandomSource random
     )
     {
         updateCulling(level, currentPos);
-        return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+        return super.updateShape(state, level, tickAccess, currentPos, direction, neighborPos, neighborState, random);
     }
 
     @Override
     public void neighborChanged(
-            BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving
+            BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving
     )
     {
         updateCulling(level, pos);
@@ -89,9 +92,9 @@ public class FramedRedstoneBlock extends PoweredBlock implements IFramedBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
-        return getCamoOcclusionShape(state, level, pos, null);
+        return getCamoOcclusionShape(state, null);
     }
 
     @Override
@@ -107,7 +110,7 @@ public class FramedRedstoneBlock extends PoweredBlock implements IFramedBlock
     }
 
     @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos)
+    public boolean propagatesSkylightDown(BlockState state)
     {
         return state.getValue(FramedProperties.PROPAGATES_SKYLIGHT);
     }

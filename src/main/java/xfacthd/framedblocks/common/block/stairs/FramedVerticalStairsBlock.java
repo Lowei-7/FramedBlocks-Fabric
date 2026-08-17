@@ -2,8 +2,11 @@ package xfacthd.framedblocks.common.block.stairs;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -44,17 +47,17 @@ public class FramedVerticalStairsBlock extends FramedBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random)
     {
         Direction dir = state.getValue(FramedProperties.FACING_HOR);
         if (facing != dir.getOpposite() && facing != dir.getClockWise())
         {
             state = getStateFromContext(state, level, pos);
         }
-        return super.updateShape(state, facing, facingState, level, pos, facingPos);
+        return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
     }
 
-    private BlockState getStateFromContext(BlockState state, LevelAccessor level, BlockPos pos)
+    private BlockState getStateFromContext(BlockState state, LevelReader level, BlockPos pos)
     {
         if (state.getValue(FramedProperties.STATE_LOCKED))
         {

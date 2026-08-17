@@ -1,7 +1,7 @@
 package net.minecraftforge.client.model;
 
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.renderer.block.model.BakedOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -65,8 +65,8 @@ public abstract class BakedModelWrapper<T extends BakedModel> implements BakedMo
     }
 
     @Override
-    public ItemOverrides getOverrides()
+    public BakedOverrides overrides()
     {
-        return originalModel.getOverrides();
+        return originalModel.overrides();
     }
 }

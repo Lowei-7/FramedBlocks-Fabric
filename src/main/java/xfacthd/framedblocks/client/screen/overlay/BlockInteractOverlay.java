@@ -1,6 +1,7 @@
 package xfacthd.framedblocks.client.screen.overlay;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
@@ -190,9 +191,10 @@ public abstract class BlockInteractOverlay implements IGuiOverlay
     @SuppressWarnings("deprecation")
     private static void drawTooltipBackground(GuiGraphics graphics, int x, int y, int width, int height)
     {
-        graphics.drawManaged(() -> TooltipRenderUtil.renderTooltipBackground(
+        graphics.drawSpecial(buf -> TooltipRenderUtil.renderTooltipBackground(
                 graphics,
-                x - 2, y - 2, width + 4, height + 4, 0
+                x - 2, y - 2, width + 4, height + 4, 0,
+                ResourceLocation.withDefaultNamespace("textures/gui/sprites/tooltip/background.png")
         ));
     }
 
@@ -203,7 +205,7 @@ public abstract class BlockInteractOverlay implements IGuiOverlay
         public void draw(ForgeGui gui, GuiGraphics graphics, int x, int y)
         {
             gui.setupOverlayRenderState(true, false);
-            graphics.blit(location, x, y, 0, xOff, yOff, width, height, texWidth, texHeight);
+            graphics.blit(RenderType::guiTextured, location, x, y, (float) xOff, (float) yOff, width, height, texWidth, texHeight);
         }
     }
 

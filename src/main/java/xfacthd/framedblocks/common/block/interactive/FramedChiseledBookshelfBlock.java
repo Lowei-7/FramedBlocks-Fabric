@@ -8,7 +8,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -80,7 +79,7 @@ public class FramedChiseledBookshelfBlock extends FramedBlock
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(
+    protected InteractionResult useItemOn(
             ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
     )
     {
@@ -90,25 +89,25 @@ public class FramedChiseledBookshelfBlock extends FramedBlock
             Optional<Vec2> optional = getRelativeHitCoordinatesForBlockFace(hit, dir);
             if (optional.isEmpty())
             {
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.PASS;
             }
 
             int slot = getHitSlot(optional.get());
             if (state.getValue(ChiseledBookShelfBlock.SLOT_OCCUPIED_PROPERTIES.get(slot)))
             {
                 takeBook(level, pos, player, be, slot);
-                return convertUseResult(InteractionResult.sidedSuccess(level.isClientSide()), level);
+                return InteractionResult.SUCCESS;
             }
 
             if (!stack.is(ItemTags.BOOKSHELF_BOOKS))
             {
-                return convertUseResult(InteractionResult.CONSUME, level);
+                return InteractionResult.CONSUME;
             }
 
             placeBook(level, pos, player, be, stack, slot);
-            return convertUseResult(InteractionResult.sidedSuccess(level.isClientSide()), level);
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     private static void placeBook(

@@ -5,8 +5,8 @@ import net.minecraft.world.level.block.state.properties.*;
 
 public final class FramedProperties
 {
-    public static final DirectionProperty FACING_HOR = BlockStateProperties.HORIZONTAL_FACING;
-    public static final DirectionProperty FACING_NE = DirectionProperty.create("facing", dir -> dir == Direction.NORTH || dir == Direction.EAST);
+    public static final EnumProperty<Direction> FACING_HOR = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING_NE = EnumProperty.create("facing", Direction.class, dir -> dir == Direction.NORTH || dir == Direction.EAST);
 
     public static final BooleanProperty TOP = BooleanProperty.create("top");
     public static final BooleanProperty OFFSET = BooleanProperty.create("offset");

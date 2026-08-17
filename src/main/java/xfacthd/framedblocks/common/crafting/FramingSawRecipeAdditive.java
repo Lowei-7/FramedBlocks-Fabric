@@ -25,14 +25,14 @@ public record FramingSawRecipeAdditive(Ingredient ingredient, int count)
         Preconditions.checkArgument(count > 0, "Additive count must be greater than 0");
     }
 
-    public static FramingSawRecipeAdditive of(TagKey<Item> tag)
+    public static FramingSawRecipeAdditive of(Ingredient ingredient)
     {
-        return of(tag, 1);
+        return of(ingredient, 1);
     }
 
-    public static FramingSawRecipeAdditive of(TagKey<Item> tag, int count)
+    public static FramingSawRecipeAdditive of(Ingredient ingredient, int count)
     {
-        return new FramingSawRecipeAdditive(Ingredient.of(tag), count);
+        return new FramingSawRecipeAdditive(ingredient, count);
     }
 
     public static FramingSawRecipeAdditive of(ItemLike item)

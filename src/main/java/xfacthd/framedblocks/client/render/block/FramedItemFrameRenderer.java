@@ -6,9 +6,11 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.MapRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.state.MapRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -31,10 +33,13 @@ public class FramedItemFrameRenderer implements BlockEntityRenderer<FramedItemFr
     private static final double MAX_NAMETAG_DIST_SQR = 64D * 64D;
 
     private final ItemRenderer itemRenderer;
+    private final MapRenderState mapRenderState = new MapRenderState();
+    private final MapRenderer mapRenderer;
 
     public FramedItemFrameRenderer(BlockEntityRendererProvider.Context ctx)
     {
         itemRenderer = ctx.getItemRenderer();
+        mapRenderer = Minecraft.getInstance().getMapRenderer();
     }
 
     @Override
@@ -66,6 +71,7 @@ public class FramedItemFrameRenderer implements BlockEntityRenderer<FramedItemFr
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yRot));
 
         ItemStack item = be.getItem();
+        MapId mapId = item.get(DataComponents.MAP_ID);
         //noinspection ConstantConditions
         MapItemSavedData mapData = MapItem.getSavedData(item, be.getLevel());
 
@@ -73,7 +79,7 @@ public class FramedItemFrameRenderer implements BlockEntityRenderer<FramedItemFr
         float itemRotation = mapData != null ? (be.getRotation() % 4 * 2) : be.getRotation();
         poseStack.mulPose(Axis.ZP.rotationDegrees(itemRotation * 360.0F / 8.0F));
 
-        if (mapData != null)
+        if (mapId != null && mapData != null)
         {
             poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
 
@@ -81,8 +87,9 @@ public class FramedItemFrameRenderer implements BlockEntityRenderer<FramedItemFr
             poseStack.translate(-64.0D, -64.0D, -1.0D);
 
             int mapLight = be.isGlowingFrame() ? 0x00F000D2 : packedLight;
-            MapId mapId = item.get(DataComponents.MAP_ID);
-            Minecraft.getInstance().gameRenderer.getMapRenderer().render(poseStack, buffer, mapId, mapData, true, mapLight);
+            MapRenderer mapRenderer = Minecraft.getInstance().getMapRenderer();
+            mapRenderer.extractRenderState(mapId, mapData, mapRenderState);
+            mapRenderer.render(mapRenderState, poseStack, buffer, true, mapLight);
         }
         else
         {

@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.*;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.*;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.level.block.state.BlockState;
@@ -177,7 +177,7 @@ public class FramedSignScreen extends Screen
 
         //noinspection ConstantConditions
         BlockRenderDispatcher renderer = minecraft.getBlockRenderer();
-        MultiBufferSource.BufferSource buffer = graphics.bufferSource();
+        MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
         BakedModel model = renderer.getBlockModel(state);
         Object modelData = sign.getRenderAttachmentData();
 

@@ -56,7 +56,7 @@ public class FramedBlueprintItem extends FramedToolItem
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
+    public InteractionResult use(Level level, Player player, InteractionHand hand)
     {
         ItemStack stack = player.getItemInHand(hand);
         if (player.isShiftKeyDown())
@@ -70,7 +70,7 @@ public class FramedBlueprintItem extends FramedToolItem
                     tag.remove("camo_data_two");
                 });
             }
-            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
         return super.use(level, player, hand);
     }
@@ -126,7 +126,7 @@ public class FramedBlueprintItem extends FramedToolItem
                 tag.put("camo_data", be.writeToBlueprint());
             }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     private static InteractionResult readBlueprint(UseOnContext context, Player player, CompoundTag tag)
@@ -167,7 +167,7 @@ public class FramedBlueprintItem extends FramedToolItem
         {
             if (player.level().isClientSide())
             {
-                player.sendSystemMessage(CANT_PLACE_FLUID_CAMO);
+                player.displayClientMessage(CANT_PLACE_FLUID_CAMO, false);
             }
             return true;
         }
@@ -219,7 +219,7 @@ public class FramedBlueprintItem extends FramedToolItem
                         .map(s -> s.getHoverName().getString())
                         .toList();
                 String list = MATERIAL_LIST_PREFIX + String.join(MATERIAL_LIST_PREFIX, names);
-                player.sendSystemMessage(Component.translatable(MISSING_MATERIALS).append(list));
+                player.displayClientMessage(Component.translatable(MISSING_MATERIALS).append(list), false);
             }
             return true;
         }
@@ -373,7 +373,7 @@ public class FramedBlueprintItem extends FramedToolItem
     public static Block getTargetBlock(ItemStack stack)
     {
         CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(tag.getString("framed_block")));
+        Block block = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.parse(tag.getString("framed_block"))).orElse(null);
         Objects.requireNonNull(block);
         return block;
     }
@@ -388,7 +388,7 @@ public class FramedBlueprintItem extends FramedToolItem
         }
         else
         {
-            Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(tag.getString("framed_block")));
+Block block = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.parse(tag.getString("framed_block"))).orElse(null);
             Component blockName = block == null ? BLOCK_INVALID : block.getName().withStyle(ChatFormatting.WHITE);
 
             CompoundTag beTag = tag.getCompound("camo_data");

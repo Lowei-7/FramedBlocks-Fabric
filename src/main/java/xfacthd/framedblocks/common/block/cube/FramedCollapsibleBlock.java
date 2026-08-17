@@ -102,9 +102,9 @@ public class FramedCollapsibleBlock extends FramedBlock
     }
 
     @Override
-    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
+    public VoxelShape getOcclusionShape(BlockState state)
     {
-        return getCamoOcclusionShape(state, level, pos, null);
+        return getCamoOcclusionShape(state, null);
     }
 
     @Override

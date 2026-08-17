@@ -100,7 +100,7 @@ public final class FramingSawDisplayGenerator implements DynamicDisplayGenerator
         for (FramingSawRecipeAdditive additive : additives)
         {
             int addCount = additive.count() * (outputCount / recipe.getResult().getCount());
-            List<EntryStack<ItemStack>> additiveStacks = Stream.of(additive.ingredient().getItems())
+            List<EntryStack<ItemStack>> additiveStacks = additive.ingredient().items().stream().map(h -> h.value().getDefaultInstance())
                     .map(ItemStack::copy)
                     .peek(s -> s.setCount(addCount))
                     .map(EntryStacks::of)

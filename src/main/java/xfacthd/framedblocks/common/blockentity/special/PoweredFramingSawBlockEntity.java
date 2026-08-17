@@ -3,6 +3,8 @@ package xfacthd.framedblocks.common.blockentity.special;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -204,7 +206,7 @@ public class PoweredFramingSawBlockEntity extends BlockEntity
     {
         ResourceLocation lastId = selectedRecipeId;
         selectedRecipe = recipe;
-        selectedRecipeId = recipe == null ? null : recipe.getId();
+        selectedRecipeId = recipe == null ? null : recipe.getId().location();
         checkRecipeSatisfied();
         if (!Objects.equals(lastId, selectedRecipeId))
         {
@@ -258,7 +260,7 @@ public class PoweredFramingSawBlockEntity extends BlockEntity
         cache = FramingSawRecipeCache.get(level.isClientSide());
         if (selectedRecipeId != null && !level.isClientSide())
         {
-            FramingSawRecipe recipe = level.getRecipeManager().byKey(selectedRecipeId)
+            FramingSawRecipe recipe = level.getServer().getRecipeManager().byKey(ResourceKey.create(Registries.RECIPE, selectedRecipeId))
                     .filter(FramingSawRecipe.class::isInstance)
                     .map(FramingSawRecipe.class::cast)
                     .orElse(null);

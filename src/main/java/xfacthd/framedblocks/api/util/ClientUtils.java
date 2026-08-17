@@ -228,7 +228,7 @@ public final class ClientUtils
 
     public static void enqueueClientTask(Runnable task)
     {
-        Minecraft.getInstance().tell(task);
+        Minecraft.getInstance().execute(task);
     }
 
     public static int getBlockColor(BlockAndTintGetter level, BlockPos pos, BlockState state, int tintIdx)
@@ -263,7 +263,7 @@ public final class ClientUtils
     {
         if (delay == 0)
         {
-            Minecraft.getInstance().tell(task);
+            Minecraft.getInstance().execute(task);
             return;
         }
 
